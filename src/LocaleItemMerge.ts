@@ -1,15 +1,10 @@
-import { InalzConfigComponent } from './types/InalzConfig'
 import { LocaleItem } from './Locale'
 
-export const LocaleItemMerge = {
-  mergeItems(
-    lang: InalzConfigComponent.Lang,
-    oldItems: LocaleItem[],
-    newItems: LocaleItem[],
-  ): LocaleItem[] {
+export class LocaleItemMerge {
+  mergeItems(oldItems: LocaleItem[], newItems: LocaleItem[]): LocaleItem[] {
     // 重複している item は oldItems を使う
     const equals = (itemA: LocaleItem, itemB: LocaleItem) =>
-      itemA.texts[lang.source] === itemB.texts[lang.source]
+      itemA.getSourceText() === itemB.getSourceText()
     const duplicatedIndexPairs = newItems.flatMap((item, i) => {
       const j = oldItems.findIndex((itemB) => equals(item, itemB))
       if (j >= 0) {
@@ -32,5 +27,5 @@ export const LocaleItemMerge = {
         return item
       })
     return mergedItems.concat(outdatedItems)
-  },
+  }
 }

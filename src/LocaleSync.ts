@@ -3,14 +3,14 @@ import { deepEquals } from './util/objectUtil'
 import { getTextsFromMarkdown } from './MarkdownText'
 import { LocaleItemParser } from './LocaleItemParser'
 import { LocaleItemMerge } from './LocaleItemMerge'
-import { InalzConfigComponent } from './types/InalzConfig'
+import { Lang } from './types/InalzConfig'
 import { BUILTIN_ACTIONS } from './Constants'
-import { LocaleComponent } from './types/Locale'
+import { LocaleItem } from './Locale'
 
 export class LocaleSync {
-  lang: InalzConfigComponent.Lang
+  lang: Lang
 
-  constructor(lang: InalzConfigComponent.Lang) {
+  constructor(lang: Lang) {
     this.lang = lang
   }
 
@@ -29,7 +29,7 @@ export class LocaleSync {
 
     const srcText = await readFile(sourcePath)
     const texts = getTextsFromMarkdown(srcText)
-    const items: LocaleComponent.Item[] = texts
+    const items: LocaleItem[] = texts
       .map(
         (text) =>
           Object.assign(
@@ -42,17 +42,19 @@ export class LocaleSync {
           ) as { [lang: string]: string },
       )
       .map((texts) => ({ texts }))
+      .map((item) => new LocaleItem(lang, item))
 
+    const parser = new LocaleItemParser(lang)
     let yaml: string
     if (localeFileExists) {
-      const oldItems = await LocaleItemParser.load(localePath)
-      const mergedItems = LocaleItemMerge.mergeItems(lang, oldItems, items)
+      const oldItems = await parser.load(localePath)
+      const mergedItems = new LocaleItemMerge().mergeItems(oldItems, items)
       if (deepEquals(oldItems, mergedItems)) {
         return
       }
-      yaml = LocaleItemParser.stringify(mergedItems)
+      yaml = parser.stringify(mergedItems)
     } else {
-      yaml = LocaleItemParser.stringify(items)
+      yaml = parser.stringify(items)
     }
 
     await writeFile(localePath, yaml, { mkdirp: true })

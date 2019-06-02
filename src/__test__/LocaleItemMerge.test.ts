@@ -1,10 +1,10 @@
 import { LocaleItemMerge } from '../LocaleItemMerge'
-import { InalzConfigComponent } from '../types/InalzConfig'
+import { Lang } from '../types/InalzConfig'
 import { Locale, LocaleItem } from '../Locale'
 
 describe('LocaleMerge', () => {
   it('mergeItems', () => {
-    const lang: InalzConfigComponent.Lang = {
+    const lang: Lang = {
       source: 'en',
       targets: ['ja'],
     }
@@ -36,7 +36,7 @@ describe('LocaleMerge', () => {
         },
       },
     ].map((item) => new LocaleItem(lang, item))
-    const items = LocaleItemMerge.mergeItems(lang, oldItems, newItems)
+    const items = new LocaleItemMerge().mergeItems(oldItems, newItems)
 
     const locale = new Locale(lang, items)
     // has old item translation

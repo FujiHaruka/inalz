@@ -4,9 +4,17 @@ import { Left } from 'fp-ts/lib/Either'
 import { LocaleComponent } from './types/Locale'
 import { IOLocaleItem } from './IOTypes'
 import { readFile } from './util/fsUtil'
+import { LocaleItem } from './Locale'
+import { Lang } from './types/InalzConfig'
 
-export const LocaleItemParser = {
-  parse(yaml: string): LocaleComponent.Item[] {
+export class LocaleItemParser {
+  lang: Lang
+
+  constructor(lang: Lang) {
+    this.lang = lang
+  }
+
+  parse(yaml: string): LocaleItem[] {
     const itemValidations = YAML.parseAllDocuments(yaml)
       .map((doc) => doc.toJSON())
       .filter(Boolean)
@@ -19,18 +27,20 @@ export const LocaleItemParser = {
             item.isLeft(),
         )
         .flatMap((e) => e.value)
-      throw new Error(JSON.stringify(errors, null, '  '))
+      throw new Error(JSON.stringify(errors))
     }
-    const items = itemValidations.map((e) => e.value as LocaleComponent.Item)
+    const items = itemValidations
+      .map((e) => e.value as LocaleComponent.Item)
+      .map((item) => new LocaleItem(this.lang, item))
     return items
-  },
+  }
 
-  stringify(items: LocaleComponent.Item[]): string {
-    return items.map((item) => YAML.stringify(item)).join('---\n')
-  },
+  stringify(items: LocaleItem[]): string {
+    return items.map((item) => YAML.stringify(item.toRaw())).join('---\n')
+  }
 
-  async load(yamlPath: string): Promise<LocaleComponent.Item[]> {
+  async load(yamlPath: string): Promise<LocaleItem[]> {
     const yaml = await readFile(yamlPath)
     return this.parse(yaml)
-  },
+  }
 }

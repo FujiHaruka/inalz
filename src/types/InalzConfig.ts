@@ -1,14 +1,14 @@
+export type Lang = {
+  source: string
+  targets: string[]
+}
+
 export interface InalzConfigInterface {
-  lang: InalzConfigComponent.Lang
+  lang: Lang
   documents: InalzConfigComponent.Document[]
 }
 
 export namespace InalzConfigComponent {
-  export type Lang = {
-    source: string
-    targets: string[]
-  }
-
   export type Document =
     | FilenameModeDocument
     | DirectoryModeDocument

@@ -1,6 +1,6 @@
 import os from 'os'
 import { Translator } from '../Translator'
-import { InalzConfigComponent } from '../types/InalzConfig'
+import { Lang } from '../types/InalzConfig'
 import { readFile } from '../util/fsUtil'
 
 describe('Translator', () => {
@@ -11,7 +11,7 @@ describe('Translator', () => {
     }
     const localePath = 'misc/mock/translator/locale01.yml'
     const expectedPath = 'misc/mock/translator/expected01.md'
-    const lang: InalzConfigComponent.Lang = {
+    const lang: Lang = {
       source: 'en',
       targets: ['ja'],
     }

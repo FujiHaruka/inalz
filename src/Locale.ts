@@ -1,14 +1,14 @@
 import { LocaleInterface, LocaleComponent } from './types/Locale'
-import { InalzConfigComponent } from './types/InalzConfig'
+import { Lang } from './types/InalzConfig'
 
 export class Locale implements LocaleInterface {
-  lang: InalzConfigComponent.Lang
+  lang: Lang
   items: LocaleItem[]
 
   // item に高速にアクセスするため
   private textToIndex: Map<string, number>
 
-  constructor(lang: InalzConfigComponent.Lang, items: LocaleComponent.Item[]) {
+  constructor(lang: Lang, items: LocaleComponent.Item[]) {
     this.lang = lang
     this.items = items.map((item) => new LocaleItem(lang, item))
     this.textToIndex = new Map(
@@ -26,11 +26,11 @@ export class Locale implements LocaleInterface {
 }
 
 export class LocaleItem implements LocaleComponent.Item {
-  lang: InalzConfigComponent.Lang
+  lang: Lang
   texts: LocaleComponent.Item['texts']
   meta?: LocaleComponent.Item['meta']
 
-  constructor(lang: InalzConfigComponent.Lang, item: LocaleComponent.Item) {
+  constructor(lang: Lang, item: LocaleComponent.Item) {
     this.lang = lang
     this.texts = item.texts
     this.meta = item.meta
@@ -46,5 +46,15 @@ export class LocaleItem implements LocaleComponent.Item {
     const text = this.texts[this.lang.source]
     const exists = Boolean(text)
     return exists ? text : null
+  }
+
+  toRaw(): LocaleComponent.Item {
+    const item: LocaleComponent.Item = {
+      texts: this.texts,
+    }
+    if (this.meta) {
+      item.meta = this.meta
+    }
+    return item
   }
 }

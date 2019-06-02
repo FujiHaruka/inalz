@@ -1,7 +1,7 @@
-import { InalzConfigComponent } from './InalzConfig'
+import { Lang } from './InalzConfig'
 
 export interface LocaleInterface {
-  lang: InalzConfigComponent.Lang
+  lang: Lang
   items: LocaleComponent.Item[]
 }
 

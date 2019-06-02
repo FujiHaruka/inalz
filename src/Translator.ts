@@ -1,14 +1,14 @@
 import { Locale, LocaleItem } from './Locale'
 import { BUILTIN_ACTIONS } from './Constants'
 import { writeFile, readFile } from './util/fsUtil'
-import { InalzConfigComponent } from './types/InalzConfig'
+import { InalzConfigComponent, Lang } from './types/InalzConfig'
 import { LocaleItemParser } from './LocaleItemParser'
 import { replaceAll } from './util/stringUtil'
 
 export class Translator {
-  lang: InalzConfigComponent.Lang
+  lang: Lang
 
-  constructor(lang: InalzConfigComponent.Lang) {
+  constructor(lang: Lang) {
     this.lang = lang
   }
 
@@ -22,7 +22,7 @@ export class Translator {
   }: InalzConfigComponent.PathModeDocument) {
     const markdown = await readFile(sourcePath)
     const localeYaml = await readFile(localePath)
-    const localeItems = LocaleItemParser.parse(localeYaml)
+    const localeItems = new LocaleItemParser(this.lang).parse(localeYaml)
     const locale = new Locale(this.lang, localeItems)
     for (const [targetlang, targetPath] of Object.entries(targetPaths)) {
       const content = this.translateContent(targetlang, markdown, locale)

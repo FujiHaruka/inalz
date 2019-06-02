@@ -2,7 +2,11 @@ import YAML from 'yaml'
 import path from 'path'
 import glob from 'fast-glob'
 import { readFile, firstExistsFile, statOrNull } from './util/fsUtil'
-import { InalzConfigComponent, InalzConfigInterface } from './types/InalzConfig'
+import {
+  InalzConfigComponent,
+  InalzConfigInterface,
+  Lang,
+} from './types/InalzConfig'
 import { IOInalzConfig } from './IOTypes'
 import { replaceExt } from './util/pathUtil'
 import { LANG_PATH_PARAM } from './Constants'
@@ -14,7 +18,7 @@ const replaceLangParam = (dir: string, lang: string) =>
 export class InalzConfig implements InalzConfigInterface {
   configPath: string
 
-  lang: InalzConfigComponent.Lang = null as any
+  lang: Lang = null as any
   documents: InalzConfigComponent.PathModeDocument[] = null as any
 
   private constructor(configPath: string) {

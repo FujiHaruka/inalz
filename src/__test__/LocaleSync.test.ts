@@ -3,11 +3,11 @@ import os from 'os'
 import path from 'path'
 import { LocaleSync } from '../LocaleSync'
 import { rmIfExists } from '../util/fsUtil'
-import { InalzConfigComponent } from '../types/InalzConfig'
+import { Lang } from '../types/InalzConfig'
 import { LocaleItemParser } from '../LocaleItemParser'
 
 describe('LocaleSync', () => {
-  const lang: InalzConfigComponent.Lang = {
+  const lang: Lang = {
     source: 'en',
     targets: ['ja'],
   }
@@ -21,8 +21,9 @@ describe('LocaleSync', () => {
     const syncer = new LocaleSync(lang)
     await syncer.sync(srcPath, localePath)
 
-    const items = await LocaleItemParser.load(localePath)
-    const expected = await LocaleItemParser.load(expectedLocPath)
+    const parser = new LocaleItemParser(lang)
+    const items = await parser.load(localePath)
+    const expected = await parser.load(expectedLocPath)
     expect(items).toEqual(expected)
   })
 
@@ -35,8 +36,9 @@ describe('LocaleSync', () => {
     const syncer = new LocaleSync(lang)
     await syncer.sync(srcPath, localePath)
 
-    const items = await LocaleItemParser.load(localePath)
-    const expected = await LocaleItemParser.load(expectedLocPath)
+    const parser = new LocaleItemParser(lang)
+    const items = await parser.load(localePath)
+    const expected = await parser.load(expectedLocPath)
     expect(items).toEqual(expected)
   })
 
@@ -51,8 +53,9 @@ describe('LocaleSync', () => {
     const syncer = new LocaleSync(lang)
     await syncer.sync(srcPath, localePath)
 
-    const items = await LocaleItemParser.load(localePath)
-    const expected = await LocaleItemParser.load(expectedLocPath)
+    const parser = new LocaleItemParser(lang)
+    const items = await parser.load(localePath)
+    const expected = await parser.load(expectedLocPath)
     expect(items).toEqual(expected)
   })
 })
