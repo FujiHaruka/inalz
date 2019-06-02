@@ -1,5 +1,8 @@
 import { IOInalzConfig, IOLocaleItem } from '../IOTypes'
-import { InalzConfigInterface } from '../types/InalzConfig'
+import {
+  InalzConfigInterface,
+  InalzConfigComponent,
+} from '../types/InalzConfig'
 import { copy } from '../util/objectUtil'
 import { LocaleComponent } from '../types/Locale'
 
@@ -24,7 +27,9 @@ describe('IOTypes', () => {
         {
           linkMode: 'path',
           sourcePath: 'path/to/source.md',
-          targetPaths: ['path/to/target.md'],
+          targetPaths: {
+            ja: 'path/to/target.md',
+          },
           localePath: 'path/to/locale.yml',
         },
       ],
@@ -52,7 +57,9 @@ describe('IOTypes', () => {
         {
           linkMode: 'directory', // invalid linkMode
           sourcePath: 'path/to/source.md',
-          targetPaths: ['path/to/target.md'],
+          targetPaths: {
+            ja: 'path/to/target.md',
+          },
           localePath: 'path/to/locale.yml',
         } as any,
       ]

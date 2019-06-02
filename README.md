@@ -13,7 +13,6 @@ lang:
     - ja
 documents:
   - linkMode: filename
-    # Inspired by Hugo
     contentDir: docs/contents
     localeDir: docs/locales
   - linkMode: directory
@@ -22,7 +21,7 @@ documents:
   - linkMode: path
     sourcePath: README.md
     targetPaths:
-      - README.ja.md
+      ja: README.ja.md
     localePath: README.locale.yml
 vocabularies:
   - vocabulary.yml

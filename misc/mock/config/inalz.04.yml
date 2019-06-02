@@ -1,0 +1,16 @@
+lang:
+  source: en
+  targets:
+    - ja
+documents:
+  - linkMode: path
+    sourcePath: misc/mock/pathMode/doc.md
+    targetPaths:
+      ja: misc/mock/pathMode/doc_ja.md
+    localePath: misc/mock/pathMode/locale.yml
+  - linkMode: filename
+    contentDir: misc/mock/config/filenameMode
+    localeDir: misc/mock/config/locales
+  - linkMode: directory
+    contentDir: misc/mock/config/directoryMode/:lang
+    localeDir: misc/mock/config/locales
