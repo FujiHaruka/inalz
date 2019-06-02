@@ -1,0 +1,8 @@
+lang:
+  source: en
+  targets:
+    - ja
+documents:
+  - linkMode: directory
+    contentDir: docs/:lang
+    localeDir: locales
