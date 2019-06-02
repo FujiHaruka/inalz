@@ -3,6 +3,9 @@
   "description": "Markdown document i18n for mentenable translation",
   "version": "0.0.0",
   "author": "FujiHaruka",
+  "bin": {
+    "inalz": "./bin/inalz.js"
+  },
   "bugs": {
     "url": "https://github.com/FujiHaruka/inalz/issues"
   },
@@ -33,11 +36,11 @@
     "inalz"
   ],
   "license": "MIT",
-  "main": "index.js",
+  "main": "dist",
   "repository": "FujiHaruka/inalz",
   "scripts": {
-    "prepare": "npm run build",
     "build": "tsc",
+    "prepare": "npm run build",
     "test": "jest --silent false"
   }
 }
