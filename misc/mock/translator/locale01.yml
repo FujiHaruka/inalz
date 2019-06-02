@@ -1,0 +1,16 @@
+---
+texts:
+  en: Title
+  ja: __COPY__
+---
+texts:
+  en: This is document.
+  ja: これはドキュメント。
+---
+texts:
+  en: a list item 1
+  ja: リストアイテム1
+---
+texts:
+  en: a list item 2
+  ja: リストアイテム2

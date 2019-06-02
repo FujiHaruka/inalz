@@ -33,16 +33,9 @@ describe('IOTypes', () => {
           localePath: 'path/to/locale.yml',
         },
       ],
-      vocabularies: ['path/to/vocabulary.yml'],
     }
     {
       const validation = IOInalzConfig.decode(CONFIG)
-      expect(validation.isRight()).toBeTruthy()
-    }
-    {
-      const config = copy(CONFIG)
-      delete config.vocabularies
-      const validation = IOInalzConfig.decode(config)
       expect(validation.isRight()).toBeTruthy()
     }
     {

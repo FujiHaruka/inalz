@@ -1,7 +1,6 @@
-import { LocaleComponent } from '../types/Locale'
 import { LocaleItemMerge } from '../LocaleItemMerge'
 import { InalzConfigComponent } from '../types/InalzConfig'
-import { Locale } from '../Locale'
+import { Locale, LocaleItem } from '../Locale'
 
 describe('LocaleMerge', () => {
   it('mergeItems', () => {
@@ -9,7 +8,7 @@ describe('LocaleMerge', () => {
       source: 'en',
       targets: ['ja'],
     }
-    const oldItems: LocaleComponent.Item[] = [
+    const oldItems: LocaleItem[] = [
       {
         texts: {
           en: 'John',
@@ -22,8 +21,8 @@ describe('LocaleMerge', () => {
           ja: 'ルーク',
         },
       },
-    ]
-    const newItems: LocaleComponent.Item[] = [
+    ].map((item) => new LocaleItem(lang, item))
+    const newItems: LocaleItem[] = [
       {
         texts: {
           en: 'Luke',
@@ -36,14 +35,14 @@ describe('LocaleMerge', () => {
           ja: '__COPY__',
         },
       },
-    ]
+    ].map((item) => new LocaleItem(lang, item))
     const items = LocaleItemMerge.mergeItems(lang, oldItems, newItems)
 
     const locale = new Locale(lang, items)
     // has old item translation
-    expect(locale.getTranslation('ja', 'Luke')).toBe('ルーク')
+    expect(locale.getItem('Luke')!.getText('ja')).toBe('ルーク')
     // new item is added
-    expect(locale.getTranslation('ja', 'Mark')).toBe('__COPY__')
+    expect(locale.getItem('Mark')!.getText('ja')).toBe('__COPY__')
     // old item is outdated
     expect(locale.getItem('John')!.meta!.outdated).toBeTruthy()
   })

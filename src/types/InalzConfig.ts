@@ -1,7 +1,6 @@
 export interface InalzConfigInterface {
   lang: InalzConfigComponent.Lang
   documents: InalzConfigComponent.Document[]
-  vocabularies?: string[]
 }
 
 export namespace InalzConfigComponent {

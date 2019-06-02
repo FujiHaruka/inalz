@@ -16,7 +16,6 @@ export class InalzConfig implements InalzConfigInterface {
 
   lang: InalzConfigComponent.Lang = null as any
   documents: InalzConfigComponent.PathModeDocument[] = null as any
-  vocabularies: string[] = []
 
   private constructor(configPath: string) {
     this.configPath = configPath
@@ -34,7 +33,6 @@ export class InalzConfig implements InalzConfigInterface {
     this.documents = (await Promise.all(
       conf.documents.map((document) => this.resolveDocument(document)),
     )).flat()
-    this.vocabularies = conf.vocabularies || []
   }
 
   static async load(configPath: string) {

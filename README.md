@@ -23,8 +23,6 @@ documents:
     targetPaths:
       ja: README.ja.md
     localePath: README.locale.yml
-vocabularies:
-  - vocabulary.yml
 ```
 
 ## Locale file
