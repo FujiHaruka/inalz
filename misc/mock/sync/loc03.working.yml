@@ -1,0 +1,27 @@
+texts:
+  en: Title
+  ja: タイトル
+---
+texts:
+  en: This is document.
+  ja: __COPY__
+---
+texts:
+  en: It is a list
+  ja: これはリスト
+---
+texts:
+  en: quote sentence.
+  ja: __COPY__
+---
+texts:
+  en: quote sentence with link.
+  ja: これはリンク
+---
+texts:
+  en: This is paragraph 1.
+  ja: __COPY__
+---
+texts:
+  en: This is paragraph *2* with [link](https://google.com).
+  ja: __COPY__

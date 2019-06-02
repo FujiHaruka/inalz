@@ -1,0 +1,12 @@
+---
+texts:
+  en: Hello world.
+  ja: ハローワールド。
+---
+meta:
+  outdated: true
+  warnings:
+    - some warning
+texts:
+  en: Hi, world.
+  ja: ハイ、ワールド。

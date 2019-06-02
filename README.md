@@ -7,17 +7,23 @@ Inals is Markdown document i18n for mentenable translation.
 `inalz.yml` is a inals configuration file.
 
 ```yml
-langs:
+lang:
   source: en
   targets:
     - ja
 documents:
-  - link_by: filename
-    base: docs/contents
-    locale: docs/locales
-  - link_by: directory
-    base: docs/contents
-    locale: docs/locales
+  - linkMode: filename
+    # Inspired by Hugo
+    contentDir: docs/contents
+    localeDir: docs/locales
+  - linkMode: directory
+    contentDir: docs/contents/:lang
+    localeDir: docs/locales/:lang
+  - linkMode: path
+    sourcePath: README.md
+    targetPaths:
+      - README.ja.md
+    localePath: README.locale.yml
 vocabularies:
   - vocabulary.yml
 ```
