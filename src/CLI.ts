@@ -2,6 +2,7 @@ import commander from 'commander'
 import { InalzConfig } from './InalzConfig'
 import { LocaleSync } from './LocaleSync'
 import { Translator } from './Translator'
+import { enableYamlOptions } from './util/enableYamlOptions'
 
 interface BaseOptions {
   cwd: string
@@ -39,6 +40,8 @@ export const CLIActions: CLIActions = {
 }
 
 export const CLI = (actions: CLIActions) => (argv: string[]) => {
+  enableYamlOptions()
+
   commander.version(require('../package.json'))
 
   commander
