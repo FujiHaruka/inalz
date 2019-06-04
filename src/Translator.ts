@@ -5,6 +5,9 @@ import { InalzConfigComponent, Lang } from './types/InalzConfig'
 import { LocaleItemParser } from './LocaleItemParser'
 import { replaceAll } from './util/stringUtil'
 
+const TRANSLATION_HEADER_COMMENT =
+  '<!-- THIS FILE IS GENERATED WITH INALZ. DO NOT EDIT MANUALLY. -->\n\n'
+
 export class Translator {
   lang: Lang
 
@@ -26,7 +29,7 @@ export class Translator {
     const locale = new Locale(this.lang, localeItems)
     for (const [targetlang, targetPath] of Object.entries(targetPaths)) {
       const content = this.translateContent(targetlang, markdown, locale)
-      await writeFile(targetPath, content, { mkdirp: true })
+      await writeFile(targetPath, content, { mkdirp: true, mode: 0o644 })
     }
   }
 
@@ -59,6 +62,6 @@ export class Translator {
       (text, item) => this.replaceByLocaleItem(text, item, targetlang),
       markdown,
     )
-    return translated
+    return TRANSLATION_HEADER_COMMENT + translated
   }
 }

@@ -38,12 +38,13 @@ export const readFile = (path: string) => fs.promises.readFile(path, 'utf-8')
 export const writeFile = async (
   filePath: string,
   content: string,
-  { mkdirp }: { mkdirp: boolean },
+  options: { mkdirp?: boolean; mode?: string | number | undefined } = {},
 ) => {
+  const { mkdirp, mode } = options
   if (mkdirp) {
     await fs.promises.mkdir(path.dirname(filePath), {
       recursive: true,
     })
   }
-  await fs.promises.writeFile(filePath, content)
+  await fs.promises.writeFile(filePath, content, { mode })
 }

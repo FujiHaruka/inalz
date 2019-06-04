@@ -1,3 +1,5 @@
+<!-- THIS FILE IS GENERATED WITH INALZ. DO NOT EDIT MANUALLY. -->
+
 # Inalz
 
 Inalz is a Markdown i18n tool for maintainable translation.
@@ -27,7 +29,7 @@ documents:
     localePath: .README.yml
 ```
 
-例として、次のような `README.md` を書いておきます。
+As an example,
 
 ```md
 # Hello world
