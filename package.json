@@ -31,16 +31,19 @@
     "tslint-plugin-prettier": "^2.0.1",
     "typescript": "^3.5.1"
   },
+  "engines": {
+    "node": ">=12"
+  },
+  "files": [
+    "dist",
+    "bin"
+  ],
   "homepage": "https://github.com/FujiHaruka/inalz#readme",
   "keywords": [
     "inalz"
   ],
   "license": "MIT",
   "main": "dist",
-  "files": [
-    "dist",
-    "bin"
-  ],
   "repository": "FujiHaruka/inalz",
   "scripts": {
     "build": "tsc",
