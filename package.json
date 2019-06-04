@@ -40,7 +40,12 @@
   ],
   "homepage": "https://github.com/FujiHaruka/inalz#readme",
   "keywords": [
-    "inalz"
+    "inalz",
+    "i18n",
+    "markdown",
+    "translation",
+    "documentation",
+    "generator"
   ],
   "license": "MIT",
   "main": "dist",
