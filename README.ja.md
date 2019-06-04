@@ -10,7 +10,7 @@ Inalz を `npm` でインストールしてください。
 $ npm install inalz -g
 ```
 
-Inalz を始めるために最小限必要なのは、Markdown ドキュメントと、その翻訳先を指示するための設定ファイル `inalz.yml` です。
+Inalz を始めるために必要なのは、Markdown ドキュメントと、その翻訳先を指示するための設定ファイル `inalz.yml` です。
 
 たとえば、英語の `README.md` を日本語の `README.ja.md` に対応させるためには、以下のような設定を `inalz.yml` に書いて、プロジェクトルートに置きます。
 
@@ -50,7 +50,7 @@ This is a hello-world document.
 $ inalz sync
 ```
 
-`inalz sync` コマンドは、`inalz.yml` の設定をもとに Locale ファイルを生成します。ここで生成される Locale ファイルは 1 つだけで、`localePath` で設定した``.README.yml` です。
+`inalz sync` コマンドは、`inalz.yml` の設定をもとに Locale ファイルを生成します。ここで生成される Locale ファイルは 1 つだけで、`localePath` で設定した `.README.yml` です。
 
 ```
 .
@@ -59,7 +59,7 @@ $ inalz sync
 └── README.md
 ```
 
-生成された Locale ファイル ``.README.yml`` の中は次のようになっています。
+Locale ファイル `.README.yml` は次のようになっているはずです。
 
 ```yml
 texts:
@@ -101,7 +101,7 @@ $ inalz build
 └── README.md
 ```
 
-ファイルの内容は次のようになっています。
+ファイルの内容は次のようになっているはずです。
 
 ```md
 # ハローワールド

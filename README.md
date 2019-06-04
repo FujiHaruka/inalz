@@ -29,7 +29,7 @@ documents:
     localePath: .README.yml
 ```
 
-As an example,
+As an example, create `README.md` as follows.
 
 ```md
 # Hello world
@@ -38,7 +38,7 @@ This is a hello-world document.
 ```
 
 
-カレントディレクトリには次の 2 つのファイルがあります。
+There are 2 files in the current directory.
 
 ```
 .
@@ -46,13 +46,13 @@ This is a hello-world document.
 └── README.md
 ```
 
-ここで、 Inalz コマンドを実行しましょう。
+Then, execute Inalz command.
 
 ```bash
 $ inalz sync
 ```
 
-`inalz sync` コマンドは、`inalz.yml` の設定をもとに Locale ファイルを生成します。ここで生成される Locale ファイルは 1 つだけで、`localePath` で設定した``.README.yml` です。
+The `inalz sync` command generates Locale files according to `inalz.yml` configuration. Now it generates a single file, `.README.yml` set on `localePath`.
 
 ```
 .
@@ -61,7 +61,7 @@ $ inalz sync
 └── README.md
 ```
 
-生成された Locale ファイル ``.README.yml`` の中は次のようになっています。
+The Locale file `.README.yml` should be as below.
 
 ```yml
 texts:
@@ -73,9 +73,9 @@ texts:
   ja: __COPY__
 ```
 
-Locale ファイルは、パラグラフ単位での本文と訳文の対応を表しています。デフォルトの `__COPY__` は、元の文章を置き換えずにそのまま使うことを意味しています。
+Locale file describes mappings of a source text and a target text by paragraph. Default target text `__COPY__` means to use the source text without replacing.
 
-`.README.yml` を次のように編集してみましょう。
+Let's edit `.README.yml` as follows.
 
 ```yml
 texts:
@@ -87,13 +87,13 @@ texts:
   ja: これはハローワールドのドキュメントです。
 ```
 
-次に、翻訳ドキュメントファイルを出力します。そのためには別の Inalz コマンドを実行しましょう。
+Next, output a translation document file. Execute another Inalz command to do it.
 
 ```
 $ inalz build
 ```
 
-`inalz build` コマンドは、Locale ファイルと元ドキュメントを参照して、翻訳ドキュメントを出力します。ここでは `README.ja.md` が出力されます。
+The `inalz build` command generates a translation document by refering to Locale files and source documents. In this case, it generates `README.ja.md`.
 
 ```
 .
@@ -103,7 +103,7 @@ $ inalz build
 └── README.md
 ```
 
-ファイルの内容は次のようになっています。
+The file should be as bellow.
 
 ```md
 # ハローワールド
@@ -111,5 +111,5 @@ $ inalz build
 これはハローワールドのドキュメントです。
 ```
 
-`README.md` の日本語訳が完成しました！　`README.ja.md` は、元の Markdown ファイルのドキュメント構造を維持しています。`inalz build` コマンドの仕事は単純で、ただ元の Markdown ファイルの文字列を置換するだけです。
+You have done translation of `README.md`! `README.ja.md` maintains the document structure of the source Markdown file. The `inalz build` command does a simple task, to replace texts of the source Markdown file.
 
