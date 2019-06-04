@@ -1,0 +1,10 @@
+lang:
+  source: ja
+  targets:
+    - en
+documents:
+  - linkMode: path
+    sourcePath: README.ja.md
+    targetPaths:
+      en: README.md
+    localePath: .README.locale.yml

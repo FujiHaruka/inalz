@@ -1,18 +1,18 @@
 # Inalz
 
-Inalz is a Markdown i18n tool for maintainable translation.
+Inalz は、 Markdown ドキュメントの翻訳をメンテナンス可能にするための i18n ツールです。
 
-## Tutorial
+## チュートリアル
 
-Install Inalz with `npm`.
+Inalz を `npm` でインストールしてください。
 
 ```bash
 $ npm install inalz -g
 ```
 
-To get started with Inalz, you need a Markdown document and a configuration file `inalz.yml`, which directs translation target destinations.
+Inalz を始めるために最小限必要なのは、Markdown ドキュメントと、その翻訳先を指示するための設定ファイル `inalz.yml` です。
 
-For example, you can create `inalz.yml` to map English `README.md` to Japanese `README.ja.md` as below.
+たとえば、英語の `README.md` を日本語の `README.ja.md` に対応させるためには、以下のような設定を `inalz.yml` に書いて、プロジェクトルートに置きます。
 
 ```yml
 lang:
