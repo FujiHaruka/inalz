@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/FujiHaruka/inalz.svg?branch=master)](https://travis-ci.org/FujiHaruka/inalz)
+
 # Inalz
 
 Inalz は、 Markdown ドキュメントの翻訳をメンテナンス可能にするための i18n ツールです。

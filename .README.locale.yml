@@ -1,4 +1,8 @@
 texts:
+  ja: "[![Build Status](https://travis-ci.org/FujiHaruka/inalz.svg?branch=master)](https://travis-ci.org/FujiHaruka/inalz)"
+  en: __COPY__
+---
+texts:
   ja: Inalz
   en: __COPY__
 ---
@@ -19,8 +23,7 @@ texts:
   en: To get started with Inalz, you need a Markdown document and a configuration file `inalz.yml`, which directs translation target destinations.
 ---
 texts:
-  ja: たとえば、英語の `README.md` を日本語の `README.ja.md` に対応させるためには、以下のような設定を `inalz.yml`
-    に書いて、プロジェクトルートに置きます。
+  ja: たとえば、英語の `README.md` を日本語の `README.ja.md` に対応させるためには、以下のような設定を `inalz.yml` に書いて、プロジェクトルートに置きます。
   en: For example, you can create `inalz.yml` to map English `README.md` to Japanese `README.ja.md` as below.
 ---
 texts:
@@ -44,8 +47,7 @@ texts:
   en: The Locale file `.README.yml` should be as below.
 ---
 texts:
-  ja: Locale ファイルは、パラグラフ単位での本文と訳文の対応を表しています。デフォルトの `__COPY__`
-    は、元の文章を置き換えずにそのまま使うことを意味しています。
+  ja: Locale ファイルは、パラグラフ単位での本文と訳文の対応を表しています。デフォルトの `__COPY__` は、元の文章を置き換えずにそのまま使うことを意味しています。
   en: Locale file describes mappings of a source text and a target text by paragraph. Default target text `__COPY__` means to use the source text without replacing.
 ---
 texts:
@@ -57,8 +59,7 @@ texts:
   en: Next, output a translation document file. Execute another Inalz command to do it.
 ---
 texts:
-  ja: "`inalz build` コマンドは、Locale ファイルと元ドキュメントを参照して、翻訳ドキュメントを出力します。ここでは
-    `README.ja.md` が出力されます。"
+  ja: "`inalz build` コマンドは、Locale ファイルと元ドキュメントを参照して、翻訳ドキュメントを出力します。ここでは `README.ja.md` が出力されます。"
   en: The `inalz build` command generates a translation document by refering to Locale files and source documents. In this case, it generates `README.ja.md`.
 ---
 texts:
@@ -66,7 +67,5 @@ texts:
   en: The file should be as bellow.
 ---
 texts:
-  ja: "`README.md` の日本語訳が完成しました！　`README.ja.md` は、元の Markdown
-    ファイルのドキュメント構造を維持しています。`inalz build` コマンドの仕事は単純で、ただ元の Markdown
-    ファイルの文字列を置換するだけです。"
+  ja: "`README.md` の日本語訳が完成しました！　`README.ja.md` は、元の Markdown ファイルのドキュメント構造を維持しています。`inalz build` コマンドの仕事は単純で、ただ元の Markdown ファイルの文字列を置換するだけです。"
   en: You have done translation of `README.md`! `README.ja.md` maintains the document structure of the source Markdown file. The `inalz build` command does a simple task, to replace texts of the source Markdown file.
