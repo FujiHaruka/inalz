@@ -37,6 +37,10 @@
   ],
   "license": "MIT",
   "main": "dist",
+  "files": [
+    "dist",
+    "bin"
+  ],
   "repository": "FujiHaruka/inalz",
   "scripts": {
     "build": "tsc",
