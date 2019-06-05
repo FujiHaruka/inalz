@@ -1,6 +1,6 @@
 import { fileExists, writeFile, readFile } from './util/fsUtil'
 import { deepEquals } from './util/objectUtil'
-import { getTextsFromMarkdown } from './MarkdownText'
+import { MarkdownText } from './MarkdownText'
 import { LocaleItemParser } from './LocaleItemParser'
 import { LocaleItemMerge } from './LocaleItemMerge'
 import { Lang } from './types/InalzConfig'
@@ -28,7 +28,7 @@ export class LocaleSync {
     const { lang } = this
 
     const srcText = await readFile(sourcePath)
-    const texts = getTextsFromMarkdown(srcText)
+    const texts = new MarkdownText({ ignorePatterns: [] }).parseTexts(srcText)
     const items: LocaleItem[] = texts
       .map(
         (text) =>

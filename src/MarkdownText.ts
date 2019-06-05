@@ -4,7 +4,7 @@ import { uniq } from 'fp-ts/lib/Array'
 import { setoidString } from 'fp-ts/lib/Setoid'
 import { disableInlineTokenizer } from './util/disableInlineTokenizer'
 
-const HTML_COMMENT_PREFIX = '<!--'
+const HTML_COMMENT_PREFIX = new RegExp('<!--')
 
 const uniqStr = uniq(setoidString)
 
@@ -22,23 +22,29 @@ const _compileToTexts = (tree: Unist.Node): string[] => {
   } else {
     switch (type) {
       case 'text':
-        return [tree.value as string]
       case 'html':
-        const text = tree.value as string
-        // コメントだけは除外
-        if (text.startsWith(HTML_COMMENT_PREFIX)) {
-          return []
-        } else {
-          return [text]
-        }
+        return [tree.value as string]
       default:
         return []
     }
   }
 }
 
-export const getTextsFromMarkdown = (markdown: string) => {
-  const tree = _parseMarkdown(markdown)
-  const texts = uniqStr(_compileToTexts(tree)) // ここで重複を除外
-  return texts
+export class MarkdownText {
+  ignoreRegExps: RegExp[]
+
+  constructor({ ignorePatterns = [] }: { ignorePatterns?: string[] }) {
+    this.ignoreRegExps = [HTML_COMMENT_PREFIX].concat(
+      ignorePatterns.map((pattern) => new RegExp(pattern)),
+    )
+  }
+
+  parseTexts(markdown: string) {
+    const tree = _parseMarkdown(markdown)
+    const texts = uniqStr(_compileToTexts(tree)) // ここで重複を除外
+    const filtered = texts.filter((text) =>
+      this.ignoreRegExps.every((reg) => !reg.test(text)),
+    )
+    return filtered
+  }
 }
