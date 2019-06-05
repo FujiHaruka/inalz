@@ -33,10 +33,15 @@ describe('IOTypes', () => {
           localePath: 'path/to/locale.yml',
         },
       ],
+      paragraphIgnorePatterns: ['^ignore'],
     }
     {
       const validation = IOInalzConfig.decode(CONFIG)
       expect(validation.isRight()).toBeTruthy()
+      if (validation.isLeft()) {
+        throw new Error()
+      }
+      expect(validation.value.paragraphIgnorePatterns).toEqual(['^ignore'])
     }
     {
       const config = copy(CONFIG)

@@ -33,13 +33,11 @@ const _compileToTexts = (tree: Unist.Node): string[] => {
 export class MarkdownText {
   ignoreRegExps: RegExp[]
 
-  constructor({
-    paragraphIgnorePatterns = [],
-  }: {
-    paragraphIgnorePatterns?: string[]
-  }) {
+  constructor(options: { paragraphIgnorePatterns?: string[] }) {
     this.ignoreRegExps = [HTML_COMMENT_PREFIX].concat(
-      paragraphIgnorePatterns.map((pattern) => new RegExp(pattern)),
+      (options.paragraphIgnorePatterns || []).map(
+        (pattern) => new RegExp(pattern),
+      ),
     )
   }
 

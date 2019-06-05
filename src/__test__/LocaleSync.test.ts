@@ -18,7 +18,7 @@ describe('LocaleSync', () => {
     const localePath = path.join(os.tmpdir(), 'locale01.yml')
 
     await rmIfExists(localePath)
-    const syncer = new LocaleSync(lang)
+    const syncer = new LocaleSync({ lang })
     await syncer.sync(srcPath, localePath)
 
     const parser = new LocaleItemParser(lang)
@@ -33,7 +33,7 @@ describe('LocaleSync', () => {
     const localePath = path.join(os.tmpdir(), 'locale02.yml')
 
     await rmIfExists(localePath)
-    const syncer = new LocaleSync(lang)
+    const syncer = new LocaleSync({ lang })
     await syncer.sync(srcPath, localePath)
 
     const parser = new LocaleItemParser(lang)
@@ -50,7 +50,7 @@ describe('LocaleSync', () => {
 
     await rmIfExists(localePath)
     await fs.promises.copyFile(workingLocPath, localePath)
-    const syncer = new LocaleSync(lang)
+    const syncer = new LocaleSync({ lang })
     await syncer.sync(srcPath, localePath)
 
     const parser = new LocaleItemParser(lang)

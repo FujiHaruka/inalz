@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "author": "FujiHaruka",
   "bin": {
-    "inalz": "./bin/inalz.js"
+    "inalz": "./bin/inalz"
   },
   "bugs": {
     "url": "https://github.com/FujiHaruka/inalz/issues"
@@ -52,7 +52,10 @@
   "repository": "FujiHaruka/inalz",
   "scripts": {
     "build": "tsc",
-    "prepare": "npm run build",
-    "test": "jest --silent false"
+    "prepare": "npm run build && npm run doc",
+    "test": "jest --silent false",
+    "doc": "npm run doc:build && npm run doc:sync",
+    "doc:build": "./bin/inalz build",
+    "doc:sync": "./bin/inalz sync"
   }
 }

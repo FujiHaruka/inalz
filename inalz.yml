@@ -8,3 +8,5 @@ documents:
     targetPaths:
       en: README.md
     localePath: .README.locale.yml
+paragraphIgnorePatterns:
+  - "^\\[!\\["

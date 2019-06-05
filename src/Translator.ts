@@ -11,7 +11,7 @@ const TRANSLATION_HEADER_COMMENT =
 export class Translator {
   lang: Lang
 
-  constructor(lang: Lang) {
+  constructor({ lang }: { lang: Lang }) {
     this.lang = lang
   }
 

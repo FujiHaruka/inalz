@@ -9,9 +9,17 @@ import { LocaleItem } from './Locale'
 
 export class LocaleSync {
   lang: Lang
+  paragraphIgnorePatterns: string[]
 
-  constructor(lang: Lang) {
+  constructor({
+    lang,
+    paragraphIgnorePatterns,
+  }: {
+    lang: Lang
+    paragraphIgnorePatterns?: string[]
+  }) {
     this.lang = lang
+    this.paragraphIgnorePatterns = paragraphIgnorePatterns || []
   }
 
   async sync(
@@ -28,9 +36,10 @@ export class LocaleSync {
     const { lang } = this
 
     const srcText = await readFile(sourcePath)
-    const texts = new MarkdownText({ paragraphIgnorePatterns: [] }).parseTexts(
-      srcText,
-    )
+    const texts = new MarkdownText({
+      paragraphIgnorePatterns: this.paragraphIgnorePatterns,
+    }).parseTexts(srcText)
+
     const items: LocaleItem[] = texts
       .map(
         (text) =>

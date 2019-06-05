@@ -20,6 +20,7 @@ export class InalzConfig implements InalzConfigInterface {
 
   lang: Lang = null as any
   documents: InalzConfigComponent.PathModeDocument[] = null as any
+  paragraphIgnorePatterns: string[] = []
 
   private constructor(configPath: string) {
     this.configPath = configPath
@@ -37,6 +38,7 @@ export class InalzConfig implements InalzConfigInterface {
     this.documents = (await Promise.all(
       conf.documents.map((document) => this.resolveDocument(document)),
     )).flat()
+    this.paragraphIgnorePatterns = conf.paragraphIgnorePatterns || []
   }
 
   static async load(configPath: string) {
