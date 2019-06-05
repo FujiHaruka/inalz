@@ -1,0 +1,11 @@
+lang:
+  source: en
+  targets:
+    - ja
+documents:
+  - linkMode: path
+    sourcePath: misc/mock/pathMode/doc.md
+    targetPaths:
+      ja: misc/mock/pathMode/doc_ja.md
+    localePath: misc/mock/pathMode/locale.yml
+paragraphIgnorePatterns:

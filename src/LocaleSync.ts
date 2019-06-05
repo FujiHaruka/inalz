@@ -28,7 +28,9 @@ export class LocaleSync {
     const { lang } = this
 
     const srcText = await readFile(sourcePath)
-    const texts = new MarkdownText({ ignorePatterns: [] }).parseTexts(srcText)
+    const texts = new MarkdownText({ paragraphIgnorePatterns: [] }).parseTexts(
+      srcText,
+    )
     const items: LocaleItem[] = texts
       .map(
         (text) =>

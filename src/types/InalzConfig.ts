@@ -6,7 +6,7 @@ export type Lang = {
 export interface InalzConfigInterface {
   lang: Lang
   documents: InalzConfigComponent.Document[]
-  ignorePatterns?: string[]
+  paragraphIgnorePatterns?: string[]
 }
 
 export namespace InalzConfigComponent {
