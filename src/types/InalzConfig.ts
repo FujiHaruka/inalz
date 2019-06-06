@@ -36,5 +36,13 @@ export namespace InalzConfigComponent {
     localePath: string
   }
 
+  export type SingleDocument = {
+    sourcePath: string
+    targetPaths: {
+      [lang: string]: string
+    }
+    localePath: string
+  }
+
   export type LinkMode = 'filename' | 'directory' | 'path'
 }

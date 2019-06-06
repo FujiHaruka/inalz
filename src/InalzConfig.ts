@@ -2,11 +2,7 @@ import YAML from 'yaml'
 import path from 'path'
 import glob from 'fast-glob'
 import { readFile, firstExistsFile, statOrNull } from './util/fsUtil'
-import {
-  InalzConfigComponent,
-  InalzConfigInterface,
-  Lang,
-} from './types/InalzConfig'
+import { InalzConfigComponent, Lang } from './types/InalzConfig'
 import { IOInalzConfig } from './IOTypes'
 import { replaceExt } from './util/pathUtil'
 import { LANG_PATH_PARAM } from './Constants'
@@ -15,11 +11,11 @@ import { replaceAll } from './util/stringUtil'
 const replaceLangParam = (dir: string, lang: string) =>
   replaceAll(dir, LANG_PATH_PARAM, lang)
 
-export class InalzConfig implements InalzConfigInterface {
+export class InalzConfig {
   configPath: string
 
   lang: Lang = null as any
-  documents: InalzConfigComponent.PathModeDocument[] = null as any
+  documents: InalzConfigComponent.SingleDocument[] = null as any
   paragraphIgnorePatterns: string[] = []
 
   private constructor(configPath: string) {
@@ -69,27 +65,59 @@ export class InalzConfig implements InalzConfigInterface {
    */
   async resolveDocument(
     document: InalzConfigComponent.Document,
-  ): Promise<InalzConfigComponent.PathModeDocument[]> {
-    if (document.linkMode === 'path') {
-      return [document]
-    }
-    const sourceDir = replaceLangParam(document.contentDir, this.lang.source)
-    const stat = await statOrNull(sourceDir)
+  ): Promise<InalzConfigComponent.SingleDocument[]> {
+    const sourcePathWithParam = (() => {
+      switch (document.linkMode) {
+        case 'path':
+          return document.sourcePath
+        case 'filename':
+        case 'directory':
+          return document.contentDir
+      }
+    })()
+    const sourcePath = replaceLangParam(sourcePathWithParam, this.lang.source)
+    const stat = await statOrNull(sourcePath)
     if (!stat) {
+      console.warn(`Path not found ${sourcePath}`)
       return []
     }
-    if (!stat.isDirectory()) {
-      console.warn(
-        `document contentDir is not directory: ${document.contentDir}`,
-      )
-      return []
-    }
+    const isDirectory = stat.isDirectory()
+    const isFile = stat.isFile()
 
     switch (document.linkMode) {
-      case 'filename':
+      case 'path': {
+        if (isFile) {
+          return [
+            {
+              sourcePath: document.sourcePath,
+              targetPaths: document.targetPaths,
+              localePath: document.localePath,
+            },
+          ]
+        }
+        if (isDirectory) {
+          return this.resolvePathMode(document)
+        }
+        return []
+      }
+      case 'filename': {
+        if (!isDirectory) {
+          console.warn(
+            `document contentDir is not directory: ${document.contentDir}`,
+          )
+          return []
+        }
         return this.resolveFilenameMode(document)
-      case 'directory':
+      }
+      case 'directory': {
+        if (!isDirectory) {
+          console.warn(
+            `document contentDir is not directory: ${document.contentDir}`,
+          )
+          return []
+        }
         return this.resolveDirectoryMode(document)
+      }
       default:
         throw new Error(`Invalid linkMode "${(document as any).linkMode}"`)
     }
@@ -97,7 +125,7 @@ export class InalzConfig implements InalzConfigInterface {
 
   private async resolveFilenameMode(
     document: InalzConfigComponent.FilenameModeDocument,
-  ): Promise<InalzConfigComponent.PathModeDocument[]> {
+  ): Promise<InalzConfigComponent.SingleDocument[]> {
     const pattern = path.join(
       document.contentDir,
       `**/*.${this.lang.source}.md`,
@@ -108,7 +136,6 @@ export class InalzConfig implements InalzConfigInterface {
       Boolean(targetsExtensions.find((ext) => file.endsWith(ext)))
     const sourcePaths = files.filter((file) => !isTarget(file))
     const documents = sourcePaths.map((sourcePath) => ({
-      linkMode: 'path' as const,
       sourcePath,
       targetPaths: Object.fromEntries(
         this.lang.targets.map((target) => [
@@ -130,7 +157,7 @@ export class InalzConfig implements InalzConfigInterface {
 
   private async resolveDirectoryMode(
     document: InalzConfigComponent.DirectoryModeDocument,
-  ): Promise<InalzConfigComponent.PathModeDocument[]> {
+  ): Promise<InalzConfigComponent.SingleDocument[]> {
     if (!document.contentDir.includes(LANG_PATH_PARAM)) {
       throw new Error(
         `Invalid inalz config: if linkMode is "directory", contentDir path must include "${LANG_PATH_PARAM}" parameter`,
@@ -140,7 +167,6 @@ export class InalzConfig implements InalzConfigInterface {
     const pattern = path.join(sourceDir, '**/*.md')
     const sourcePaths: string[] = await glob(pattern)
     const documents = sourcePaths.map((sourcePath) => ({
-      linkMode: 'path' as const,
       sourcePath,
       targetPaths: Object.fromEntries(
         this.lang.targets.map((target) => [
@@ -153,6 +179,31 @@ export class InalzConfig implements InalzConfigInterface {
       ),
       localePath: replaceExt(
         path.join(document.localeDir, path.relative(sourceDir, sourcePath)),
+        '.yml',
+      ),
+    }))
+    return documents
+  }
+
+  private async resolvePathMode(
+    document: InalzConfigComponent.PathModeDocument,
+  ): Promise<InalzConfigComponent.SingleDocument[]> {
+    const sourceDir = replaceLangParam(document.sourcePath, this.lang.source)
+    const pattern = path.join(sourceDir, '**/*.md')
+    const sourcePaths: string[] = await glob(pattern)
+    const documents = sourcePaths.map((sourcePath) => ({
+      sourcePath,
+      targetPaths: Object.fromEntries(
+        this.lang.targets.map((target) => [
+          target,
+          path.join(
+            replaceLangParam(document.targetPaths[target], target),
+            path.relative(sourceDir, sourcePath),
+          ),
+        ]),
+      ),
+      localePath: replaceExt(
+        path.join(document.localePath, path.relative(sourceDir, sourcePath)),
         '.yml',
       ),
     }))

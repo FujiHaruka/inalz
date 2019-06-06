@@ -4,10 +4,10 @@ lang:
     - ja
 documents:
   - linkMode: path
-    sourcePath: misc/mock/pathMode/doc.md
+    sourcePath: misc/mock/config/pathMode/doc.md
     targetPaths:
-      ja: misc/mock/pathMode/doc_ja.md
-    localePath: misc/mock/pathMode/locale.yml
+      ja: misc/mock/config/pathMode/doc_ja.md
+    localePath: misc/mock/config/pathMode/locale.yml
   - linkMode: filename
     contentDir: misc/mock/config/filenameMode
     localeDir: misc/mock/config/locales

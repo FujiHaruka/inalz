@@ -6,12 +6,11 @@ describe('InalzConfig', () => {
     const config = await InalzConfig.load(path)
     expect(config.lang.source).toBe('en')
     expect(config.documents).toContainEqual({
-      linkMode: 'path',
-      sourcePath: 'misc/mock/pathMode/doc.md',
+      sourcePath: 'misc/mock/config/pathMode/doc.md',
       targetPaths: {
-        ja: 'misc/mock/pathMode/doc_ja.md',
+        ja: 'misc/mock/config/pathMode/doc_ja.md',
       },
-      localePath: 'misc/mock/pathMode/locale.yml',
+      localePath: 'misc/mock/config/pathMode/locale.yml',
     })
   })
 
@@ -19,7 +18,6 @@ describe('InalzConfig', () => {
     const path = 'misc/mock/config/inalz.02.yml'
     const config = await InalzConfig.load(path)
     expect(config.documents).toContainEqual({
-      linkMode: 'path',
       sourcePath: 'misc/mock/config/filenameMode/doc.doc.en.md',
       targetPaths: { ja: 'misc/mock/config/filenameMode/doc.doc.ja.md' },
       localePath: 'misc/mock/config/locales/doc.doc.yml',
@@ -30,7 +28,6 @@ describe('InalzConfig', () => {
     const path = 'misc/mock/config/inalz.03.yml'
     const config = await InalzConfig.load(path)
     expect(config.documents).toContainEqual({
-      linkMode: 'path',
       sourcePath: 'misc/mock/config/directoryMode/en/doc.md',
       targetPaths: { ja: 'misc/mock/config/directoryMode/ja/doc.md' },
       localePath: 'misc/mock/config/locales/doc.yml',
@@ -41,5 +38,17 @@ describe('InalzConfig', () => {
     const path = 'misc/mock/config/inalz.04.yml'
     const config = await InalzConfig.load(path)
     expect(config.documents.length).toBe(3)
+  })
+
+  it('05: path mode allows directory', async () => {
+    const path = 'misc/mock/config/inalz.05.yml'
+    const config = await InalzConfig.load(path)
+    expect(config.documents).toContainEqual({
+      sourcePath: 'misc/mock/config/pathMode/dir/doc.md',
+      targetPaths: {
+        ja: 'misc/mock/config/pathMode/ja/doc.md',
+      },
+      localePath: 'misc/mock/config/pathMode/locales/doc.yml',
+    })
   })
 })
