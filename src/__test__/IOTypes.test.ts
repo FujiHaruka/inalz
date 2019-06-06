@@ -51,11 +51,11 @@ describe('IOTypes', () => {
       config.documents = [
         {
           linkMode: 'directory', // invalid linkMode
-          sourcePath: 'path/to/source.md',
-          targetPaths: {
+          source: 'path/to/source.md',
+          targets: {
             ja: 'path/to/target.md',
           },
-          localePath: 'path/to/locale.yml',
+          locale: 'path/to/locale.yml',
         } as any,
       ]
       const validation = IOInalzConfig.decode(config)

@@ -1,4 +1,3 @@
----
 texts:
   ja: Inalz
   en: __COPY__
@@ -36,8 +35,8 @@ texts:
   en: Then, execute Inalz command.
 ---
 texts:
-  ja: "`inalz sync` コマンドは、`inalz.yml` の設定をもとに Locale ファイルを生成します。ここで生成される Locale ファイルは 1 つだけで、`localePath` で設定した `.README.yml` です。"
-  en: The `inalz sync` command generates Locale files according to `inalz.yml` configuration. Now it generates a single file, `.README.yml` set on `localePath`.
+  ja: "`inalz sync` コマンドは、`inalz.yml` の設定をもとに Locale ファイルを生成します。ここで生成される Locale ファイルは 1 つだけで、`locale` で設定した `.README.yml` です。"
+  en: The `inalz sync` command generates Locale files according to `inalz.yml` configuration. Now it generates a single file, `.README.yml` set on `locale`.
 ---
 texts:
   ja: Locale ファイル `.README.yml` は次のようになっているはずです。

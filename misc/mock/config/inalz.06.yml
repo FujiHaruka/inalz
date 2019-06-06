@@ -1,0 +1,9 @@
+lang:
+  source: en
+  targets:
+    - ja
+documents:
+  - source: misc/mock/config/pathMode/doc.md
+    targets:
+      ja: misc/mock/config/pathMode/doc_ja.md
+    locale: misc/mock/config/pathMode/locale.yml

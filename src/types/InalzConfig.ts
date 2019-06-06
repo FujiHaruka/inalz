@@ -28,7 +28,7 @@ export namespace InalzConfigComponent {
   }
 
   export type PathModeDocument = {
-    linkMode: 'path'
+    linkMode?: 'path'
     source: string
     targets: {
       [lang: string]: string

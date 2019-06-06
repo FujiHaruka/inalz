@@ -27,7 +27,7 @@ export class InalzConfig {
     const config = YAML.parse(yml)
     const validation = IOInalzConfig.decode(config)
     if (validation.isLeft()) {
-      throw new Error(`Invaid ${this.configPath}`)
+      throw new Error(`Invaid inalz config ${path.basename(this.configPath)}`)
     }
     const conf = validation.value
     this.lang = conf.lang
@@ -66,13 +66,16 @@ export class InalzConfig {
   async resolveDocument(
     document: InalzConfigComponent.Document,
   ): Promise<InalzConfigComponent.SingleDocument[]> {
+    if (!document.linkMode) {
+      document.linkMode = 'path'
+    }
     const sourcePathWithParam = (() => {
       switch (document.linkMode) {
-        case 'path':
-          return document.source
         case 'filename':
         case 'directory':
           return document.contentDir
+        case 'path':
+          return document.source
       }
     })()
     const sourcePath = replaceLangParam(sourcePathWithParam, this.lang.source)

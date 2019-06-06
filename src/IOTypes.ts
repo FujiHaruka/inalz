@@ -18,12 +18,16 @@ export const IOInalzConfig = t.intersection([
           contentDir: t.string,
           localeDir: t.string,
         }),
-        t.strict({
-          linkMode: t.literal('path'),
-          source: t.string,
-          targets: t.record(t.string, t.string),
-          locale: t.string,
-        }),
+        t.intersection([
+          t.partial({
+            linkMode: t.literal('path'),
+          }),
+          t.type({
+            source: t.string,
+            targets: t.record(t.string, t.string),
+            locale: t.string,
+          }),
+        ]),
       ]),
     ),
   }),
@@ -33,7 +37,7 @@ export const IOInalzConfig = t.intersection([
 ])
 
 export const IOLocaleItem = t.intersection([
-  t.strict({
+  t.type({
     texts: t.record(t.string, t.string),
   }),
   t.partial({

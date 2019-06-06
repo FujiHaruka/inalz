@@ -51,4 +51,17 @@ describe('InalzConfig', () => {
       localePath: 'misc/mock/config/pathMode/locales/doc.yml',
     })
   })
+
+  it('06: "path" mode is default', async () => {
+    const path = 'misc/mock/config/inalz.06.yml'
+    const config = await InalzConfig.load(path)
+    expect(config.lang.source).toBe('en')
+    expect(config.documents).toContainEqual({
+      sourcePath: 'misc/mock/config/pathMode/doc.md',
+      targetPaths: {
+        ja: 'misc/mock/config/pathMode/doc_ja.md',
+      },
+      localePath: 'misc/mock/config/pathMode/locale.yml',
+    })
+  })
 })

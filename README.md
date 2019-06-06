@@ -26,10 +26,10 @@ lang:
     - ja
 documents:
   - linkMode: path
-    sourcePath: README.md
-    targetPaths:
+    source: README.md
+    targets:
       ja: README.ja.md
-    localePath: .README.yml
+    locale: .README.yml
 ```
 
 As an example, create `README.md` as follows.
@@ -55,7 +55,7 @@ Then, execute Inalz command.
 $ inalz sync
 ```
 
-The `inalz sync` command generates Locale files according to `inalz.yml` configuration. Now it generates a single file, `.README.yml` set on `localePath`.
+The `inalz sync` command generates Locale files according to `inalz.yml` configuration. Now it generates a single file, `.README.yml` set on `locale`.
 
 ```
 .

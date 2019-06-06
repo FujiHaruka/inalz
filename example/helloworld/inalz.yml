@@ -3,8 +3,7 @@ lang:
   targets:
     - ja
 documents:
-  - linkMode: path
-    source: README.md
+  - source: README.md
     targets:
       ja: README.ja.md
     locale: .README.locale.yml

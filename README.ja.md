@@ -24,10 +24,10 @@ lang:
     - ja
 documents:
   - linkMode: path
-    sourcePath: README.md
-    targetPaths:
+    source: README.md
+    targets:
       ja: README.ja.md
-    localePath: .README.yml
+    locale: .README.yml
 ```
 
 例として、次のような `README.md` を書いておきます。
@@ -53,7 +53,7 @@ This is a hello-world document.
 $ inalz sync
 ```
 
-`inalz sync` コマンドは、`inalz.yml` の設定をもとに Locale ファイルを生成します。ここで生成される Locale ファイルは 1 つだけで、`localePath` で設定した `.README.yml` です。
+`inalz sync` コマンドは、`inalz.yml` の設定をもとに Locale ファイルを生成します。ここで生成される Locale ファイルは 1 つだけで、`locale` で設定した `.README.yml` です。
 
 ```
 .

@@ -3,10 +3,9 @@ lang:
   targets:
     - en
 documents:
-  - linkMode: path
-    sourcePath: README.ja.md
-    targetPaths:
+  - source: README.ja.md
+    targets:
       en: README.md
-    localePath: .README.locale.yml
+    locale: .README.locale.yml
 paragraphIgnorePatterns:
   - "^\\[!\\["
