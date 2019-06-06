@@ -1,8 +1,5 @@
 import { IOInalzConfig, IOLocaleItem } from '../IOTypes'
-import {
-  InalzConfigInterface,
-  InalzConfigComponent,
-} from '../types/InalzConfig'
+import { InalzConfigInterface } from '../types/InalzConfig'
 import { copy } from '../util/objectUtil'
 import { LocaleComponent } from '../types/Locale'
 
@@ -26,11 +23,11 @@ describe('IOTypes', () => {
         },
         {
           linkMode: 'path',
-          sourcePath: 'path/to/source.md',
-          targetPaths: {
+          source: 'path/to/source.md',
+          targets: {
             ja: 'path/to/target.md',
           },
-          localePath: 'path/to/locale.yml',
+          locale: 'path/to/locale.yml',
         },
       ],
       paragraphIgnorePatterns: ['^ignore'],

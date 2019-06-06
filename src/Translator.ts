@@ -22,7 +22,7 @@ export class Translator {
     sourcePath,
     targetPaths,
     localePath,
-  }: InalzConfigComponent.PathModeDocument) {
+  }: InalzConfigComponent.SingleDocument) {
     const markdown = await readFile(sourcePath)
     const localeYaml = await readFile(localePath)
     const localeItems = new LocaleItemParser(this.lang).parse(localeYaml)

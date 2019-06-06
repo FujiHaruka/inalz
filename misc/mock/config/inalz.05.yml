@@ -4,7 +4,7 @@ lang:
     - ja
 documents:
   - linkMode: path
-    sourcePath: misc/mock/config/pathMode/dir
-    targetPaths:
+    source: misc/mock/config/pathMode/dir
+    targets:
       ja: misc/mock/config/pathMode/ja
-    localePath: misc/mock/config/pathMode/locales
+    locale: misc/mock/config/pathMode/locales

@@ -29,11 +29,11 @@ export namespace InalzConfigComponent {
 
   export type PathModeDocument = {
     linkMode: 'path'
-    sourcePath: string
-    targetPaths: {
+    source: string
+    targets: {
       [lang: string]: string
     }
-    localePath: string
+    locale: string
   }
 
   export type SingleDocument = {

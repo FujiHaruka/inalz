@@ -20,9 +20,9 @@ export const IOInalzConfig = t.intersection([
         }),
         t.strict({
           linkMode: t.literal('path'),
-          sourcePath: t.string,
-          targetPaths: t.record(t.string, t.string),
-          localePath: t.string,
+          source: t.string,
+          targets: t.record(t.string, t.string),
+          locale: t.string,
         }),
       ]),
     ),

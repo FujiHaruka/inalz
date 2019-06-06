@@ -69,7 +69,7 @@ export class InalzConfig {
     const sourcePathWithParam = (() => {
       switch (document.linkMode) {
         case 'path':
-          return document.sourcePath
+          return document.source
         case 'filename':
         case 'directory':
           return document.contentDir
@@ -89,9 +89,9 @@ export class InalzConfig {
         if (isFile) {
           return [
             {
-              sourcePath: document.sourcePath,
-              targetPaths: document.targetPaths,
-              localePath: document.localePath,
+              sourcePath: document.source,
+              targetPaths: document.targets,
+              localePath: document.locale,
             },
           ]
         }
@@ -188,7 +188,7 @@ export class InalzConfig {
   private async resolvePathMode(
     document: InalzConfigComponent.PathModeDocument,
   ): Promise<InalzConfigComponent.SingleDocument[]> {
-    const sourceDir = replaceLangParam(document.sourcePath, this.lang.source)
+    const sourceDir = replaceLangParam(document.source, this.lang.source)
     const pattern = path.join(sourceDir, '**/*.md')
     const sourcePaths: string[] = await glob(pattern)
     const documents = sourcePaths.map((sourcePath) => ({
@@ -197,13 +197,13 @@ export class InalzConfig {
         this.lang.targets.map((target) => [
           target,
           path.join(
-            replaceLangParam(document.targetPaths[target], target),
+            replaceLangParam(document.targets[target], target),
             path.relative(sourceDir, sourcePath),
           ),
         ]),
       ),
       localePath: replaceExt(
-        path.join(document.localePath, path.relative(sourceDir, sourcePath)),
+        path.join(document.locale, path.relative(sourceDir, sourcePath)),
         '.yml',
       ),
     }))

@@ -17,7 +17,6 @@ describe('Translator', () => {
     }
     const translator = new Translator({ lang })
     await translator.translate({
-      linkMode: 'path',
       sourcePath,
       targetPaths,
       localePath,
