@@ -56,6 +56,7 @@
     "test": "jest --silent false",
     "doc": "npm run doc:build && npm run doc:sync",
     "doc:build": "./bin/inalz build",
-    "doc:sync": "./bin/inalz sync"
+    "doc:sync": "./bin/inalz sync",
+    "inalz:dev": "ts-node bin/inalz.ts"
   }
 }

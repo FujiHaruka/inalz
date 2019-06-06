@@ -42,7 +42,7 @@ export const CLIActions: CLIActions = {
 export const CLI = (actions: CLIActions) => (argv: string[]) => {
   enableYamlOptions()
 
-  commander.version(require('../package.json'))
+  commander.version(require('../package.json').version, '-v, --version')
 
   commander
     .command('sync')
@@ -55,4 +55,8 @@ export const CLI = (actions: CLIActions) => (argv: string[]) => {
     .action((options) => actions.build({ ...options, cwd: process.cwd() }))
 
   commander.parse(argv)
+
+  if (commander.args.length === 0) {
+    commander.outputHelp()
+  }
 }
