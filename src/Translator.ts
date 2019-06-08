@@ -5,9 +5,6 @@ import { InalzConfigComponent, Lang } from './types/InalzConfig'
 import { LocaleItemParser } from './LocaleItemParser'
 import { replaceAll } from './util/stringUtil'
 
-const TRANSLATION_HEADER_COMMENT =
-  '<!-- THIS FILE IS GENERATED WITH INALZ. DO NOT EDIT MANUALLY. -->\n\n'
-
 export class Translator {
   lang: Lang
 
@@ -62,6 +59,6 @@ export class Translator {
       (text, item) => this.replaceByLocaleItem(text, item, targetlang),
       markdown,
     )
-    return TRANSLATION_HEADER_COMMENT + translated
+    return translated
   }
 }
