@@ -14,3 +14,7 @@ texts:
 texts:
   en: a list item 2
   ja: リストアイテム2
+---
+texts:
+  en: (only for english)
+  ja: ""

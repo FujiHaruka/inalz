@@ -38,13 +38,13 @@ export class LocaleItem implements LocaleComponent.Item {
 
   getText(targetLang: string) {
     const text = this.texts[targetLang]
-    const exists = Boolean(text)
+    const exists = typeof text === 'string'
     return exists ? text : null
   }
 
   getSourceText(): string | null {
     const text = this.texts[this.lang.source]
-    const exists = Boolean(text)
+    const exists = typeof text === 'string'
     return exists ? text : null
   }
 
