@@ -55,8 +55,8 @@ describe('MarkdownText', () => {
   it('09: ignore patterns', async () => {
     const markdown = await readFile('misc/mock/md/09.md')
     const texts = new MarkdownText({
-      paragraphIgnorePatterns: ['^ignore'],
+      paragraphIgnorePatterns: ['^ignore', '^#\\s'],
     }).parseTexts(markdown)
-    expect(texts.length).toBe(1)
+    expect(texts.length).toBe(2)
   })
 })
