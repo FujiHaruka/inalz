@@ -38,10 +38,14 @@ export class Translator {
     const targetText = item.getText(targetLang)
     const sourceText = item.getSourceText()
     if (typeof targetText !== 'string') {
-      throw new Error()
+      throw new Error(
+        `Target text of ${targetLang} is not string.
+Source text of locale item is:
+${item.getSourceText()}`,
+      )
     }
     if (typeof sourceText !== 'string') {
-      throw new Error()
+      throw new Error(`Source text is not string`)
     }
     if (targetText === BUILTIN_ACTIONS.COPY) {
       // Don't replace
