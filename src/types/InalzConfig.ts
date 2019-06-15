@@ -6,7 +6,7 @@ export type Lang = {
 export interface InalzConfigInterface {
   lang: Lang
   documents: InalzConfigComponent.Document[]
-  options: InalzConfigComponent.Options
+  options?: InalzConfigComponent.Options
 }
 
 export namespace InalzConfigComponent {

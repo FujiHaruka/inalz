@@ -1,3 +1,4 @@
+import * as t from 'io-ts'
 import { IOInalzConfig } from '../config/IOInalzConfig'
 import { IOLocaleItem } from '../convert/IOLocaleItem'
 import { InalzConfigInterface } from '../types/InalzConfig'
@@ -5,6 +6,17 @@ import { copy } from '../util/objectUtil'
 import { LocaleComponent } from '../types/Locale'
 
 describe('IOTypes', () => {
+  it('IOInalzConfig static type checking', () => {
+    type IOInalzConfigType = t.TypeOf<typeof IOInalzConfig>
+
+    const x: InalzConfigInterface = (null as any) as IOInalzConfigType
+    const y: IOInalzConfigType = (null as any) as InalzConfigInterface
+
+    // meaningless
+    expect(x).toBe(null)
+    expect(y).toBe(null)
+  })
+
   it('IOInalzConfig', () => {
     const CONFIG: InalzConfigInterface = {
       lang: {
