@@ -26,9 +26,6 @@ export const CLIActions: CLIActions = {
         new LocaleSync(config.lang, config.options).sync(
           sourcePath,
           localePath,
-          {
-            merge: true,
-          },
         ),
       ),
     )

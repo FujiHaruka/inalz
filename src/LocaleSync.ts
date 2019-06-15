@@ -33,17 +33,7 @@ export class LocaleSync {
     this.options = LocaleSync.constructOptions(options)
   }
 
-  async sync(
-    sourcePath: string,
-    localePath: string,
-    options: { merge?: boolean } = {},
-  ) {
-    const { merge = true } = options
-
-    const localeFileExists = await fileExists(localePath)
-    if (!merge && localeFileExists) {
-      throw new Error(`Locale file already exists: ${localePath}`)
-    }
+  async sync(sourcePath: string, localePath: string) {
     const { lang } = this
 
     const srcText = await readFile(sourcePath)
@@ -68,7 +58,7 @@ export class LocaleSync {
 
     const parser = new LocaleItemParser(lang)
     let yaml: string
-    if (localeFileExists) {
+    if (await fileExists(localePath)) {
       const oldItems = await parser.load(localePath)
       const mergedItems = new LocaleItemMerge().mergeItems(oldItems, items)
       if (deepEquals(oldItems, mergedItems)) {
