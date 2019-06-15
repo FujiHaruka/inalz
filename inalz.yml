@@ -7,5 +7,6 @@ documents:
     targets:
       en: README.md
     locale: .README.locale.yml
-paragraphIgnorePatterns:
-  - "^\\[!\\["
+options:
+  paragraphIgnorePatterns:
+    - "^\\[!\\["

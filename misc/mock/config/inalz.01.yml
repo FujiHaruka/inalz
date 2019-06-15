@@ -8,3 +8,6 @@ documents:
     targets:
       ja: misc/mock/config/pathMode/doc_ja.md
     locale: misc/mock/config/pathMode/locale.yml
+options:
+  paragraphIgnorePatterns:
+    - "^\\[!\\["

@@ -1,5 +1,6 @@
 import * as t from 'io-ts'
 
+/** IO implementation of InalzConfigInterface */
 export const IOInalzConfig = t.intersection([
   t.type({
     lang: t.strict({
@@ -32,10 +33,13 @@ export const IOInalzConfig = t.intersection([
     ),
   }),
   t.partial({
-    paragraphIgnorePatterns: t.array(t.string),
+    options: t.partial({
+      paragraphIgnorePatterns: t.array(t.string),
+    }),
   }),
 ])
 
+/** IO implementation of LocaleComponent.Item */
 export const IOLocaleItem = t.intersection([
   t.type({
     texts: t.record(t.string, t.string),

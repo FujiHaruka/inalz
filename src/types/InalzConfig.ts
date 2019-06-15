@@ -6,7 +6,7 @@ export type Lang = {
 export interface InalzConfigInterface {
   lang: Lang
   documents: InalzConfigComponent.Document[]
-  paragraphIgnorePatterns?: string[]
+  options: InalzConfigComponent.Options
 }
 
 export namespace InalzConfigComponent {
@@ -45,4 +45,8 @@ export namespace InalzConfigComponent {
   }
 
   export type LinkMode = 'filename' | 'directory' | 'path'
+
+  export type Options = {
+    paragraphIgnorePatterns?: string[]
+  }
 }

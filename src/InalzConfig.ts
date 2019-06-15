@@ -16,7 +16,7 @@ export class InalzConfig {
 
   lang: Lang = null as any
   documents: InalzConfigComponent.SingleDocument[] = null as any
-  paragraphIgnorePatterns: string[] = []
+  options: InalzConfigComponent.Options = {}
 
   private constructor(configPath: string) {
     this.configPath = configPath
@@ -34,7 +34,7 @@ export class InalzConfig {
     this.documents = (await Promise.all(
       conf.documents.map((document) => this.resolveDocument(document)),
     )).flat()
-    this.paragraphIgnorePatterns = conf.paragraphIgnorePatterns || []
+    this.options = conf.options || {}
   }
 
   static async load(configPath: string) {

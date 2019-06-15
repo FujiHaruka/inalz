@@ -30,7 +30,9 @@ describe('IOTypes', () => {
           locale: 'path/to/locale.yml',
         },
       ],
-      paragraphIgnorePatterns: ['^ignore'],
+      options: {
+        paragraphIgnorePatterns: ['^ignore'],
+      },
     }
     {
       const validation = IOInalzConfig.decode(CONFIG)
@@ -38,7 +40,9 @@ describe('IOTypes', () => {
       if (validation.isLeft()) {
         throw new Error()
       }
-      expect(validation.value.paragraphIgnorePatterns).toEqual(['^ignore'])
+      expect(validation.value.options!.paragraphIgnorePatterns).toEqual([
+        '^ignore',
+      ])
     }
     {
       const config = copy(CONFIG)
