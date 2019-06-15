@@ -46,7 +46,11 @@ export namespace InalzConfigComponent {
 
   export type LinkMode = 'filename' | 'directory' | 'path'
 
-  export type Options = {
-    paragraphIgnorePatterns?: string[]
+  export type SyncOptions = {
+    paragraphIgnorePatterns: string[]
+    enableLinkVariable: boolean
   }
+  export type BuildOptions = {}
+
+  export type Options = Partial<SyncOptions> & Partial<BuildOptions>
 }

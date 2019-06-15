@@ -35,6 +35,7 @@ export const IOInalzConfig = t.intersection([
   t.partial({
     options: t.partial({
       paragraphIgnorePatterns: t.array(t.string),
+      enableLinkVariable: t.boolean,
     }),
   }),
 ])

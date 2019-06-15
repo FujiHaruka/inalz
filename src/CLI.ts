@@ -23,12 +23,13 @@ export const CLIActions: CLIActions = {
     const config = await InalzConfig.findAndLoad(cwd)
     await Promise.all(
       config.documents.map(({ sourcePath, localePath }) =>
-        new LocaleSync({
-          lang: config.lang,
-          paragraphIgnorePatterns: config.options.paragraphIgnorePatterns || [],
-        }).sync(sourcePath, localePath, {
-          merge: true,
-        }),
+        new LocaleSync(config.lang, config.options).sync(
+          sourcePath,
+          localePath,
+          {
+            merge: true,
+          },
+        ),
       ),
     )
   },

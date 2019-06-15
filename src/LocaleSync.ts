@@ -3,23 +3,34 @@ import { deepEquals } from './util/objectUtil'
 import { MarkdownText } from './MarkdownText'
 import { LocaleItemParser } from './LocaleItemParser'
 import { LocaleItemMerge } from './LocaleItemMerge'
-import { Lang } from './types/InalzConfig'
+import { Lang, InalzConfigComponent } from './types/InalzConfig'
 import { BUILTIN_ACTIONS } from './Constants'
 import { LocaleItem } from './Locale'
 
 export class LocaleSync {
   lang: Lang
-  paragraphIgnorePatterns: string[]
+  options: InalzConfigComponent.SyncOptions
 
-  constructor({
-    lang,
+  static DEFAULT_OPTIONS: InalzConfigComponent.SyncOptions = {
+    paragraphIgnorePatterns: [],
+    enableLinkVariable: false,
+  }
+  static constructOptions = ({
+    paragraphIgnorePatterns = [],
+    enableLinkVariable = false,
+  }: Partial<
+    InalzConfigComponent.SyncOptions
+  >): InalzConfigComponent.SyncOptions => ({
     paragraphIgnorePatterns,
-  }: {
-    lang: Lang
-    paragraphIgnorePatterns?: string[]
-  }) {
+    enableLinkVariable,
+  })
+
+  constructor(
+    lang: Lang,
+    options: Partial<InalzConfigComponent.SyncOptions> = {},
+  ) {
     this.lang = lang
-    this.paragraphIgnorePatterns = paragraphIgnorePatterns || []
+    this.options = LocaleSync.constructOptions(options)
   }
 
   async sync(
@@ -37,7 +48,7 @@ export class LocaleSync {
 
     const srcText = await readFile(sourcePath)
     const texts = new MarkdownText({
-      paragraphIgnorePatterns: this.paragraphIgnorePatterns,
+      paragraphIgnorePatterns: this.options.paragraphIgnorePatterns,
     }).parseTexts(srcText)
 
     const items: LocaleItem[] = texts

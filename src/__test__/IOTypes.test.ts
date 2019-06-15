@@ -32,6 +32,7 @@ describe('IOTypes', () => {
       ],
       options: {
         paragraphIgnorePatterns: ['^ignore'],
+        enableLinkVariable: true,
       },
     }
     {
