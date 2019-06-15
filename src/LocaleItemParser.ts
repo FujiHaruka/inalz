@@ -6,6 +6,7 @@ import { IOLocaleItem } from './IOTypes'
 import { readFile } from './util/fsUtil'
 import { LocaleItem } from './Locale'
 import { Lang } from './types/InalzConfig'
+import { BUILTIN_ACTIONS } from './Constants'
 
 export class LocaleItemParser {
   lang: Lang
@@ -22,10 +23,10 @@ export class LocaleItemParser {
 
     if (itemValidations.some((item) => item.isLeft())) {
       const errors = itemValidations
-        .filter(
-          (item): item is Left<t.ValidationError[], LocaleComponent.Item> =>
-            item.isLeft(),
-        )
+        .filter((item): item is Left<
+          t.ValidationError[],
+          LocaleComponent.Item
+        > => item.isLeft())
         .flatMap((e) => e.value)
       throw new Error(JSON.stringify(errors))
     }
@@ -33,6 +34,20 @@ export class LocaleItemParser {
       .map((e) => e.value as LocaleComponent.Item)
       .map((item) => new LocaleItem(this.lang, item))
     return items
+  }
+
+  parseFromSrc(text: string): LocaleItem {
+    const { lang } = this
+    const texts = Object.assign(
+      {
+        [lang.source]: text,
+      },
+      ...lang.targets.map((target) => ({
+        [target]: BUILTIN_ACTIONS.DEFAULT,
+      })),
+    ) as { [lang: string]: string }
+    const item = new LocaleItem(lang, { texts })
+    return item
   }
 
   stringify(items: LocaleItem[]): string {

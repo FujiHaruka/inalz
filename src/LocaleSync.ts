@@ -6,6 +6,7 @@ import { LocaleItemMerge } from './LocaleItemMerge'
 import { Lang, InalzConfigComponent } from './types/InalzConfig'
 import { BUILTIN_ACTIONS } from './Constants'
 import { LocaleItem } from './Locale'
+import { parse } from '@babel/core'
 
 export class LocaleSync {
   lang: Lang
@@ -41,22 +42,9 @@ export class LocaleSync {
       paragraphIgnorePatterns: this.options.paragraphIgnorePatterns,
     }).parseTexts(srcText)
 
-    const items: LocaleItem[] = texts
-      .map(
-        (text) =>
-          Object.assign(
-            {
-              [lang.source]: text,
-            },
-            ...lang.targets.map((target) => ({
-              [target]: BUILTIN_ACTIONS.DEFAULT,
-            })),
-          ) as { [lang: string]: string },
-      )
-      .map((texts) => ({ texts }))
-      .map((item) => new LocaleItem(lang, item))
-
     const parser = new LocaleItemParser(lang)
+    const items: LocaleItem[] = texts.map((text) => parser.parseFromSrc(text))
+
     let yaml: string
     if (await fileExists(localePath)) {
       const oldItems = await parser.load(localePath)
