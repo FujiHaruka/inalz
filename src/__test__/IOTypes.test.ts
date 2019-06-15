@@ -9,11 +9,10 @@ describe('IOTypes', () => {
   it('IOInalzConfig static type checking', () => {
     type IOInalzConfigType = t.TypeOf<typeof IOInalzConfig>
 
-    const x: InalzConfigInterface = (null as any) as IOInalzConfigType
+    // 逆は不要。 IOInalzConfigType は partail なので。
     const y: IOInalzConfigType = (null as any) as InalzConfigInterface
 
     // meaningless
-    expect(x).toBe(null)
     expect(y).toBe(null)
   })
 
@@ -46,6 +45,12 @@ describe('IOTypes', () => {
       options: {
         paragraphIgnorePatterns: ['^ignore'],
         enableLinkVariable: true,
+      },
+      plugins: {
+        'some-plugin': {
+          key: 'value',
+        },
+        'another-plugin': null,
       },
     }
     {
