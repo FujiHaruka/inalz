@@ -1,5 +1,5 @@
 import os from 'os'
-import { Translator } from '../Translator'
+import { Translator } from '../command/Translator'
 import { Lang } from '../types/InalzConfig'
 import { readFile } from '../util/fsUtil'
 

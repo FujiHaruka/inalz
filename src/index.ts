@@ -1,5 +1,2 @@
-export { InalzConfig } from './InalzConfig'
-export { Locale } from './Locale'
-export { LocaleItemMerge } from './LocaleItemMerge'
-export { LocaleItemParser } from './LocaleItemParser'
-export { Translator } from './Translator'
+export { Locale } from './core/Locale'
+export { LocaleItem } from './core/LocaleItem'

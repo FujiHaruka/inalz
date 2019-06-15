@@ -1,10 +1,10 @@
 import fs from 'fs'
 import os from 'os'
 import path from 'path'
-import { LocaleSync } from '../LocaleSync'
+import { LocaleSync } from '../command/LocaleSync'
 import { rmIfExists } from '../util/fsUtil'
 import { Lang } from '../types/InalzConfig'
-import { LocaleItemParser } from '../LocaleItemParser'
+import { LocaleItemParser } from '../convert/LocaleItemParser'
 
 describe('LocaleSync', () => {
   const lang: Lang = {

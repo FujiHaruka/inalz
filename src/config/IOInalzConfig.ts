@@ -39,16 +39,3 @@ export const IOInalzConfig = t.intersection([
     }),
   }),
 ])
-
-/** IO implementation of LocaleComponent.Item */
-export const IOLocaleItem = t.intersection([
-  t.type({
-    texts: t.record(t.string, t.string),
-  }),
-  t.partial({
-    meta: t.partial({
-      outdated: t.boolean,
-      warnings: t.array(t.string),
-    }),
-  }),
-])

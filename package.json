@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@types/yaml": "^1.0.2",
-    "at-template": "^1.0.1",
     "commander": "^2.20.0",
     "fast-glob": "^2.2.7",
     "io-ts": "^1.9.0",

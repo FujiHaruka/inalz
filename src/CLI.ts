@@ -1,7 +1,7 @@
 import commander from 'commander'
-import { InalzConfig } from './InalzConfig'
-import { LocaleSync } from './LocaleSync'
-import { Translator } from './Translator'
+import { InalzConfig } from './config/InalzConfig'
+import { LocaleSync } from './command/LocaleSync'
+import { Translator } from './command/Translator'
 import { enableYamlOptions } from './util/enableYamlOptions'
 
 interface BaseOptions {

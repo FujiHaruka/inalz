@@ -1,12 +1,12 @@
 import YAML from 'yaml'
 import path from 'path'
 import glob from 'fast-glob'
-import { readFile, firstExistsFile, statOrNull } from './util/fsUtil'
-import { InalzConfigComponent, Lang } from './types/InalzConfig'
-import { IOInalzConfig } from './IOTypes'
-import { replaceExt } from './util/pathUtil'
-import { LANG_PATH_PARAM } from './Constants'
-import { replaceAll } from './util/stringUtil'
+import { readFile, firstExistsFile, statOrNull } from '../util/fsUtil'
+import { InalzConfigComponent, Lang } from '../types/InalzConfig'
+import { IOInalzConfig } from './IOInalzConfig'
+import { replaceExt } from '../util/pathUtil'
+import { LANG_PATH_PARAM } from '../Constants'
+import { replaceAll } from '../util/stringUtil'
 
 const replaceLangParam = (dir: string, lang: string) =>
   replaceAll(dir, LANG_PATH_PARAM, lang)

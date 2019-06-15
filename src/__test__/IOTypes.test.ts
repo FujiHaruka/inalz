@@ -1,4 +1,5 @@
-import { IOInalzConfig, IOLocaleItem } from '../IOTypes'
+import { IOInalzConfig } from '../config/IOInalzConfig'
+import { IOLocaleItem } from '../convert/IOLocaleItem'
 import { InalzConfigInterface } from '../types/InalzConfig'
 import { copy } from '../util/objectUtil'
 import { LocaleComponent } from '../types/Locale'

@@ -1,4 +1,4 @@
-import { InalzConfig } from '../InalzConfig'
+import { InalzConfig } from '../config/InalzConfig'
 
 describe('InalzConfig', () => {
   it('01: valid "path" mode', async () => {

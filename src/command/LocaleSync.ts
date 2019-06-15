@@ -1,12 +1,10 @@
-import { fileExists, writeFile, readFile } from './util/fsUtil'
-import { deepEquals } from './util/objectUtil'
-import { MarkdownText } from './MarkdownText'
-import { LocaleItemParser } from './LocaleItemParser'
-import { LocaleItemMerge } from './LocaleItemMerge'
-import { Lang, InalzConfigComponent } from './types/InalzConfig'
-import { BUILTIN_ACTIONS } from './Constants'
-import { LocaleItem } from './Locale'
-import { parse } from '@babel/core'
+import { fileExists, writeFile, readFile } from '../util/fsUtil'
+import { deepEquals } from '../util/objectUtil'
+import { parseMarkdownTexts } from '../convert/Markdown'
+import { LocaleItemParser } from '../convert/LocaleItemParser'
+import { LocaleItemMerge } from '../convert/LocaleItemMerge'
+import { Lang, InalzConfigComponent } from '../types/InalzConfig'
+import { LocaleItem } from '../core/LocaleItem'
 
 export class LocaleSync {
   lang: Lang
@@ -38,9 +36,9 @@ export class LocaleSync {
     const { lang } = this
 
     const srcText = await readFile(sourcePath)
-    const texts = new MarkdownText({
+    const texts = parseMarkdownTexts(srcText, {
       paragraphIgnorePatterns: this.options.paragraphIgnorePatterns,
-    }).parseTexts(srcText)
+    })
 
     const parser = new LocaleItemParser(lang)
     const items: LocaleItem[] = texts.map((text) => parser.parseFromSrc(text))

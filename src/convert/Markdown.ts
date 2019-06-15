@@ -2,7 +2,7 @@ import unified from 'unified'
 import * as Unist from 'unist'
 import { uniq } from 'fp-ts/lib/Array'
 import { setoidString } from 'fp-ts/lib/Setoid'
-import { disableInlineTokenizer } from './util/disableInlineTokenizer'
+import { disableInlineTokenizer } from '../util/disableInlineTokenizer'
 
 const HTML_COMMENT_PREFIX = new RegExp('<!--')
 
@@ -30,23 +30,23 @@ const _compileToTexts = (tree: Unist.Node): string[] => {
   }
 }
 
-export class MarkdownText {
-  ignoreRegExps: RegExp[]
+export type ParseMarkdownTextsOptions = {
+  paragraphIgnorePatterns?: string[]
+}
 
-  constructor(options: { paragraphIgnorePatterns?: string[] }) {
-    this.ignoreRegExps = [HTML_COMMENT_PREFIX].concat(
-      (options.paragraphIgnorePatterns || []).map(
-        (pattern) => new RegExp(pattern),
-      ),
-    )
-  }
+export const parseMarkdownTexts = (
+  markdown: string,
+  options: ParseMarkdownTextsOptions = {},
+) => {
+  const { paragraphIgnorePatterns = [] } = options
+  const ignoreRegExps = [HTML_COMMENT_PREFIX].concat(
+    (paragraphIgnorePatterns || []).map((pattern) => new RegExp(pattern)),
+  )
 
-  parseTexts(markdown: string) {
-    const tree = _parseMarkdown(markdown)
-    const texts = uniqStr(_compileToTexts(tree)) // ここで重複を除外
-    const filtered = texts.filter((text) =>
-      this.ignoreRegExps.every((reg) => !reg.test(text)),
-    )
-    return filtered
-  }
+  const tree = _parseMarkdown(markdown)
+  const texts = uniqStr(_compileToTexts(tree)) // ここで重複を除外
+  const filtered = texts.filter((text) =>
+    ignoreRegExps.every((reg) => !reg.test(text)),
+  )
+  return filtered
 }

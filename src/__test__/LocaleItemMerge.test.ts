@@ -1,6 +1,7 @@
-import { LocaleItemMerge } from '../LocaleItemMerge'
+import { LocaleItemMerge } from '../convert/LocaleItemMerge'
 import { Lang } from '../types/InalzConfig'
-import { Locale, LocaleItem } from '../Locale'
+import { Locale } from '../core/Locale'
+import { LocaleItem } from '../core/LocaleItem'
 
 describe('LocaleMerge', () => {
   it('mergeItems', () => {

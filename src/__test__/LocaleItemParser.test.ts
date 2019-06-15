@@ -1,5 +1,5 @@
 import { readFile } from '../util/fsUtil'
-import { LocaleItemParser } from '../LocaleItemParser'
+import { LocaleItemParser } from '../convert/LocaleItemParser'
 import { BUILTIN_ACTIONS } from '../Constants'
 
 describe('LocaleItemParser', () => {

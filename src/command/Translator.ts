@@ -1,9 +1,10 @@
-import { Locale, LocaleItem } from './Locale'
-import { BUILTIN_ACTIONS } from './Constants'
-import { writeFile, readFile } from './util/fsUtil'
-import { InalzConfigComponent, Lang } from './types/InalzConfig'
-import { LocaleItemParser } from './LocaleItemParser'
-import { replaceAll } from './util/stringUtil'
+import { Locale } from '../core/Locale'
+import { LocaleItem } from '../core/LocaleItem'
+import { BUILTIN_ACTIONS } from '../Constants'
+import { writeFile, readFile } from '../util/fsUtil'
+import { InalzConfigComponent, Lang } from '../types/InalzConfig'
+import { LocaleItemParser } from '../convert/LocaleItemParser'
+import { replaceAll } from '../util/stringUtil'
 
 export class Translator {
   lang: Lang

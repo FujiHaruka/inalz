@@ -1,4 +1,4 @@
-import { LocaleItem } from './Locale'
+import { LocaleItem } from '../core/LocaleItem'
 
 export class LocaleItemMerge {
   mergeItems(oldItems: LocaleItem[], newItems: LocaleItem[]): LocaleItem[] {

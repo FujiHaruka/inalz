@@ -1,12 +1,12 @@
 import YAML from 'yaml'
 import * as t from 'io-ts'
 import { Left } from 'fp-ts/lib/Either'
-import { LocaleComponent } from './types/Locale'
-import { IOLocaleItem } from './IOTypes'
-import { readFile } from './util/fsUtil'
-import { LocaleItem } from './Locale'
-import { Lang } from './types/InalzConfig'
-import { BUILTIN_ACTIONS } from './Constants'
+import { LocaleComponent } from '../types/Locale'
+import { IOLocaleItem } from './IOLocaleItem'
+import { readFile } from '../util/fsUtil'
+import { LocaleItem } from '../core/LocaleItem'
+import { Lang } from '../types/InalzConfig'
+import { BUILTIN_ACTIONS } from '../Constants'
 
 export class LocaleItemParser {
   lang: Lang
