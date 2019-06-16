@@ -6,8 +6,7 @@ export type Lang = {
 export interface InalzConfigInterface {
   lang: Lang
   documents: InalzConfigComponent.Document[]
-  options: InalzConfigComponent.Options
-  plugins: InalzConfigComponent.Plugins
+  options?: InalzConfigComponent.Options
 }
 
 export namespace InalzConfigComponent {
@@ -54,14 +53,4 @@ export namespace InalzConfigComponent {
   export type BuildOptions = {}
 
   export type Options = Partial<SyncOptions> & Partial<BuildOptions>
-
-  export type Plugins = {
-    [name: string]: PluginSettings
-  }
-
-  export type PluginSettings = null | {
-    [key: string]: YamlScalar
-  }
-
-  export type YamlScalar = string | number | null | boolean
 }
