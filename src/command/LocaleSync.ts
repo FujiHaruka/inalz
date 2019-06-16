@@ -10,18 +10,12 @@ export class LocaleSync {
   lang: Lang
   options: InalzConfigComponent.SyncOptions
 
-  static DEFAULT_OPTIONS: InalzConfigComponent.SyncOptions = {
-    paragraphIgnorePatterns: [],
-    enableLinkVariable: false,
-  }
   static constructOptions = ({
     paragraphIgnorePatterns = [],
-    enableLinkVariable = false,
   }: Partial<
     InalzConfigComponent.SyncOptions
   >): InalzConfigComponent.SyncOptions => ({
     paragraphIgnorePatterns,
-    enableLinkVariable,
   })
 
   constructor(

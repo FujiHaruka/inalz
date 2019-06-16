@@ -48,7 +48,6 @@ export namespace InalzConfigComponent {
 
   export type SyncOptions = {
     paragraphIgnorePatterns: string[]
-    enableLinkVariable: boolean
   }
   export type BuildOptions = {}
 
