@@ -13,6 +13,7 @@ export namespace LocaleComponent {
 
   export type ItemMeta = {
     outdated?: boolean
+    unused?: boolean
     warnings?: string[]
   }
 }
