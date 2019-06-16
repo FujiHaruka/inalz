@@ -51,7 +51,7 @@ export class LocaleItemParser {
   }
 
   stringify(items: LocaleItem[]): string {
-    return items.map((item) => YAML.stringify(item.toRaw())).join('---\n')
+    return items.map((item) => YAML.stringify(item.toObject())).join('---\n')
   }
 
   async load(yamlPath: string): Promise<LocaleItem[]> {

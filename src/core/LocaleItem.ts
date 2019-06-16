@@ -1,26 +1,29 @@
 import { LocaleComponent } from '../types/Locale'
 import { Lang } from '../types/InalzConfig'
+import { UniqKey } from '../types/Group'
 
-export class LocaleItem implements LocaleComponent.Item {
+export class LocaleItem implements LocaleComponent.Item, UniqKey {
   lang: Lang
   texts: LocaleComponent.Item['texts']
   meta?: LocaleComponent.Item['meta']
+
   constructor(lang: Lang, item: LocaleComponent.Item) {
     this.lang = lang
     this.texts = item.texts
     this.meta = item.meta
   }
+
   getText(targetLang: string) {
     const text = this.texts[targetLang]
     const exists = typeof text === 'string'
     return exists ? text : null
   }
-  getSourceText(): string | null {
-    const text = this.texts[this.lang.source]
-    const exists = typeof text === 'string'
-    return exists ? text : null
+
+  getSourceText(): string {
+    return this.texts[this.lang.source]
   }
-  toRaw(): LocaleComponent.Item {
+
+  toObject(): LocaleComponent.Item {
     const item: LocaleComponent.Item = {
       texts: this.texts,
     }
@@ -28,5 +31,9 @@ export class LocaleItem implements LocaleComponent.Item {
       item.meta = this.meta
     }
     return item
+  }
+
+  get key() {
+    return this.getSourceText()
   }
 }
