@@ -1,6 +1,7 @@
 import { groupByChangeStatus } from '../convert/group/groupByChangeStatus'
-import { UniqKey } from '../convert/group/Group'
-import { closestFinder, closestPairs } from '../convert/group/closestPairs'
+import { UniqKey, ChangeStatus } from '../convert/group/Group'
+import { closestFinder, closestIndexes } from '../convert/group/closestIndexes'
+import { mergeLocaleGroup } from '../convert/group/mergeLocaleGroup'
 
 describe('groupByChangeStatus', () => {
   const itemsFrom = (str: string): UniqKey[] =>
@@ -86,46 +87,58 @@ describe('groupByChangeStatus', () => {
     expect(() => closestFinder([])).toThrow()
   })
 
-  it('closestPairs', () => {
-    expect(closestPairs([], ['aaa', 'aaa'])).toEqual([-1, -1])
+  it('closestIndexes', () => {
+    expect(closestIndexes([], ['aaa', 'aaa'])).toEqual([-1, -1])
 
-    expect(closestPairs(['aaa', 'aaa'], [])).toEqual([])
+    expect(closestIndexes(['aaa', 'aaa'], [])).toEqual([])
 
     expect(
-      closestPairs(
+      closestIndexes(
         ['aaaa', 'bbb', 'ccc'],
         ['aaxa', 'ggg', 'bbx', 'kkk', 'ccx'],
       ),
     ).toEqual([0, -1, 1, -1, 2])
 
-    expect(closestPairs(['aaaa', 'aaab', 'baaa'], ['ab', 'aaxa'])).toEqual([
+    expect(closestIndexes(['aaaa', 'aaab', 'baaa'], ['ab', 'aaxa'])).toEqual([
       1,
       0,
     ])
 
     expect(
-      closestPairs(
+      closestIndexes(
         ['aaaa', 'bbb', 'cccc', 'dddd'],
         ['aaxa', 'ccxd', 'dddx', 'whole new added'],
       ),
     ).toEqual([0, 2, 3, -1])
 
-    expect(closestPairs(['aaaa', 'bbb', 'cccc', 'dddd'], ['ccdx'])).toEqual([2])
+    expect(closestIndexes(['aaaa', 'bbb', 'cccc', 'dddd'], ['ccdx'])).toEqual([
+      2,
+    ])
 
     expect(
-      closestPairs(
+      closestIndexes(
         ['aaaa', 'bbb', 'cccc', 'dddd'],
         ['aaxa', 'xxxx', 'xxxx', 'whole new added', 'bbeb', 'ddcd', 'ccdc'],
       ),
     ).toEqual([0, -1, -1, -1, 1, 3, 2])
 
     expect(
-      closestPairs(['aaaa', 'bbbb', 'cccc'], ['aaaa', 'bbbb', 'cccc']),
+      closestIndexes(['aaaa', 'bbbb', 'cccc'], ['aaaa', 'bbbb', 'cccc']),
     ).toEqual([0, 1, 2])
 
-    expect(closestPairs(['aaaa', 'bbbb', 'cccc'], ['aaaa', 'cccc'])).toEqual([
+    expect(closestIndexes(['aaaa', 'bbbb', 'cccc'], ['aaaa', 'cccc'])).toEqual([
       0,
       2,
     ])
+  })
+
+  it('mergeLocaleGroup', () => {
+    expect(
+      mergeLocaleGroup({
+        status: ChangeStatus.DEC,
+        items: [],
+        prevItems: [],
+      }),
+    ).toEqual([])
   })
 })

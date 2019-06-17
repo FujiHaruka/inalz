@@ -2,7 +2,7 @@ import { fileExists, writeFile, readFile } from '../util/fsUtil'
 import { deepEquals } from '../util/objectUtil'
 import { parseMarkdownTexts } from '../convert/Markdown'
 import { LocaleItemParser } from '../convert/LocaleItemParser'
-import { LocaleItemMerge } from '../convert/LocaleItemMerge'
+import { mergeLocaleItems } from '../convert/mergeLocaleItems'
 import { Lang, InalzConfigComponent } from '../types/InalzConfig'
 import { LocaleItem } from '../core/LocaleItem'
 
@@ -40,7 +40,7 @@ export class LocaleSync {
     let yaml: string
     if (await fileExists(localePath)) {
       const oldItems = await parser.load(localePath)
-      const mergedItems = new LocaleItemMerge().mergeItems(oldItems, items)
+      const mergedItems = mergeLocaleItems(oldItems, items)
       if (deepEquals(oldItems, mergedItems)) {
         return
       }

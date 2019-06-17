@@ -23,6 +23,10 @@ export class LocaleItem implements LocaleComponent.Item, UniqKey {
     return this.texts[this.lang.source]
   }
 
+  setSourceText(text: string) {
+    this.texts[this.lang.source] = text
+  }
+
   setMeta(meta: LocaleComponent.ItemMeta) {
     this.meta = {
       ...(this.meta || {}),

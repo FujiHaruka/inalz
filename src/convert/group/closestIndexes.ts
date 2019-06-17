@@ -32,7 +32,7 @@ export const closestFinder = (strings: string[]) => {
  * 2. 各 next についてそれを指す prev のうち編集距離最小のものを選ぶ
  * 3. next に対応する prev index を出力する。存在しなければ -1
  */
-export const closestPairs = (prevs: string[], nexts: string[]): number[] => {
+export const closestIndexes = (prevs: string[], nexts: string[]): number[] => {
   if (nexts.length === 0) {
     return []
   }

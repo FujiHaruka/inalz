@@ -18,9 +18,11 @@ texts:
   en: quote sentence.
   ja: __COPY__
 ---
+meta:
+  outdated: true
 texts:
   en: quote sentence with [link](https://google.com).
-  ja: __COPY__
+  ja: これはリンク
 ---
 texts:
   en: This is paragraph 1.
@@ -29,9 +31,3 @@ texts:
 texts:
   en: This is paragraph *2* with [link](https://google.com).
   ja: __COPY__
----
-meta:
-  outdated: true
-texts:
-  en: quote sentence with link.
-  ja: これはリンク
