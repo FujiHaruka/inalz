@@ -17,8 +17,8 @@ export enum ChangeStatus {
   INC = 'inc',
 }
 
-export type ItemGroup = {
+export type ItemGroup<T extends UniqKey> = {
   status: ChangeStatus
-  items: UniqKey[]
-  prevItems: UniqKey[]
+  items: T[]
+  prevItems: T[]
 }

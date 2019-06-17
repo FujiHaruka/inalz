@@ -40,10 +40,10 @@ const groupIndexesByStatus = (statuses: ChangeStatus[]): number[] => {
 /**
  * ChangeStatus によって group 分けする
  */
-export const groupByChangeStatus = (
-  prevItems: UniqKey[],
-  nextItems: UniqKey[],
-): ItemGroup[] => {
+export const groupByChangeStatus = <T extends UniqKey>(
+  prevItems: T[],
+  nextItems: T[],
+): ItemGroup<T>[] => {
   // NOTE: items が一意でないと index が -1 以外単調増加になることを保証できない
   const findPrevIndex = indexFinder(prevItems)
 
@@ -62,7 +62,7 @@ export const groupByChangeStatus = (
     }
   })
 
-  const groups: ItemGroup[] = groupHeadIndexes.map((headIndex, i) => {
+  const groups: ItemGroup<T>[] = groupHeadIndexes.map((headIndex, i) => {
     const nextHeadIndex: number | undefined = groupHeadIndexes[i + 1]
     const status = statuses[headIndex]
     // nextHeadIndex が undefined でもちゃんと動く

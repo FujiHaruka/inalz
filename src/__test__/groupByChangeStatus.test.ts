@@ -1,4 +1,5 @@
-import { groupByChangeStatus, UniqKey } from '../util/groupByChangeStatus'
+import { groupByChangeStatus } from '../util/groupByChangeStatus'
+import { UniqKey } from '../types/Group'
 
 describe('groupByChangeStatus', () => {
   const itemsFrom = (str: string): UniqKey[] =>
