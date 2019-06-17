@@ -1,11 +1,11 @@
 import { LocaleComponent } from '../types/Locale'
 import { Lang } from '../types/InalzConfig'
-import { UniqKey } from '../types/Group'
+import { UniqKey } from '../convert/group/Group'
 
 export class LocaleItem implements LocaleComponent.Item, UniqKey {
   lang: Lang
   texts: LocaleComponent.Item['texts']
-  meta?: LocaleComponent.Item['meta']
+  meta?: LocaleComponent.ItemMeta
 
   constructor(lang: Lang, item: LocaleComponent.Item) {
     this.lang = lang
@@ -21,6 +21,13 @@ export class LocaleItem implements LocaleComponent.Item, UniqKey {
 
   getSourceText(): string {
     return this.texts[this.lang.source]
+  }
+
+  setMeta(meta: LocaleComponent.ItemMeta) {
+    this.meta = {
+      ...(this.meta || {}),
+      ...meta,
+    }
   }
 
   toObject(): LocaleComponent.Item {

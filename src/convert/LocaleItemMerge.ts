@@ -1,6 +1,6 @@
 import { LocaleItem } from '../core/LocaleItem'
-import { groupByChangeStatus } from '../util/groupByChangeStatus'
-import { ItemGroup } from '../types/Group'
+import { groupByChangeStatus } from './group/groupByChangeStatus'
+import { ItemGroup } from './group/Group'
 
 const findClosest = (item: LocaleItem, items: LocaleItem[]) => {
   // TODO: implement

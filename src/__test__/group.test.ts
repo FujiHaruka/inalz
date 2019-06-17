@@ -1,5 +1,6 @@
-import { groupByChangeStatus } from '../util/groupByChangeStatus'
-import { UniqKey } from '../types/Group'
+import { groupByChangeStatus } from '../convert/group/groupByChangeStatus'
+import { UniqKey } from '../convert/group/Group'
+import { closestFinder, closestPairs } from '../convert/group/closestPairs'
 
 describe('groupByChangeStatus', () => {
   const itemsFrom = (str: string): UniqKey[] =>
@@ -71,5 +72,60 @@ describe('groupByChangeStatus', () => {
         { status: 'inc', items: ['s', 't'], prevItems: ['j'] },
       ])
     }
+  })
+
+  it('edit distance', () => {
+    {
+      const find = closestFinder(['abc', 'def', 'ghi'])
+      const result = find('ghg')
+      expect(result).toEqual({
+        index: 2,
+        distance: 1,
+      })
+    }
+    expect(() => closestFinder([])).toThrow()
+  })
+
+  it('closestPairs', () => {
+    expect(closestPairs([], ['aaa', 'aaa'])).toEqual([-1, -1])
+
+    expect(closestPairs(['aaa', 'aaa'], [])).toEqual([])
+
+    expect(
+      closestPairs(
+        ['aaaa', 'bbb', 'ccc'],
+        ['aaxa', 'ggg', 'bbx', 'kkk', 'ccx'],
+      ),
+    ).toEqual([0, -1, 1, -1, 2])
+
+    expect(closestPairs(['aaaa', 'aaab', 'baaa'], ['ab', 'aaxa'])).toEqual([
+      1,
+      0,
+    ])
+
+    expect(
+      closestPairs(
+        ['aaaa', 'bbb', 'cccc', 'dddd'],
+        ['aaxa', 'ccxd', 'dddx', 'whole new added'],
+      ),
+    ).toEqual([0, 2, 3, -1])
+
+    expect(closestPairs(['aaaa', 'bbb', 'cccc', 'dddd'], ['ccdx'])).toEqual([2])
+
+    expect(
+      closestPairs(
+        ['aaaa', 'bbb', 'cccc', 'dddd'],
+        ['aaxa', 'xxxx', 'xxxx', 'whole new added', 'bbeb', 'ddcd', 'ccdc'],
+      ),
+    ).toEqual([0, -1, -1, -1, 1, 3, 2])
+
+    expect(
+      closestPairs(['aaaa', 'bbbb', 'cccc'], ['aaaa', 'bbbb', 'cccc']),
+    ).toEqual([0, 1, 2])
+
+    expect(closestPairs(['aaaa', 'bbbb', 'cccc'], ['aaaa', 'cccc'])).toEqual([
+      0,
+      2,
+    ])
   })
 })
