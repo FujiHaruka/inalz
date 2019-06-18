@@ -5,9 +5,12 @@ import { mergeLocaleGroup } from '../convert/group/mergeLocaleGroup'
 
 describe('groupByChangeStatus', () => {
   const itemsFrom = (str: string): UniqKey[] =>
-    str.split('').map((key) => ({
-      key,
-    }))
+    str
+      .split('')
+      .filter(Boolean)
+      .map((key) => ({
+        key,
+      }))
   const getKey = (item: UniqKey) => item.key
 
   it('works', () => {
@@ -71,6 +74,19 @@ describe('groupByChangeStatus', () => {
           prevItems: ['d', 'e', 'f', 'g', 'h', 'i'],
         },
         { status: 'inc', items: ['s', 't'], prevItems: ['j'] },
+      ])
+    }
+    {
+      const prevItems = itemsFrom('abc')
+      const nextItems = itemsFrom('')
+
+      const groups = groupByChangeStatus(prevItems, nextItems).map((group) => ({
+        status: group.status,
+        items: group.items.map(getKey),
+        prevItems: group.prevItems.map(getKey),
+      }))
+      expect(groups).toEqual([
+        { status: 'dec', items: [], prevItems: ['a', 'b', 'c'] },
       ])
     }
   })

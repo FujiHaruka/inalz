@@ -8,6 +8,16 @@ export const groupByChangeStatus = <T extends UniqKey>(
   prevItems: T[],
   nextItems: T[],
 ): ItemGroup<T>[] => {
+  if (nextItems.length === 0) {
+    return [
+      {
+        status: ChangeStatus.DEC,
+        items: nextItems,
+        prevItems,
+      },
+    ]
+  }
+
   // NOTE: items が一意でないと index が -1 以外単調増加になることを保証できない
   const findPrevIndex = indexFinder(prevItems)
 

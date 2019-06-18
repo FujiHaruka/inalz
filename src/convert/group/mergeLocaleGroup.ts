@@ -24,19 +24,27 @@ export const mergeLocaleGroup = (group: ItemGroup<LocaleItem>) =>
         mapKey(group.prevItems),
         mapKey(group.items),
       )
-      return prevIndexes.map((prevIndex, i) => {
-        if (prevIndex < 0) {
-          // 対応する prevItem がない
-          const item = group.items[i]
+      const unusedItems = group.prevItems
+        .filter((_, i) => !prevIndexes.includes(i))
+        .map((item) => {
+          item.setMeta({ unused: true })
           return item
-        } else {
-          // marge する
-          const item = group.prevItems[prevIndex]
-          const newItem = group.items[i]
-          item.setSourceText(newItem.getSourceText())
-          item.setMeta({ outdated: true })
-          return item
-        }
-      })
+        })
+      return prevIndexes
+        .map((prevIndex, i) => {
+          if (prevIndex < 0) {
+            // 対応する prevItem がないので新規 item
+            const item = group.items[i]
+            return item
+          } else {
+            // 対応する prevItem があるので marge
+            const item = group.prevItems[prevIndex]
+            const newItem = group.items[i]
+            item.setSourceText(newItem.getSourceText())
+            item.setMeta({ outdated: true })
+            return item
+          }
+        })
+        .concat(unusedItems)
     },
   )
