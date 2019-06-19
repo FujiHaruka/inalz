@@ -42,13 +42,17 @@ export class LocaleItem implements LocaleComponent.Item, UniqKey {
   }
 
   toObject(): LocaleComponent.Item {
-    const item: LocaleComponent.Item = {
-      texts: this.texts,
-    }
     if (this.meta) {
-      item.meta = this.meta
+      return {
+        // Keys are sorted with this order
+        meta: this.meta,
+        texts: this.texts,
+      }
+    } else {
+      return {
+        texts: this.texts,
+      }
     }
-    return item
   }
 
   get key() {
