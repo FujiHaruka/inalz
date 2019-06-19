@@ -4,5 +4,5 @@ lang:
     - ja
 documents:
   - linkMode: filename
-    contentDir: misc/mock/config/filenameMode
-    localeDir: misc/mock/config/locales
+    contentDir: filenameMode
+    localeDir: locales

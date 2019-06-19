@@ -16,4 +16,10 @@ describe('inalz integration', () => {
       await readFile('misc/exampleOutput/helloworld/README.ja.md'),
     )
   })
+
+  // it('example/advanced', async () => {
+  //   const cwd = path.resolve('example/advanced')
+
+  //   await CLIActions.sync({ cwd })
+  // })
 })

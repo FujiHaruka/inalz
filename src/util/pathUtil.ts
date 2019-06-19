@@ -1,4 +1,5 @@
 import path from 'path'
+import { InalzConfigComponent } from '../types/InalzConfig'
 
 export const replaceExt = (
   file: string,
@@ -20,4 +21,27 @@ export const replaceExt = (
     name,
     ext,
   })
+}
+
+export const resolveDocumentPath = (
+  baseDir: string,
+  {
+    sourcePath: _sourcePath,
+    targetPaths: _targetPaths,
+    localePath: _localePath,
+  }: InalzConfigComponent.SingleDocument,
+) => {
+  const sourcePath = path.resolve(baseDir, _sourcePath)
+  const localePath = path.resolve(baseDir, _localePath)
+  const targetPaths = Object.fromEntries(
+    Object.entries(_targetPaths).map(([lang, targetPath]) => [
+      lang,
+      path.resolve(baseDir, targetPath),
+    ]),
+  )
+  return {
+    sourcePath,
+    localePath,
+    targetPaths,
+  }
 }

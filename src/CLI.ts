@@ -33,7 +33,7 @@ export const CLIActions: CLIActions = {
   async build(options) {
     const { cwd } = options
     const config = await InalzConfig.findAndLoad(cwd)
-    const translator = new Translator(cwd, config)
+    const translator = new Translator(config)
     await Promise.all(
       config.documents.map((document) => translator.translate(document)),
     )

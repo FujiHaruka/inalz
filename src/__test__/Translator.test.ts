@@ -16,8 +16,7 @@ describe('Translator', () => {
       source: 'en',
       targets: ['ja'],
     }
-    const cwd = path.resolve(__dirname, '../..')
-    const translator = new Translator(cwd, { lang })
+    const translator = new Translator({ lang })
     await translator.translate({
       sourcePath,
       targetPaths,

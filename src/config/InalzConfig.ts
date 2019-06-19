@@ -4,7 +4,7 @@ import glob from 'fast-glob'
 import { readFile, firstExistsFile, statOrNull } from '../util/fsUtil'
 import { InalzConfigComponent, Lang } from '../types/InalzConfig'
 import { IOInalzConfig } from './IOInalzConfig'
-import { replaceExt } from '../util/pathUtil'
+import { replaceExt, resolveDocumentPath } from '../util/pathUtil'
 import { LANG_PATH_PARAM } from '../Constants'
 import { replaceAll } from '../util/stringUtil'
 
@@ -12,6 +12,7 @@ const replaceLangParam = (dir: string, lang: string) =>
   replaceAll(dir, LANG_PATH_PARAM, lang)
 
 export class InalzConfig {
+  configDir: string
   configPath: string
 
   lang: Lang = null as any
@@ -19,6 +20,8 @@ export class InalzConfig {
   options: InalzConfigComponent.Options = {}
 
   private constructor(configPath: string) {
+    configPath = path.resolve(process.cwd(), configPath)
+    this.configDir = path.dirname(configPath)
     this.configPath = configPath
   }
 
@@ -33,7 +36,9 @@ export class InalzConfig {
     this.lang = conf.lang
     this.documents = (await Promise.all(
       conf.documents.map((document) => this.resolveDocument(document)),
-    )).flat()
+    ))
+      .flat()
+      .map((document) => resolveDocumentPath(this.configDir, document))
     this.options = conf.options || {}
   }
 
@@ -78,11 +83,15 @@ export class InalzConfig {
           return document.source
       }
     })()
-    const sourcePath = replaceLangParam(sourcePathWithParam, this.lang.source)
+    const sourcePath = path.resolve(
+      this.configDir,
+      replaceLangParam(sourcePathWithParam, this.lang.source),
+    )
     const stat = await statOrNull(sourcePath)
     if (!stat) {
-      console.warn(`Path not found ${sourcePath}`)
-      return []
+      throw new Error(
+        `Source path is neither directory nor file: ${sourcePath}`,
+      )
     }
     const isDirectory = stat.isDirectory()
     const isFile = stat.isFile()
@@ -101,6 +110,7 @@ export class InalzConfig {
         if (isDirectory) {
           return this.resolvePathMode(document)
         }
+        console.warn(`Source path is neither directory nor file: ${sourcePath}`)
         return []
       }
       case 'filename': {
@@ -129,7 +139,8 @@ export class InalzConfig {
   private async resolveFilenameMode(
     document: InalzConfigComponent.FilenameModeDocument,
   ): Promise<InalzConfigComponent.SingleDocument[]> {
-    const pattern = path.join(
+    const pattern = path.resolve(
+      this.configDir,
       document.contentDir,
       `**/*.${this.lang.source}.md`,
     )
@@ -147,9 +158,13 @@ export class InalzConfig {
         ]),
       ),
       localePath: replaceExt(
-        path.join(
+        path.resolve(
+          this.configDir,
           document.localeDir,
-          path.relative(document.contentDir, sourcePath),
+          path.relative(
+            path.resolve(this.configDir, document.contentDir),
+            sourcePath,
+          ),
         ),
         '.yml',
         { depth: 2 },
@@ -166,22 +181,29 @@ export class InalzConfig {
         `Invalid inalz config: if linkMode is "directory", contentDir path must include "${LANG_PATH_PARAM}" parameter`,
       )
     }
-    const sourceDir = replaceLangParam(document.contentDir, this.lang.source)
-    const pattern = path.join(sourceDir, '**/*.md')
+    const localeDir = path.resolve(this.configDir, document.localeDir)
+    const contentDir = path.resolve(this.configDir, document.contentDir)
+    const sourceDir = replaceLangParam(contentDir, this.lang.source)
+    const pattern = path.resolve(sourceDir, '**/*.md')
     const sourcePaths: string[] = await glob(pattern)
     const documents = sourcePaths.map((sourcePath) => ({
       sourcePath,
       targetPaths: Object.fromEntries(
         this.lang.targets.map((target) => [
           target,
-          path.join(
-            replaceLangParam(document.contentDir, target),
+          path.resolve(
+            this.configDir,
+            replaceLangParam(contentDir, target),
             path.relative(sourceDir, sourcePath),
           ),
         ]),
       ),
       localePath: replaceExt(
-        path.join(document.localeDir, path.relative(sourceDir, sourcePath)),
+        path.resolve(
+          this.configDir,
+          localeDir,
+          path.relative(sourceDir, sourcePath),
+        ),
         '.yml',
       ),
     }))
@@ -191,22 +213,30 @@ export class InalzConfig {
   private async resolvePathMode(
     document: InalzConfigComponent.PathModeDocument,
   ): Promise<InalzConfigComponent.SingleDocument[]> {
-    const sourceDir = replaceLangParam(document.source, this.lang.source)
-    const pattern = path.join(sourceDir, '**/*.md')
+    const sourceDir = path.resolve(
+      this.configDir,
+      replaceLangParam(document.source, this.lang.source),
+    )
+    const pattern = path.resolve(sourceDir, '**/*.md')
     const sourcePaths: string[] = await glob(pattern)
     const documents = sourcePaths.map((sourcePath) => ({
       sourcePath,
       targetPaths: Object.fromEntries(
         this.lang.targets.map((target) => [
           target,
-          path.join(
+          path.resolve(
+            this.configDir,
             replaceLangParam(document.targets[target], target),
             path.relative(sourceDir, sourcePath),
           ),
         ]),
       ),
       localePath: replaceExt(
-        path.join(document.locale, path.relative(sourceDir, sourcePath)),
+        path.resolve(
+          this.configDir,
+          document.locale,
+          path.relative(sourceDir, sourcePath),
+        ),
         '.yml',
       ),
     }))
