@@ -1,6 +1,7 @@
 import { LocaleComponent } from '../types/Locale'
 import { Lang } from '../types/InalzConfig'
 import { UniqKey } from '../convert/group/Group'
+import { BUILTIN_ACTIONS } from '../Constants'
 
 export class LocaleItem implements LocaleComponent.Item, UniqKey {
   lang: Lang
@@ -32,6 +33,12 @@ export class LocaleItem implements LocaleComponent.Item, UniqKey {
       ...(this.meta || {}),
       ...meta,
     }
+  }
+
+  isInitialState() {
+    return this.lang.targets
+      .map((target) => this.getText(target))
+      .every((text) => text === BUILTIN_ACTIONS.DEFAULT)
   }
 
   toObject(): LocaleComponent.Item {

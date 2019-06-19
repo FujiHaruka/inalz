@@ -1,0 +1,83 @@
+meta:
+  outdated: true
+texts:
+  en: aaaaaaaaaaaax
+  ja: ああああああああ
+---
+texts:
+  en: bbbbbbbbbbbbb
+  ja: いいいいいいいい
+---
+meta:
+  outdated: true
+texts:
+  en: ddddddddddddx
+  ja: ええええええええ
+---
+meta:
+  outdated: true
+texts:
+  en: eeeeeeeeeeeex
+  ja: おおおおおおおお
+---
+meta:
+  outdated: true
+texts:
+  en: ggggggggggggx
+  ja: きききききききき
+---
+meta:
+  outdated: true
+texts:
+  en: jjjjjjjjjjjjx
+  ja: ここここここここ
+---
+texts:
+  en: lllllllllllll
+  ja: しししししししし
+---
+texts:
+  en: add new content
+  ja: __COPY__
+---
+texts:
+  en: add new content 2
+  ja: __COPY__
+---
+texts:
+  en: mmmmmmmmmmmmx
+  ja: __COPY__
+---
+texts:
+  en: nnnnnnnnnnnnn
+  ja: __COPY__
+---
+meta:
+  unused: true
+texts:
+  en: ccccccccccccc
+  ja: うううううううう
+---
+meta:
+  unused: true
+texts:
+  en: fffffffffffff
+  ja: かかかかかかかか
+---
+meta:
+  unused: true
+texts:
+  en: hhhhhhhhhhhhh
+  ja: くくくくくくくく
+---
+meta:
+  unused: true
+texts:
+  en: iiiiiiiiiiiii
+  ja: けけけけけけけけ
+---
+meta:
+  unused: true
+texts:
+  en: kkkkkkkkkkkkk
+  ja: ささささささささ

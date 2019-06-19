@@ -42,11 +42,28 @@ describe('LocaleSync', () => {
     expect(items).toEqual(expected)
   })
 
-  it('03: with merge', async () => {
+  it('03: merge', async () => {
     const srcPath = 'misc/mock/sync/src03.md'
     const workingLocPath = 'misc/mock/sync/loc03.working.yml'
     const expectedLocPath = 'misc/mock/sync/loc03.yml'
-    const localePath = path.join('/tmp/', 'loc03.yml')
+    const localePath = path.join(os.tmpdir(), 'loc03.yml')
+
+    await rmIfExists(localePath)
+    await fs.promises.copyFile(workingLocPath, localePath)
+    const syncer = new LocaleSync(lang)
+    await syncer.sync(srcPath, localePath)
+
+    const parser = new LocaleItemParser(lang)
+    const items = await parser.load(localePath)
+    const expected = await parser.load(expectedLocPath)
+    expect(items).toEqual(expected)
+  })
+
+  it('04: merge', async () => {
+    const srcPath = 'misc/mock/sync/src04.md'
+    const workingLocPath = 'misc/mock/sync/loc04.working.yml'
+    const expectedLocPath = 'misc/mock/sync/loc04.yml'
+    const localePath = path.join(os.tmpdir(), 'loc04.yml')
 
     await rmIfExists(localePath)
     await fs.promises.copyFile(workingLocPath, localePath)

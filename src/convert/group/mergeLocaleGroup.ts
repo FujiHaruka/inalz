@@ -41,7 +41,9 @@ export const mergeLocaleGroup = (group: ItemGroup<LocaleItem>) =>
             const item = group.prevItems[prevIndex]
             const newItem = group.items[i]
             item.setSourceText(newItem.getSourceText())
-            item.setMeta({ outdated: true })
+            if (!item.isInitialState()) {
+              item.setMeta({ outdated: true })
+            }
             return item
           }
         })
