@@ -1,4 +1,5 @@
 import os from 'os'
+import path from 'path'
 import { Translator } from '../command/Translator'
 import { Lang } from '../types/InalzConfig'
 import { readFile } from '../util/fsUtil'
@@ -15,7 +16,8 @@ describe('Translator', () => {
       source: 'en',
       targets: ['ja'],
     }
-    const translator = new Translator({ lang })
+    const cwd = path.resolve(__dirname, '../..')
+    const translator = new Translator(cwd, { lang })
     await translator.translate({
       sourcePath,
       targetPaths,
