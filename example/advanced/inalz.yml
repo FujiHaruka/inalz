@@ -1,0 +1,15 @@
+lang:
+  source: en
+  targets:
+    - ja
+    - zh
+documents:
+  - source: docs/en
+    targets:
+      ja: docs/ja
+      zh: docs/zh
+    locale: locales
+options:
+  paragraphIgnorePatterns:
+    - "^{{.+}}$"
+

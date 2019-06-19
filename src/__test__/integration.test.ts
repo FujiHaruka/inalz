@@ -17,9 +17,10 @@ describe('inalz integration', () => {
     )
   })
 
-  // it('example/advanced', async () => {
-  //   const cwd = path.resolve('example/advanced')
+  it('example/advanced', async () => {
+    const cwd = path.resolve('example/advanced')
 
-  //   await CLIActions.sync({ cwd })
-  // })
+    await CLIActions.sync({ cwd })
+    await CLIActions.build({ cwd })
+  })
 })
