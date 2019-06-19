@@ -11,7 +11,8 @@ export const mergeLocaleGroup = (group: ItemGroup<LocaleItem>) =>
     function onDec() {
       const findIndex = indexFinder(group.items)
       // 新しい item がないが、unused な item はありえる
-      return group.prevItems.map((item) => {
+      return group.prevItems.map((_item) => {
+        const item = _item.copy()
         const isUnused = findIndex(item.key) < 0
         if (isUnused) {
           item.setMeta({ unused: true })
@@ -26,7 +27,8 @@ export const mergeLocaleGroup = (group: ItemGroup<LocaleItem>) =>
       )
       const unusedItems = group.prevItems
         .filter((_, i) => !prevIndexes.includes(i))
-        .map((item) => {
+        .map((_item) => {
+          const item = _item.copy()
           item.setMeta({ unused: true })
           return item
         })
@@ -34,11 +36,11 @@ export const mergeLocaleGroup = (group: ItemGroup<LocaleItem>) =>
         .map((prevIndex, i) => {
           if (prevIndex < 0) {
             // 対応する prevItem がないので新規 item
-            const item = group.items[i]
+            const item = group.items[i].copy()
             return item
           } else {
             // 対応する prevItem があるので marge
-            const item = group.prevItems[prevIndex]
+            const item = group.prevItems[prevIndex].copy()
             const newItem = group.items[i]
             item.setSourceText(newItem.getSourceText())
             if (!item.isInitialState()) {

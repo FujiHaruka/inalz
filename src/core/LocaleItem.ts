@@ -2,6 +2,7 @@ import { LocaleComponent } from '../types/Locale'
 import { Lang } from '../types/InalzConfig'
 import { UniqKey } from '../convert/group/Group'
 import { BUILTIN_ACTIONS } from '../Constants'
+import { copy } from '../util/objectUtil'
 
 export class LocaleItem implements LocaleComponent.Item, UniqKey {
   lang: Lang
@@ -43,19 +44,23 @@ export class LocaleItem implements LocaleComponent.Item, UniqKey {
 
   toObject(): LocaleComponent.Item {
     if (this.meta) {
-      return {
+      return copy({
         // Keys are sorted with this order
         meta: this.meta,
         texts: this.texts,
-      }
+      })
     } else {
-      return {
+      return copy({
         texts: this.texts,
-      }
+      })
     }
   }
 
   get key() {
     return this.getSourceText()
+  }
+
+  copy() {
+    return new LocaleItem({ ...this.lang }, this.toObject())
   }
 }
