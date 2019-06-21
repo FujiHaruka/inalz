@@ -1,0 +1,5 @@
+digraph g{
+  "README.md" -> "README.locale.yml"
+  "README.locale.yml" -> "README_ja.md"
+  "README.locale.yml" -> "README_zh.md"
+}
