@@ -3,12 +3,12 @@ lang:
   targets:
     - en
 documents:
-  - source: README_ja.md
+  - source: content/ja
     targets:
-      en: README.md
-    locale: README.locale.yml
+      en: content/en
+    locale: locales
 options:
   paragraphIgnorePatterns:
     - "^\\[!\\["
     - "^!\\["
-    - "<pre"
+    - "<div"

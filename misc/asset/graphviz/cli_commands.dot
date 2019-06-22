@@ -1,0 +1,5 @@
+digraph g{
+  "Source markdown documents (en)" -> "Locale files" [ label=" inalz sync" ];
+  "Locale files" -> "Target documents (ja)" [ label=" inalz build" ];
+  "Locale files" -> "Target documents (zh)" [ label=" inalz build" ];
+}
