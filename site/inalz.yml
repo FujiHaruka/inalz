@@ -11,4 +11,4 @@ options:
   paragraphIgnorePatterns:
     - "^\\[!\\["
     - "^!\\["
-    - "<div"
+    - "^<div"
