@@ -1,0 +1,4 @@
+digraph g{
+  "README.md" -> "README.locale.yml" [ label=" inalz sync" ];
+  "README.locale.yml" -> "README_ja.md" [ label=" inalz build" ];
+}

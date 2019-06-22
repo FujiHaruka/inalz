@@ -41,7 +41,7 @@ Markdown ドキュメントを多言語対応するには、普通、言語ご�
 
 ### Inalz による解決
 
-以上の問題を解決する Inalz のアプローチは、元ドキュメントと翻訳ドキュメントの間に中間ファイルを用意するというものです。
+要約すると、以上の問題は翻訳ドキュメントのメンテナンスが難しいということです。それを解決する Inalz のアプローチは、元ドキュメントと翻訳ドキュメントの間に中間ファイルを用意するというものです。
 
 ![locale graph](./misc/asset/image/locale.jpg)
 
@@ -72,6 +72,15 @@ $ npm install inalz -g
 ```
 
 ### 最初の翻訳
+
+ここで学ぶのは、2 つのコマンドです。
+
++ `inalz sync`
++ `inalz build`
+
+概念図を示しておきます。
+
+![command graph](./misc/asset/image/command.jpg)
 
 [example/helloworld](./example/helloworld) に例がありますが、最小限必要なのは次のファイルです。
 
@@ -110,7 +119,7 @@ documents:
     locale: README.locale.yml
 ```
 
-設定ファイルの読み方は以下です。
+設定ファイルの読み方を説明します。
 
 + `lang`: 言語の設定。ここでは、元ドキュメントが英語 (`en`)、翻訳ドキュメントが日本語 (`ja`) です
 + `documents`: ドキュメントファイルのマッピング。ここでは、元ドキュメント `README.md` には Locale ファイル `README.locale.yml` が対応し、翻訳ドキュメント `README_ja.md` が出力されます
