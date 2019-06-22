@@ -7,6 +7,7 @@ import { IOInalzConfig } from './IOInalzConfig'
 import { replaceExt, resolveDocumentPath } from '../util/pathUtil'
 import { LANG_PATH_PARAM } from '../Constants'
 import { replaceAll } from '../util/stringUtil'
+import { InalzConfigError } from '../util/InalzError'
 
 const replaceLangParam = (dir: string, lang: string) =>
   replaceAll(dir, LANG_PATH_PARAM, lang)
@@ -30,7 +31,10 @@ export class InalzConfig {
     const config = YAML.parse(yml)
     const validation = IOInalzConfig.decode(config)
     if (validation.isLeft()) {
-      throw new Error(`Invaid inalz config ${path.basename(this.configPath)}`)
+      throw new InalzConfigError(
+        // TODO: error details
+        `Invaid inalz config: ${path.basename(this.configPath)}`,
+      )
     }
     const conf = validation.value
     this.lang = conf.lang
@@ -58,8 +62,8 @@ export class InalzConfig {
       .map((name) => path.join(configDir, name))
     const found = await firstExistsFile(paths)
     if (!found) {
-      throw new Error(
-        `inalz config file is not found such as "inalz.yml" in ${configDir}`,
+      throw new InalzConfigError(
+        `inalz config file ("inalz.yml") is not found in ${configDir}`,
       )
     }
     return InalzConfig.load(found)
@@ -89,8 +93,8 @@ export class InalzConfig {
     )
     const stat = await statOrNull(sourcePath)
     if (!stat) {
-      throw new Error(
-        `Source path is neither directory nor file: ${sourcePath}`,
+      throw new InalzConfigError(
+        `Source path in inalz config is not directory or file: ${sourcePath}`,
       )
     }
     const isDirectory = stat.isDirectory()
@@ -132,7 +136,9 @@ export class InalzConfig {
         return this.resolveDirectoryMode(document)
       }
       default:
-        throw new Error(`Invalid linkMode "${(document as any).linkMode}"`)
+        throw new InalzConfigError(
+          `Invalid linkMode "${(document as any).linkMode}"`,
+        )
     }
   }
 
@@ -177,7 +183,7 @@ export class InalzConfig {
     document: InalzConfigComponent.DirectoryModeDocument,
   ): Promise<InalzConfigComponent.SingleDocument[]> {
     if (!document.contentDir.includes(LANG_PATH_PARAM)) {
-      throw new Error(
+      throw new InalzConfigError(
         `Invalid inalz config: if linkMode is "directory", contentDir path must include "${LANG_PATH_PARAM}" parameter`,
       )
     }

@@ -12,6 +12,7 @@
   "dependencies": {
     "@types/fast-levenshtein": "0.0.1",
     "@types/yaml": "^1.0.2",
+    "chalk": "^2.4.2",
     "commander": "^2.20.0",
     "fast-glob": "^2.2.7",
     "fast-levenshtein": "^2.0.6",

@@ -3,12 +3,18 @@ import * as t from 'io-ts'
 import { Left } from 'fp-ts/lib/Either'
 import { LocaleComponent } from '../types/Locale'
 import { IOLocaleItem } from './IOLocaleItem'
-import { readFile } from '../util/fsUtil'
+import { readFile, fileExists } from '../util/fsUtil'
 import { LocaleItem } from '../core/LocaleItem'
 import { Lang } from '../types/InalzConfig'
 import { BUILTIN_ACTIONS } from '../Constants'
+import {
+  YamlParseError,
+  LocaleNotFoundError,
+  InvalidLocaleItemError,
+} from '../util/InalzError'
 
 export class LocaleItemParser {
+  yamlPath?: string
   lang: Lang
 
   constructor(lang: Lang) {
@@ -16,19 +22,47 @@ export class LocaleItemParser {
   }
 
   parse(yaml: string): LocaleItem[] {
-    const itemValidations = YAML.parseAllDocuments(yaml)
+    const documents = YAML.parseAllDocuments(yaml)
+    const errors = documents
+      .map((doc) => doc.errors)
+      .map((errors, documentIndex) => ({
+        documentIndex,
+        error: errors[0] ? errors[0].message : null,
+      }))
+      .filter(({ error }) => Boolean(error))
+    if (errors.length > 0) {
+      throw new YamlParseError(
+        `Invalid yaml file: ${this.yamlPath}
+For details:
+${JSON.stringify(errors, null, 2)}`,
+      )
+    }
+    const itemValidations = documents
       .map((doc) => doc.toJSON())
       .filter(Boolean)
       .map((item) => IOLocaleItem.decode(item))
 
     if (itemValidations.some((item) => item.isLeft())) {
       const errors = itemValidations
-        .filter((item): item is Left<
-          t.ValidationError[],
-          LocaleComponent.Item
-        > => item.isLeft())
-        .flatMap((e) => e.value)
-      throw new Error(JSON.stringify(errors))
+        .map((validation, documentIndex) => ({
+          validation,
+          documentIndex,
+        }))
+        .filter(
+          ({ validation }) =>
+            validation.isLeft() && validation.value.length > 0,
+        )
+        .map(({ validation, documentIndex }) => ({
+          documentIndex,
+          document: documents[documentIndex],
+          // error: (validation.value as t.Errors)[0],
+        }))
+      throw new InvalidLocaleItemError(
+        // TODO: error details
+        `There is invalid locale items in ${this.yamlPath}
+For details:
+${JSON.stringify(errors, null, 2)}`,
+      )
     }
     const items = itemValidations
       .map((e) => e.value as LocaleComponent.Item)
@@ -55,7 +89,11 @@ export class LocaleItemParser {
   }
 
   async load(yamlPath: string): Promise<LocaleItem[]> {
+    if (!(await fileExists(yamlPath))) {
+      throw new LocaleNotFoundError(`Locale file not found: ${yamlPath}`)
+    }
     const yaml = await readFile(yamlPath)
+    this.yamlPath = yamlPath
     return this.parse(yaml)
   }
 }

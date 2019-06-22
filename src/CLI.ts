@@ -1,8 +1,10 @@
-import commander from 'commander'
+import commander, { Command } from 'commander'
+import chalk from 'chalk'
 import { InalzConfig } from './config/InalzConfig'
 import { LocaleSync } from './command/LocaleSync'
 import { Translator } from './command/Translator'
 import { enableYamlOptions } from './util/enableYamlOptions'
+import { InalzCLIError, InalzErrorBase } from './util/InalzError'
 
 interface BaseOptions {
   cwd: string
@@ -15,6 +17,21 @@ interface BuildOptions extends BaseOptions {}
 interface CLIActions {
   sync: (options: SyncOptions) => Promise<void>
   build: (options: BuildOptions) => Promise<void>
+}
+
+const CLICommands = {
+  SYNC: 'sync',
+  BUILD: 'build',
+}
+
+const handleError = (error: InalzErrorBase) => {
+  if (error.handled) {
+    const message = `[${error.name}] ${error.message}`
+    console.error('\n' + chalk.redBright(message) + '\n')
+    process.exit(1)
+  } else {
+    throw error
+  }
 }
 
 export const CLIActions: CLIActions = {
@@ -46,18 +63,28 @@ export const CLI = (actions: CLIActions) => (argv: string[]) => {
   commander.version(require('../package.json').version, '-v, --version')
 
   commander
-    .command('sync')
+    .command(CLICommands.SYNC)
     .description('Sync documents with locale files')
-    .action((options) => actions.sync({ ...options, cwd: process.cwd() }))
+    .action((options) =>
+      actions.sync({ ...options, cwd: process.cwd() }).catch(handleError),
+    )
 
   commander
-    .command('build')
-    .description('Build translations with locale files')
-    .action((options) => actions.build({ ...options, cwd: process.cwd() }))
+    .command(CLICommands.BUILD)
+    .description('Build translations from locale files')
+    .action((options) =>
+      actions.build({ ...options, cwd: process.cwd() }).catch(handleError),
+    )
 
   commander.parse(argv)
 
   if (commander.args.length === 0) {
     commander.outputHelp()
+  }
+  const command = (commander.args[0] as any) as Command | string
+  const commandName = typeof command === 'string' ? command : command._name
+  if (!Object.values(CLICommands).includes(commandName)) {
+    commander.outputHelp()
+    handleError(new InalzCLIError(`No such command "${commandName}"`))
   }
 }
