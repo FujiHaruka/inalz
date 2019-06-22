@@ -148,7 +148,7 @@ example/helloworld/
 `inalz sync` コマンドは冪等です。つまり、元ドキュメントに変更がなければ、すでにある Locale ファイルは変更されません。
 
 
-`README.locale.yml` の内容は以下のようになっているはずです。
+`README.locale.yml` の内容は以下のようになるはずです。
 
 ```yml
 texts:
@@ -192,7 +192,7 @@ example/helloworld/
 
 `inalz build` コマンドは、Locale ファイルと元ドキュメントを参照して、翻訳ドキュメントを出力します。
 
-`README_ja.md` の内容はこうなっているはずです。
+`README_ja.md` の内容は以下のようになるはずです。
 
 <pre lang="no-highlight"><code># Hello world
 
@@ -206,3 +206,105 @@ $ inalz build
 
 日本語訳 `README_ja.md` が完成しました！　翻訳ドキュメントは元ドキュメントの英文を単純に置換したものなので、 Markdown ドキュメント構造を保持しています。
 
+### ドキュメントの更新
+
+では、ドキュメントのメンテナンスをしましょう。
+
+たとえば、`README.md` を次のように更新します。
+
+<pre lang="no-highlight"><code># Hello world
+
+This is an awesome hello-world document.
+
+A new paragraph is added.
+
+```bash
+$ inalz sync
+$ inalz build
+```
+</code></pre>
+
+差分を確認します。
+
+```diff
+-This is a hello-world document.
++This is an awesome hello-world document.
++
++A new paragraph is added.
+```
+
+既存のパラグラフが変更され、新たなパラグラフも追加されています。
+
+元ドキュメントを更新したら、`inalz sync` コマンドで Locale ファイルに変更を反映します。
+
+```
+$ inalz sync
+```
+
+`README.locale.yml` は以下のようになるはずです。
+
+```yml
+texts:
+  en: Hello world
+  ja: __COPY__
+---
+meta:
+  outdated: true
+texts:
+  en: This is an awesome hello-world document.
+  ja: これはハローワールドのドキュメントです。
+---
+texts:
+  en: A new paragraph is added.
+  ja: __COPY__
+```
+
+観察すると次のことがわかります。
+
++ 更新されたパラグラフは `meta.outdated` が `true` になる
++ 新しいパラグラフが追加される
+
+`meta.outdated` は注釈です。`inalz build` には影響しませんが、そのパラグラフの翻訳が古くなっていることを教えてくれます。
+
+更新のための翻訳作業では、以下のことを行います。
+
++ 更新されたパラグラフを翻訳し直し、`meta.outdated` を削除する
++ 新しいパラグラフを翻訳する
+
+`README.locale.yml` を以下のように更新します。
+
+```yml
+texts:
+  en: Hello world
+  ja: __COPY__
+---
+texts:
+  en: This is an awesome hello-world document.
+  ja: これは素晴らしいハローワールドのドキュメントです。
+---
+texts:
+  en: A new paragraph is added.
+  ja: 新しいパラグラフが追加されます。
+```
+
+それから、翻訳ドキュメントを出力します。
+
+```
+$ inalz build
+```
+
+`README_ja.md` は以下のようになるはずです。
+
+<pre lang="no-highlight"><code># Hello world
+
+これは素晴らしいハローワールドのドキュメントです。
+
+新しいパラグラフが追加されます。
+
+```bash
+$ inalz sync
+$ inalz build
+```
+</code></pre>
+
+このように、Locale ファイルを介してドキュメントを更新します。翻訳が古くなったパラグラフは Locale ファイルが教えてくれるので、ドキュメントのメンテナンスが容易です。
