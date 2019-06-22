@@ -7,7 +7,7 @@ import { InalzConfigComponent, Lang } from '../types/InalzConfig'
 import { LocaleItemParser } from '../convert/LocaleItemParser'
 import { replaceAll } from '../util/stringUtil'
 
-export class Translator {
+export class BuildCommand {
   lang: Lang
 
   constructor({ lang }: { lang: Lang }) {
@@ -23,8 +23,7 @@ export class Translator {
     localePath,
   }: InalzConfigComponent.SingleDocument) {
     const markdown = await readFile(sourcePath)
-    const localeYaml = await readFile(localePath)
-    const localeItems = new LocaleItemParser(this.lang).parse(localeYaml)
+    const localeItems = await new LocaleItemParser(this.lang).load(localePath)
     const locale = new Locale(this.lang, localeItems)
     for (const [targetlang, targetPath] of Object.entries(targetPaths)) {
       const content = this.translateContent(targetlang, markdown, locale)

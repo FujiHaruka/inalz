@@ -6,7 +6,7 @@ import { mergeLocaleItems } from '../convert/mergeLocaleItems'
 import { Lang, InalzConfigComponent } from '../types/InalzConfig'
 import { LocaleItem } from '../core/LocaleItem'
 
-export class LocaleSync {
+export class SyncCommand {
   lang: Lang
   options: InalzConfigComponent.SyncOptions
 
@@ -23,7 +23,7 @@ export class LocaleSync {
     options: Partial<InalzConfigComponent.SyncOptions> = {},
   ) {
     this.lang = lang
-    this.options = LocaleSync.constructOptions(options)
+    this.options = SyncCommand.constructOptions(options)
   }
 
   async sync(sourcePath: string, localePath: string) {

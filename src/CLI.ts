@@ -1,8 +1,8 @@
 import commander, { Command } from 'commander'
 import chalk from 'chalk'
 import { InalzConfig } from './config/InalzConfig'
-import { LocaleSync } from './command/LocaleSync'
-import { Translator } from './command/Translator'
+import { SyncCommand } from './command/SyncCommand'
+import { BuildCommand } from './command/BuildCommand'
 import { enableYamlOptions } from './util/enableYamlOptions'
 import { InalzCLIError, InalzErrorBase } from './util/InalzError'
 
@@ -40,7 +40,7 @@ export const CLIActions: CLIActions = {
     const config = await InalzConfig.findAndLoad(cwd)
     await Promise.all(
       config.documents.map(({ sourcePath, localePath }) =>
-        new LocaleSync(config.lang, config.options).sync(
+        new SyncCommand(config.lang, config.options).sync(
           sourcePath,
           localePath,
         ),
@@ -50,9 +50,9 @@ export const CLIActions: CLIActions = {
   async build(options) {
     const { cwd } = options
     const config = await InalzConfig.findAndLoad(cwd)
-    const translator = new Translator(config)
+    const builder = new BuildCommand(config)
     await Promise.all(
-      config.documents.map((document) => translator.translate(document)),
+      config.documents.map((document) => builder.translate(document)),
     )
   },
 }

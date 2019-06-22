@@ -1,10 +1,10 @@
 import os from 'os'
 import path from 'path'
-import { Translator } from '../command/Translator'
+import { BuildCommand } from '../command/BuildCommand'
 import { Lang } from '../types/InalzConfig'
 import { readFile } from '../util/fsUtil'
 
-describe('Translator', () => {
+describe('BuildCommand', () => {
   it('01', async () => {
     const sourcePath = 'misc/mock/translator/src01.md'
     const targetPaths = {
@@ -16,8 +16,8 @@ describe('Translator', () => {
       source: 'en',
       targets: ['ja'],
     }
-    const translator = new Translator({ lang })
-    await translator.translate({
+    const builder = new BuildCommand({ lang })
+    await builder.translate({
       sourcePath,
       targetPaths,
       localePath,
