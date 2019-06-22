@@ -6,19 +6,40 @@ title = "Inalz documentation"
 themesDir = "themes"
 theme = "hugo-whisper-theme"
 
+DefaultContentLanguage = "en"
+defaultContentLanguageInSubdir = true
+
 pygmentsCodeFences = true
 pygmentsCodefencesGuessSyntax = true
 pygmentsUseClasses = true
 
-[[menu.main]]
-    name = "Home"
-    url = "/"
+[languages]
+  [languages.en]
+    contentDir = "content/en"
+    languageName = "English"
+    title = "Inalz documentation"
     weight = 1
-
-[[menu.main]]
-    name = "Docs"
-    url = "/docs/"
+    [[languages.en.menu.main]]
+        name = "Home"
+        url = "/en/"
+        weight = 1
+    [[languages.en.menu.main]]
+        name = "Docs"
+        url = "/en/docs/"
+        weight = 2
+  [languages.ja]
+    contentDir = "content/ja"
+    languageName = "日本語"
+    title = "Inalz ドキュメント"
     weight = 2
+    [[languages.ja.menu.main]]
+        name = "ホーム"
+        url = "/ja/"
+        weight = 1
+    [[languages.ja.menu.main]]
+        name = "ドキュメント"
+        url = "/ja/docs/"
+        weight = 2
 
 [params]
   google_analytics_id=""
