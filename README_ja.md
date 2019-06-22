@@ -308,3 +308,47 @@ $ inalz build
 </code></pre>
 
 このように、Locale ファイルを介してドキュメントを更新します。翻訳が古くなったパラグラフは Locale ファイルが教えてくれるので、ドキュメントのメンテナンスが容易です。
+
+## API
+
+### inalz.yml ファイル
+
+inalz.yml は設定ファイルで、言語やドキュメント同士のマッピングを設定します。
+
+以下が inalz.yml の完全な例です。
+
+```yml
+# language settings
+lang:
+  # source language
+  source: en
+  # target languages
+  targets:
+    - ja
+    - zh
+# document settings
+documents:
+  # you can specify single file mapping
+  - source: path/to/en/doc.md
+    targets:
+      ja: path/to/ja/doc.md
+      zh: path/to/zh/doc.md
+    locale: path/to/doc.locale.yml
+  # you can specify directory mapping for all markdown files under the directory
+  - source: dir/to/en
+    targets:
+      ja: dir/to/ja
+      zh: dir/to/zh
+    locale: dir/to/locale
+options:
+  # you can specify patterns for ignoring paragraph by regular expressions
+  # this is useful for template such as hugo
+  paragraphIgnorePatterns: "^{{.+}}$"
+```
+
+### `inalz` コマンド
+
+以下のコマンドは、設定ファイル `inalz.yml` があるディレクトリで実行します。
+
++ `inalz sync`: 設定ファイルを見て、元ドキュメントから Locale ファイルを同期します
++ `inalz build`: Locale ファイルから翻訳ドキュメントを出力します
