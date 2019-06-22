@@ -5687,7 +5687,7 @@ p {
   .sub-footer .sub-footer-inner {
     display: flex;
     flex-direction: column;
-    justify-content: flex-end; }
+    justify-content: space-between; }
     @media (min-width: 768px) {
       .sub-footer .sub-footer-inner {
         flex-direction: row; } }
@@ -5710,6 +5710,8 @@ p {
           text-decoration: none; }
           .sub-footer .sub-footer-inner ul li a:hover {
             text-decoration: underline; }
+        .sub-footer .sub-footer-inner ul li a.lang {
+          color: #666; }
         .sub-footer .sub-footer-inner ul li span {
           display: inline-block;
           height: 40px;

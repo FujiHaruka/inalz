@@ -9,7 +9,7 @@
   .sub-footer-inner {
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: space-between;
     @include media-breakpoint-up(md) {
       flex-direction: row;
     }
@@ -34,6 +34,9 @@
           &:hover {
             text-decoration: underline;
           }
+        }
+        a.lang {
+          color: #666;
         }
         span {
           display: inline-block;

@@ -4,7 +4,12 @@
       <div class="col-12">
         <div class="sub-footer-inner">
           <ul>
-            <li class="zerostatic"><a href="https://www.zerostatic.io">www.zerostatic.io</a></li>
+            {{ range $.Site.Home.AllTranslations }}
+            <li><a class="lang" href="{{ .Permalink }}">{{ .Language.LanguageName }}</a></li>
+            {{ end }}
+          </ul>
+          <ul>
+            <li><a href="https://github.com/FujiHaruka/inalz">GitHub</a></li>
           </ul>
         </div>
       </div>

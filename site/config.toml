@@ -1,7 +1,5 @@
-baseURL = "/"
-# baseURL = "http://inalz.netlify.com/"
-languageCode = "en-us"
-title = "Inalz documentation"
+baseURL = "http://inalz.netlify.com/"
+title = "INALZ"
 
 themesDir = "themes"
 theme = "hugo-whisper-theme"
@@ -17,48 +15,48 @@ pygmentsUseClasses = true
   [languages.en]
     contentDir = "content/en"
     languageName = "English"
-    title = "Inalz documentation"
     weight = 1
     [[languages.en.menu.main]]
-        name = "Home"
-        url = "/en/"
-        weight = 1
+      name = "Home"
+      url = "/en/"
+      weight = 1
     [[languages.en.menu.main]]
-        name = "Docs"
-        url = "/en/docs/"
-        weight = 2
+      name = "Docs"
+      url = "/en/docs/"
+      weight = 2
+    [languages.en.params]
+      homepage_button_link = '/en/docs'
+      homepage_button_text = 'Read The Docs'
   [languages.ja]
     contentDir = "content/ja"
     languageName = "日本語"
-    title = "Inalz ドキュメント"
     weight = 2
     [[languages.ja.menu.main]]
-        name = "ホーム"
-        url = "/ja/"
-        weight = 1
+      name = "Home"
+      url = "/ja/"
+      weight = 1
     [[languages.ja.menu.main]]
-        name = "ドキュメント"
-        url = "/ja/docs/"
-        weight = 2
+      name = "Docs"
+      url = "/ja/docs/"
+      weight = 2
+    [languages.ja.params]
+      homepage_button_link = '/ja/docs'
+      homepage_button_text = 'ドキュメントを読む'
 
 [params]
   google_analytics_id=""
-  homepage_button_link = '/docs'
-  homepage_button_text = 'Read The Docs'
-  homepage_intro = 'Whisper is a documentation theme built with Hugo. The design and functionality is intentionally minimal.'
-  homepage_image = '/images/terminal.gif'
+  # homepage_intro = 'Whisper is a documentation theme built with Hugo. The design and functionality is intentionally minimal.'
+  # homepage_image = '/images/terminal.gif'
 
   [params.homepage_meta_tags]
-    meta_description = "Hugo Whisper is a documentation theme built with Hugo."
-    meta_og_title = "Hugo Whisper Theme"
+    meta_description = "Inalz is markdown document 18n tool for maintainable translation"
+    meta_og_title = "Inalz documentaion"
     meta_og_type = "website"
-    meta_og_url = "https://hugo-whisper.netlify.com"
-    meta_og_image = "https://raw.githubusercontent.com/JugglerX/hugo-whisper-theme/master/images/tn.png"
-    meta_og_description = "Hugo Whisper is a documentation theme built with Hugo."
+    meta_og_url = "https://inalz.netlify.com"
+    # meta_og_image = "https://raw.githubusercontent.com/JugglerX/hugo-whisper-theme/master/images/tn.png"
+    meta_og_description = "Inalz is markdown document 18n tool for maintainable translation"
     meta_twitter_card = "summary"
-    meta_twitter_site = "@zerostaticio"
-    meta_twitter_creator = "@zerostaticio"
 
   [params.logo]
-      mobile = "/images/logo-mobile.svg"
-      standard  = "/images/logo.svg"
+      # mobile = "/images/logo-mobile.svg"
+      # standard  = "/images/logo.svg"
