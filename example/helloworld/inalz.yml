@@ -5,5 +5,5 @@ lang:
 documents:
   - source: README.md
     targets:
-      ja: README.ja.md
-    locale: .README.locale.yml
+      ja: README_ja.md
+    locale: README.locale.yml
