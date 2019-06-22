@@ -3,16 +3,35 @@
 [![Build Status](https://travis-ci.org/FujiHaruka/inalz.svg?branch=master)](https://travis-ci.org/FujiHaruka/inalz)
 [![npm version](https://badge.fury.io/js/inalz.svg)](https://badge.fury.io/js/inalz)
 
-
 Inalz は、 Markdown ドキュメントの翻訳をメンテナブルにするための i18n ツールです。
+
+## Table of Contents
+
+-   [なぜ Inalz が必要か](#なぜ-inalz-が必要か)
+
+    -   [翻訳ドキュメントの更新が難しい](#翻訳ドキュメントの更新が難しい)
+    -   [ドキュメントに無用の重複が生じる](#ドキュメントに無用の重複が生じる)
+    -   [元の文と翻訳文の比較が難しい](#元の文と翻訳文の比較が難しい)
+    -   [Inalz による解決](#inalz-による解決)
+
+-   [Getting started](#getting-started)
+
+    -   [インストール](#インストール)
+    -   [最初の翻訳](#最初の翻訳)
+    -   [ドキュメントの更新](#ドキュメントの更新)
+
+-   [API](#api)
+
+    -   [inalz.yml ファイル](#inalzyml-ファイル)
+    -   [inalz コマンド](#inalz-コマンド)
 
 ## なぜ Inalz が必要か
 
 Markdown ドキュメントを多言語対応するには、普通、言語ごとに Markdown ファイルを用意します。たとえば、`README.md` を元にして日本語の `README_ja.md`、中国語の `README_zh.md` を作成するといったやり方で、最初に書いたドキュメントを元にそれぞれの翻訳ドキュメントを作成します。ところが、このやり方で翻訳作業を進めると、次のような問題があります。
 
-+ 翻訳ドキュメントの更新が難しい
-+ ドキュメントに無用の重複が生じる
-+ 元の文と翻訳文の比較が難しい
+-   翻訳ドキュメントの更新が難しい
+-   ドキュメントに無用の重複が生じる
+-   元の文と翻訳文の比較が難しい
 
 それぞれの問題点について少し説明します。
 
@@ -28,8 +47,8 @@ Markdown ドキュメントを多言語対応するには、普通、言語ご�
 
 翻訳ドキュメントを書く素朴な手順は、次のようなものでしょう。
 
-1. 元ドキュメント `README.md` をコピーして翻訳ドキュメント `README_ja.md` を作る
-1. 翻訳ドキュメント `README_ja.md` のテキストを翻訳文に一文ずつ置き換える
+1.  元ドキュメント `README.md` をコピーして翻訳ドキュメント `README_ja.md` を作る
+2.  翻訳ドキュメント `README_ja.md` のテキストを翻訳文に一文ずつ置き換える
 
 これは DRY の原則に違反しています。このやり方では、ドキュメントに無用の重複が生じます。その一番大きなものがコードブロックです。ライブラリのドキュメントにはサンプルコードなどが書かれたコードブロックが多用されますが、ほとんどの場合、コードブロックは翻訳不要です。翻訳者はコードブロックには手を付けずに説明文だけを翻訳しますが、その結果、コードブロックは無用の重複として残ることになります。
 
@@ -49,17 +68,17 @@ Markdown ドキュメントを多言語対応するには、普通、言語ご�
 
 Locale ファイルの特徴は次のとおりです。
 
-+ 元ドキュメントが更新されると、対象の翻訳文に `outdated` のラベルが自動で付く
-  + そのため、更新すべき文がすぐにわかる
-+ コードブロックは翻訳対象とせず、Locale ファイルに含めない
-  + そのため、無用の重複を避けられる
-+ 原文と翻訳文が一文ずつ並ぶ
-  + そのため、翻訳作業と確認が容易である
+-   元ドキュメントが更新されると、対象の翻訳文に `outdated` のラベルが自動で付く
+    -   そのため、更新すべき文がすぐにわかる
+-   コードブロックは翻訳対象とせず、Locale ファイルに含めない
+    -   そのため、無用の重複を避けられる
+-   原文と翻訳文が一文ずつ並ぶ
+    -   そのため、翻訳作業と確認が容易である
 
 また、中間ファイルを置くことで、ドキュメント作成の役割分担が明確になります。
 
-+ 元ドキュメントを書く人は翻訳のことを気にせず Markdown で自由に書ける
-+ 翻訳する人は元ドキュメントの構造を気にせず一文ずつの翻訳に集中できる
+-   元ドキュメントを書く人は翻訳のことを気にせず Markdown で自由に書ける
+-   翻訳する人は元ドキュメントの構造を気にせず一文ずつの翻訳に集中できる
 
 いわゆる**関心の分離**です。これが Inalz による解決です。
 
@@ -75,8 +94,8 @@ $ npm install inalz -g
 
 ここで学ぶのは、2 つのコマンドです。
 
-+ `inalz sync`
-+ `inalz build`
+-   `inalz sync`
+-   `inalz build`
 
 概念図を示しておきます。
 
@@ -84,14 +103,12 @@ $ npm install inalz -g
 
 [example/helloworld](./example/helloworld) に例がありますが、最小限必要なのは次のファイルです。
 
-```
-example/helloworld/
-├── README.md
-└── inalz.yml
-```
+    example/helloworld/
+    ├── README.md
+    └── inalz.yml
 
-+ `README.md` ... 元ドキュメント。この例では簡単のため 1 つのファイルだけです
-+ `inalz.yml` ... Inalz の設定ファイル
+-   `README.md` ... 元ドキュメント。この例では簡単のため 1 つのファイルだけです
+-   `inalz.yml` ... Inalz の設定ファイル
 
 `README.md` の内容は以下です。
 
@@ -121,32 +138,26 @@ documents:
 
 設定ファイルの読み方を説明します。
 
-+ `lang`: 言語の設定。ここでは、元ドキュメントが英語 (`en`)、翻訳ドキュメントが日本語 (`ja`) です
-+ `documents`: ドキュメントファイルのマッピング。ここでは、元ドキュメント `README.md` には Locale ファイル `README.locale.yml` が対応し、翻訳ドキュメント `README_ja.md` が出力されます
+-   `lang`: 言語の設定。ここでは、元ドキュメントが英語 (`en`)、翻訳ドキュメントが日本語 (`ja`) です
+-   `documents`: ドキュメントファイルのマッピング。ここでは、元ドキュメント `README.md` には Locale ファイル `README.locale.yml` が対応し、翻訳ドキュメント `README_ja.md` が出力されます
 
 `inalz.yml` はプロジェクトルートに置きます。設定ファイルは JSON もサポートしているので、`inalz.json` としても構いません。
 
-
 `example/helloworld/` ディレクトリに移動して、Inalz コマンドを実行しましょう。
 
-```
-$ cd example/helloworld
-$ inalz sync
-```
+    $ cd example/helloworld
+    $ inalz sync
 
 すると、`README.locale.yml` ファイルが出力されます。
 
-```
-example/helloworld/
-├── README.locale.yml
-├── README.md
-└── inalz.yml
-```
+    example/helloworld/
+    ├── README.locale.yml
+    ├── README.md
+    └── inalz.yml
 
 `inalz sync` コマンドは、`inalz.yml` の設定をもとに Locale ファイルを生成・同期します。ここで生成される Locale ファイルは `README.locale.yml` です。
 
 `inalz sync` コマンドは冪等です。つまり、元ドキュメントに変更がなければ、すでにある Locale ファイルは変更されません。
-
 
 `README.locale.yml` の内容は以下のようになるはずです。
 
@@ -182,13 +193,11 @@ $ inalz build
 
 すると、翻訳ドキュメント `README_ja.md` が新たに出力されます。
 
-```
-example/helloworld/
-├── README.locale.yml
-├── README.md
-├── README_ja.md
-└── inalz.yml
-```
+    example/helloworld/
+    ├── README.locale.yml
+    ├── README.md
+    ├── README_ja.md
+    └── inalz.yml
 
 `inalz build` コマンドは、Locale ファイルと元ドキュメントを参照して、翻訳ドキュメントを出力します。
 
@@ -237,9 +246,7 @@ $ inalz build
 
 元ドキュメントを更新したら、`inalz sync` コマンドで Locale ファイルに変更を反映します。
 
-```
-$ inalz sync
-```
+    $ inalz sync
 
 `README.locale.yml` は以下のようになるはずです。
 
@@ -261,15 +268,15 @@ texts:
 
 観察すると次のことがわかります。
 
-+ 更新されたパラグラフは `meta.outdated` が `true` になる
-+ 新しいパラグラフが追加される
+-   更新されたパラグラフは `meta.outdated` が `true` になる
+-   新しいパラグラフが追加される
 
 `meta.outdated` は注釈です。`inalz build` には影響しませんが、そのパラグラフの翻訳が古くなっていることを教えてくれます。
 
 更新のための翻訳作業では、以下のことを行います。
 
-+ 更新されたパラグラフを翻訳し直し、`meta.outdated` を削除する
-+ 新しいパラグラフを翻訳する
+-   更新されたパラグラフを翻訳し直し、`meta.outdated` を削除する
+-   新しいパラグラフを翻訳する
 
 `README.locale.yml` を以下のように更新します。
 
@@ -289,9 +296,7 @@ texts:
 
 それから、翻訳ドキュメントを出力します。
 
-```
-$ inalz build
-```
+    $ inalz build
 
 `README_ja.md` は以下のようになるはずです。
 
@@ -350,5 +355,5 @@ options:
 
 以下のコマンドは、設定ファイル `inalz.yml` があるディレクトリで実行します。
 
-+ `inalz sync`: 設定ファイルを見て、元ドキュメントから Locale ファイルを同期します
-+ `inalz build`: Locale ファイルから翻訳ドキュメントを出力します
+-   `inalz sync`: 設定ファイルを見て、元ドキュメントから Locale ファイルを同期します
+-   `inalz build`: Locale ファイルから翻訳ドキュメントを出力します
