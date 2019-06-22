@@ -16,6 +16,7 @@
     "fast-glob": "^2.2.7",
     "fast-levenshtein": "^2.0.6",
     "io-ts": "^1.9.0",
+    "please-upgrade-node": "^3.1.1",
     "remark-parse": "^6.0.3",
     "unified": "^7.1.0",
     "yaml": "^1.6.0"

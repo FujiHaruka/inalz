@@ -3,6 +3,9 @@
  * CLI endpoint
  */
 
+const pkg = require('../package.json')
+require('please-upgrade-node')(pkg)
+
 const { CLI, CLIActions } = require('../dist/CLI')
 const cli = CLI(CLIActions)
 cli(process.argv)
