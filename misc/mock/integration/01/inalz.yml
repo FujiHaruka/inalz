@@ -1,0 +1,9 @@
+lang:
+  source: en
+  targets:
+    - ja
+documents:
+  - source: README.md
+    targets:
+      ja: README_ja.md
+    locale: README.locale.yml
