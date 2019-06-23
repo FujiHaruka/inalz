@@ -8,6 +8,7 @@ export const IOLocaleItem = t.intersection([
   t.partial({
     meta: t.partial({
       outdated: t.boolean,
+      unused: t.boolean,
       warnings: t.array(t.string),
     }),
   }),

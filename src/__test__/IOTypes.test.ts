@@ -17,6 +17,17 @@ describe('IOTypes', () => {
     expect(y).toBe(null)
   })
 
+  it('IOLocaleItem static type checking', () => {
+    type IOLocaleItemType = t.TypeOf<typeof IOLocaleItem>
+
+    const x: LocaleComponent.Item = (null as any) as IOLocaleItemType
+    const y: IOLocaleItemType = (null as any) as LocaleComponent.Item
+
+    // meaningless
+    expect(x).toBe(null)
+    expect(y).toBe(null)
+  })
+
   it('IOInalzConfig', () => {
     const CONFIG: InalzConfigInterface = {
       lang: {

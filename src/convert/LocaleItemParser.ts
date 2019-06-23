@@ -1,6 +1,5 @@
 import YAML from 'yaml'
 import * as t from 'io-ts'
-import { Left } from 'fp-ts/lib/Either'
 import { LocaleComponent } from '../types/Locale'
 import { IOLocaleItem } from './IOLocaleItem'
 import { readFile, fileExists } from '../util/fsUtil'
@@ -12,6 +11,25 @@ import {
   LocaleNotFoundError,
   InvalidLocaleItemError,
 } from '../util/InalzError'
+import { Either } from 'fp-ts/lib/Either'
+
+const pickValidationErrors = (
+  itemValidations: Either<t.Errors, LocaleComponent.Item>[],
+  documents: YAML.ast.Document[],
+) =>
+  itemValidations
+    .map((validation, documentIndex) => ({
+      validation,
+      documentIndex,
+    }))
+    .filter(
+      ({ validation }) => validation.isLeft() && validation.value.length > 0,
+    )
+    .map(({ documentIndex }) => ({
+      documentIndex,
+      document: documents[documentIndex],
+      // error: (validation.value as t.Errors)[0],
+    }))
 
 export class LocaleItemParser {
   yamlPath?: string
@@ -43,20 +61,7 @@ ${JSON.stringify(errors, null, 2)}`,
       .map((item) => IOLocaleItem.decode(item))
 
     if (itemValidations.some((item) => item.isLeft())) {
-      const errors = itemValidations
-        .map((validation, documentIndex) => ({
-          validation,
-          documentIndex,
-        }))
-        .filter(
-          ({ validation }) =>
-            validation.isLeft() && validation.value.length > 0,
-        )
-        .map(({ validation, documentIndex }) => ({
-          documentIndex,
-          document: documents[documentIndex],
-          // error: (validation.value as t.Errors)[0],
-        }))
+      const errors = pickValidationErrors(itemValidations, documents)
       throw new InvalidLocaleItemError(
         // TODO: error details
         `There is invalid locale items in ${this.yamlPath}

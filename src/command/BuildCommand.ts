@@ -15,9 +15,9 @@ export class BuildCommand {
   }
 
   /**
-   * Translate document and output file
+   * Build tranlration document
    */
-  async translate({
+  async build({
     sourcePath,
     targetPaths,
     localePath,
@@ -26,11 +26,12 @@ export class BuildCommand {
     const localeItems = await new LocaleItemParser(this.lang).load(localePath)
     const locale = new Locale(this.lang, localeItems)
     for (const [targetlang, targetPath] of Object.entries(targetPaths)) {
-      const content = this.translateContent(targetlang, markdown, locale)
+      const content = this.replaceContent(targetlang, markdown, locale)
       await writeFile(targetPath, content, { mkdirp: true, mode: 0o644 })
     }
   }
 
+  // FIXME: 文字列を置換するだけにする
   private replaceByLocaleItem = (
     text: string,
     item: LocaleItem,
@@ -38,6 +39,7 @@ export class BuildCommand {
   ): string => {
     const targetText = item.getText(targetLang)
     const sourceText = item.getSourceText()
+    // TODO: ここでバリデーションはおかしい
     if (typeof targetText !== 'string') {
       throw new Error(
         `Target text of ${targetLang} is not string.
@@ -55,7 +57,7 @@ ${item.getSourceText()}`,
     return replaceAll(text, sourceText, targetText)
   }
 
-  private translateContent(
+  private replaceContent(
     targetlang: string,
     markdown: string,
     locale: Locale,

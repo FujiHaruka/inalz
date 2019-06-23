@@ -17,7 +17,7 @@ describe('BuildCommand', () => {
       targets: ['ja'],
     }
     const builder = new BuildCommand({ lang })
-    await builder.translate({
+    await builder.build({
       sourcePath,
       targetPaths,
       localePath,

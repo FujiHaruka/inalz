@@ -52,7 +52,7 @@ export const CLIActions: CLIActions = {
     const config = await InalzConfig.findAndLoad(cwd)
     const builder = new BuildCommand(config)
     await Promise.all(
-      config.documents.map((document) => builder.translate(document)),
+      config.documents.map((document) => builder.build(document)),
     )
   },
 }
