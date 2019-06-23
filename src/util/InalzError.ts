@@ -1,5 +1,5 @@
 /**
- * Custom error classes for CLI
+ * Custom error classes
  */
 
 export class InalzErrorBase extends Error {
@@ -28,4 +28,8 @@ export class InvalidLocaleItemError extends InalzErrorBase {
 
 export class EmptyYamlDocumentError extends InalzErrorBase {
   name = 'EmptyYamlDocumentError'
+}
+
+export class BuildFailedError extends InalzErrorBase {
+  name = 'BuildFailedError'
 }

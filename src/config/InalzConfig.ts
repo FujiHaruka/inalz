@@ -10,7 +10,7 @@ import { replaceAll } from '../util/stringUtil'
 import { IOInalzConfig } from './IOInalzConfig'
 
 const replaceLangParam = (dir: string, lang: string) =>
-  replaceAll(dir, LANG_PATH_PARAM, lang)
+  replaceAll(dir, LANG_PATH_PARAM, lang).result
 
 export class InalzConfig {
   configDir: string

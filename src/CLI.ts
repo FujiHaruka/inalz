@@ -50,9 +50,10 @@ export const CLIActions: CLIActions = {
   async build(options) {
     const { cwd } = options
     const config = await InalzConfig.findAndLoad(cwd)
-    const builder = new BuildCommand(config)
     await Promise.all(
-      config.documents.map((document) => builder.build(document)),
+      config.documents.map((document) =>
+        new BuildCommand(config, document).build(),
+      ),
     )
   },
 }
