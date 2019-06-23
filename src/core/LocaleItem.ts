@@ -1,10 +1,10 @@
 import YAML from 'yaml'
-import { LocaleComponent } from '../types/Locale'
-import { Lang } from '../types/InalzConfig'
-import { UniqKey } from '../convert/group/Group'
 import { BUILTIN_ACTIONS } from '../Constants'
-import { copy } from '../util/objectUtil'
+import { UniqKey } from '../convert/group/Group'
+import { Lang } from '../types/InalzConfig'
+import { LocaleComponent } from '../types/Locale'
 import { InvalidLocaleItemError } from '../util/InalzError'
+import { copy } from '../util/objectUtil'
 
 export class LocaleItem implements LocaleComponent.Item, UniqKey {
   lang: Lang

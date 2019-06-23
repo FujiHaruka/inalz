@@ -1,6 +1,6 @@
-import { readFile } from '../util/fsUtil'
-import { LocaleItemParser } from '../convert/LocaleItemParser'
 import { BUILTIN_ACTIONS } from '../Constants'
+import { LocaleItemParser } from '../convert/LocaleItemParser'
+import { readFile } from '../util/fsUtil'
 
 describe('LocaleItemParser', () => {
   const LANG = {

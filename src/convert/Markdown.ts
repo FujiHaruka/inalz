@@ -1,7 +1,7 @@
-import unified from 'unified'
-import * as Unist from 'unist'
 import { uniq } from 'fp-ts/lib/Array'
 import { setoidString } from 'fp-ts/lib/Setoid'
+import unified from 'unified'
+import * as Unist from 'unist'
 import { disableInlineTokenizer } from '../util/disableInlineTokenizer'
 
 const HTML_COMMENT_PREFIX = new RegExp('<!--')

@@ -2,8 +2,8 @@ import * as t from 'io-ts'
 import { IOInalzConfig } from '../config/IOInalzConfig'
 import { IOLocaleItem } from '../convert/IOLocaleItem'
 import { InalzConfigInterface } from '../types/InalzConfig'
-import { copy } from '../util/objectUtil'
 import { LocaleComponent } from '../types/Locale'
+import { copy } from '../util/objectUtil'
 
 describe('IOTypes', () => {
   it('IOInalzConfig static type checking', () => {

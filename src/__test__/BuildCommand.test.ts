@@ -1,5 +1,4 @@
 import os from 'os'
-import path from 'path'
 import { BuildCommand } from '../command/BuildCommand'
 import { Lang } from '../types/InalzConfig'
 import { readFile } from '../util/fsUtil'

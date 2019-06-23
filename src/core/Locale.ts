@@ -1,5 +1,5 @@
-import { LocaleInterface, LocaleComponent } from '../types/Locale'
 import { Lang } from '../types/InalzConfig'
+import { LocaleComponent, LocaleInterface } from '../types/Locale'
 import { LocaleItem } from './LocaleItem'
 
 export class Locale implements LocaleInterface {

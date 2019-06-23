@@ -1,15 +1,15 @@
 import YAML from 'yaml'
-import { IOLocaleItem } from './IOLocaleItem'
-import { readFile, fileExists } from '../util/fsUtil'
+import { BUILTIN_ACTIONS } from '../Constants'
 import { LocaleItem } from '../core/LocaleItem'
 import { Lang } from '../types/InalzConfig'
-import { BUILTIN_ACTIONS } from '../Constants'
+import { fileExists, readFile } from '../util/fsUtil'
 import {
-  YamlParseError,
-  LocaleNotFoundError,
-  InvalidLocaleItemError,
   EmptyYamlDocumentError,
+  InvalidLocaleItemError,
+  LocaleNotFoundError,
+  YamlParseError,
 } from '../util/InalzError'
+import { IOLocaleItem } from './IOLocaleItem'
 
 const pickYamlParseErrors = (documents: YAML.ast.Document[]) =>
   documents

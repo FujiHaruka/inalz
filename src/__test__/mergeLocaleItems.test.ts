@@ -1,8 +1,8 @@
+import { BUILTIN_ACTIONS } from '../Constants'
 import { mergeLocaleItems } from '../convert/mergeLocaleItems'
 import { LocaleItem } from '../core/LocaleItem'
 import { Lang } from '../types/InalzConfig'
 import { LocaleComponent } from '../types/Locale'
-import { BUILTIN_ACTIONS } from '../Constants'
 
 describe('mergeLocaleItems', () => {
   const lang: Lang = {

@@ -2,9 +2,9 @@ import fs from 'fs'
 import os from 'os'
 import path from 'path'
 import { SyncCommand } from '../command/SyncCommand'
-import { rmIfExists } from '../util/fsUtil'
-import { Lang } from '../types/InalzConfig'
 import { LocaleItemParser } from '../convert/LocaleItemParser'
+import { Lang } from '../types/InalzConfig'
+import { rmIfExists } from '../util/fsUtil'
 
 describe('SyncCommand', () => {
   const lang: Lang = {

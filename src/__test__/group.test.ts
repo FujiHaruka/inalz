@@ -1,6 +1,6 @@
-import { groupByChangeStatus } from '../convert/group/groupByChangeStatus'
-import { UniqKey, ChangeStatus } from '../convert/group/Group'
 import { closestFinder, closestIndexes } from '../convert/group/closestIndexes'
+import { ChangeStatus, UniqKey } from '../convert/group/Group'
+import { groupByChangeStatus } from '../convert/group/groupByChangeStatus'
 import { mergeLocaleGroup } from '../convert/group/mergeLocaleGroup'
 
 describe('groupByChangeStatus', () => {

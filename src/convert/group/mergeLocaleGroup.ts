@@ -1,7 +1,7 @@
-import { ItemGroup, UniqKey } from './Group'
-import { switchStatus, indexFinder } from './groupUtil'
 import { LocaleItem } from '../../core/LocaleItem'
 import { closestIndexes } from './closestIndexes'
+import { ItemGroup, UniqKey } from './Group'
+import { indexFinder, switchStatus } from './groupUtil'
 
 const mapKey = (items: UniqKey[]) => items.map((i) => i.key)
 

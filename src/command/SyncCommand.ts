@@ -1,10 +1,10 @@
-import { fileExists, writeFile, readFile } from '../util/fsUtil'
-import { deepEquals } from '../util/objectUtil'
-import { parseMarkdownTexts } from '../convert/Markdown'
 import { LocaleItemParser } from '../convert/LocaleItemParser'
+import { parseMarkdownTexts } from '../convert/Markdown'
 import { mergeLocaleItems } from '../convert/mergeLocaleItems'
-import { Lang, InalzConfigComponent } from '../types/InalzConfig'
 import { LocaleItem } from '../core/LocaleItem'
+import { InalzConfigComponent, Lang } from '../types/InalzConfig'
+import { fileExists, readFile, writeFile } from '../util/fsUtil'
+import { deepEquals } from '../util/objectUtil'
 
 export class SyncCommand {
   lang: Lang

@@ -1,4 +1,4 @@
-import { UniqKey, ChangeStatus } from './Group'
+import { ChangeStatus, UniqKey } from './Group'
 
 export const switchStatus = <T>(
   status: ChangeStatus,

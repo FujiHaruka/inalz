@@ -1,10 +1,8 @@
-import path from 'path'
-import { Locale } from '../core/Locale'
-import { LocaleItem } from '../core/LocaleItem'
 import { BUILTIN_ACTIONS } from '../Constants'
-import { writeFile, readFile } from '../util/fsUtil'
-import { InalzConfigComponent, Lang } from '../types/InalzConfig'
 import { LocaleItemParser } from '../convert/LocaleItemParser'
+import { Locale } from '../core/Locale'
+import { InalzConfigComponent, Lang } from '../types/InalzConfig'
+import { readFile, writeFile } from '../util/fsUtil'
 import { replaceAll } from '../util/stringUtil'
 
 export class BuildCommand {

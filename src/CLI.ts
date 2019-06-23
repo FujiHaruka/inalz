@@ -1,8 +1,8 @@
-import commander, { Command } from 'commander'
 import chalk from 'chalk'
-import { InalzConfig } from './config/InalzConfig'
-import { SyncCommand } from './command/SyncCommand'
+import commander, { Command } from 'commander'
 import { BuildCommand } from './command/BuildCommand'
+import { SyncCommand } from './command/SyncCommand'
+import { InalzConfig } from './config/InalzConfig'
 import { enableYamlOptions } from './util/enableYamlOptions'
 import { InalzCLIError, InalzErrorBase } from './util/InalzError'
 

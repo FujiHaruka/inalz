@@ -1,5 +1,5 @@
-import { ChangeStatus, UniqKey, ItemGroup } from './Group'
-import { indexFinder, groupIndexesByStatus, switchStatus } from './groupUtil'
+import { ChangeStatus, ItemGroup, UniqKey } from './Group'
+import { groupIndexesByStatus, indexFinder, switchStatus } from './groupUtil'
 
 /**
  * ChangeStatus によって group 分けする
