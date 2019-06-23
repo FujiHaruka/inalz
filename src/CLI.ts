@@ -81,6 +81,7 @@ export const CLI = (actions: CLIActions) => (argv: string[]) => {
 
   if (commander.args.length === 0) {
     commander.outputHelp()
+    return
   }
   const command = (commander.args[0] as any) as Command | string
   const commandName = typeof command === 'string' ? command : command._name
