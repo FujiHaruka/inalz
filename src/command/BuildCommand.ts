@@ -31,25 +31,11 @@ export class BuildCommand {
     }
   }
 
-  // FIXME: 文字列を置換するだけにする
-  private replaceByLocaleItem = (
+  private replace = (
     text: string,
-    item: LocaleItem,
-    targetLang: string,
+    sourceText: string,
+    targetText: string,
   ): string => {
-    const targetText = item.getText(targetLang)
-    const sourceText = item.getSourceText()
-    // TODO: ここでバリデーションはおかしい
-    if (typeof targetText !== 'string') {
-      throw new Error(
-        `Target text of ${targetLang} is not string.
-Source text of locale item is:
-${item.getSourceText()}`,
-      )
-    }
-    if (typeof sourceText !== 'string') {
-      throw new Error(`Source text is not string`)
-    }
     if (targetText === BUILTIN_ACTIONS.COPY) {
       // Don't replace
       return text
@@ -58,14 +44,18 @@ ${item.getSourceText()}`,
   }
 
   private replaceContent(
-    targetlang: string,
+    targetLang: string,
     markdown: string,
     locale: Locale,
   ): string {
-    const translated = locale.items.reduce(
-      (text, item) => this.replaceByLocaleItem(text, item, targetlang),
-      markdown,
-    )
+    const translated = locale.items.reduce((text, item) => {
+      const sourceText = item.getSourceText()
+      let targetText = item.getText(targetLang)
+      if (typeof targetText !== 'string') {
+        targetText = BUILTIN_ACTIONS.COPY
+      }
+      return this.replace(text, sourceText, targetText)
+    }, markdown)
     return translated
   }
 }
