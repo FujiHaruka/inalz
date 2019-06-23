@@ -6,3 +6,17 @@
 Inalz is a Markdown document i18n tool for maintainable translation.
 
 For documentation, visit our website https://inalz.netlify.com.
+
+## Short Usage
+
+Installation.
+
+```
+$ npm install -g inalz
+```
+
+Help.
+
+```
+$ inalz -h
+```
