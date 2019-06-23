@@ -25,3 +25,7 @@ export class LocaleNotFoundError extends InalzErrorBase {
 export class InvalidLocaleItemError extends InalzErrorBase {
   name = 'InvalidLocaleItemError'
 }
+
+export class EmptyYamlDocumentError extends InalzErrorBase {
+  name = 'EmptyYamlDocumentError'
+}
