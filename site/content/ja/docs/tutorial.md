@@ -29,7 +29,7 @@ GitHub の [example/helloworld](https://github.com/FujiHaruka/inalz/tree/master/
 
 This is a hello-world document.
 
-```bash
+```
 $ inalz sync
 $ inalz build
 ```
@@ -121,7 +121,7 @@ $ inalz build
 
 これはハローワールドのドキュメントです。
 
-```bash
+```
 $ inalz sync
 $ inalz build
 ```
@@ -142,7 +142,7 @@ This is an awesome hello-world document.
 
 A new paragraph is added.
 
-```bash
+```
 $ inalz sync
 $ inalz build
 ```
@@ -222,7 +222,7 @@ texts:
 
 新しいパラグラフが追加されます。
 
-```bash
+```
 $ inalz sync
 $ inalz build
 ```
