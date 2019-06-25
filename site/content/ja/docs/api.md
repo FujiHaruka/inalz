@@ -6,20 +6,18 @@ weight: 40
 
 ## 設定ファイル
 
-設定ファイルは YAML または JSON で書くことができ、ファイル名は `inalz.yml` はたは `inalz.json` にして、普通、プロジェクトルートに置きます。設定ファイルは言語やドキュメント同士のマッピングを設定します。
+設定ファイルは YAML または JSON で書くことができます。ファイル名は `inalz.yml` または `inalz.json` にして、普通、プロジェクトルートに置きます。
+
+設定ファイルは言語やドキュメント同士のマッピングを設定します。
 
 以下が inalz.yml の完全な例です。
 
 ```yml
-# language settings
 lang:
-  # source language
   source: en
-  # target languages
   targets:
     - ja
     - zh
-# document settings
 documents:
   # you can specify single file mapping
   - source: path/to/en/doc.md
@@ -27,17 +25,42 @@ documents:
       ja: path/to/ja/doc.md
       zh: path/to/zh/doc.md
     locale: path/to/doc.locale.yml
-  # you can specify directory mapping for all markdown files under the directory
+  # you can also specify directory mapping
   - source: dir/to/en
     targets:
       ja: dir/to/ja
       zh: dir/to/zh
     locale: dir/to/locale
 options:
-  # you can specify patterns for ignoring paragraph by regular expressions
-  # this is useful for template such as hugo
   paragraphIgnorePatterns: "^{{.+}}$"
 ```
+
+### lang
+
+`lang` フィールドは言語についてです。翻訳元言語と、翻訳先言語を記述します。
+
+-   `source`: 翻訳先言語名
+-   `targets`: 翻訳先言語名のリスト
+
+言語名には任意の文字列を指定できます。
+
+### documents
+
+`documents` フィールドにはファイルのマッピングを記述します。
+
+-   `source`: `lang.source` で指定した言語で書かれた元ドキュメントの場所。ファイルまたはディレクトリ。
+-   `targets`: `lang.targets` で指定した言語で書かれた翻訳ドキュメントの場所。言語名をキーとしたマッピで、値はファイルまたはディレクトリ。
+-   `locale`: `source` と `targets` の Locale ファイルの場所。ファイルまたはディレクトリ。
+
+`source` がファイルパスであれば、`targets` と `locale` はファイルパスでなければなりません。`source` がディレクトリパスであれば、`targets` と `locale` はディレクトリパスでなければなりません。
+
+`source` にディレクトリを指定した場合、ディレクトリ下のすべての Markdown ファイルが再帰的に検索され、翻訳対象になります。`source` のファイル名に応じて Locale ファイルと翻訳ドキュメントファイルが生成されます。上の例では、`source` が `dir/to/en` ですが、`dir/to/en/doc.md` というファイルが見つかれば、Locale ファイル `dir/to/locale/doc.md` と翻訳ファイル `dir/to/ja/doc.md`、`dir/to/zh/doc.md` が対応します。
+
+## options
+
+`options` フィールドはオプションを記述します。
+
+-   `paragraphIgnorePatterns`: source の Markdown ドキュメントをブロック要素に分割したあと、Locale ファイルに取り入れるにあたって無視するパターンを記述します。JavaScript の[正規表現](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)で記述できます。このオプションは、[hugo](https://gohugo.io/) など Markdown ファイルをテンプレートとして使うようなケースで役立ちます。
 
 ## Inalz コマンド
 
@@ -46,7 +69,7 @@ options:
 -   `inalz sync`: 元ドキュメントから Locale ファイルを同期します
 -   `inalz build`: Locale ファイルから翻訳ドキュメントを出力します
 
-元ドキュメントと Locale ファイル、翻訳ドキュメントのマッピングは設定ファイル内に記述します。
+元ドキュメントと Locale ファイル、翻訳ドキュメントのマッピングは `inalz.yml` 内に記述します。
 
 ![inalz commands](/images/cli_commands.jpg)
 
