@@ -9,7 +9,10 @@ For documentation, visit our website https://inalz.netlify.com.
 
 ## Short Usage
 
+__*Before installing, download and install node.js 12 or higher__.
+
 Installation.
+
 
 ```
 $ npm install -g inalz
