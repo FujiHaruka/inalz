@@ -1,5 +1,7 @@
+import YAML from 'yaml'
 import { InalzConfig } from '../config/InalzConfig'
 import { resolveDocumentPath } from '../util/pathUtil'
+import { readFile } from '../util/fsUtil'
 
 describe('InalzConfig', () => {
   it('01: valid "path" mode', async () => {
@@ -74,5 +76,12 @@ describe('InalzConfig', () => {
         localePath: 'pathMode/locale.yml',
       }),
     )
+  })
+
+  it('07: invalid config. launguage inconsistency', async () => {
+    const path = 'misc/mock/config/inalz.07.yml'
+    const yaml = await readFile(path)
+    const config = YAML.parse(yaml)
+    expect(() => InalzConfig.validate(config)).toThrow()
   })
 })

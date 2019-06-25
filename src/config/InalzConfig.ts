@@ -29,14 +29,7 @@ export class InalzConfig {
   private async load() {
     const yml = await readFile(this.configPath)
     const config = YAML.parse(yml)
-    const validation = IOInalzConfig.decode(config)
-    if (validation.isLeft()) {
-      throw new InalzConfigError(
-        // TODO: error details
-        `Invaid inalz config: ${path.basename(this.configPath)}`,
-      )
-    }
-    const conf = validation.value
+    const conf = InalzConfig.validate(config)
     this.lang = conf.lang
     this.documents = (await Promise.all(
       conf.documents.map((document) => this.resolveDocument(document)),
@@ -67,6 +60,31 @@ export class InalzConfig {
       )
     }
     return InalzConfig.load(found)
+  }
+
+  static validate(config: any) {
+    const validation = IOInalzConfig.decode(config)
+    if (validation.isLeft()) {
+      throw new InalzConfigError(
+        // TODO: error details
+        `Invaid inalz config`,
+      )
+    }
+    const { lang, documents } = validation.value
+    const targets = new Set(lang.targets)
+    const pathModeDocs = documents.filter(
+      (d) => d.linkMode === 'path',
+    ) as InalzConfigComponent.PathModeDocument[]
+    for (const document of pathModeDocs) {
+      for (const targetLang of Object.keys(document.targets)) {
+        if (!targets.has(targetLang)) {
+          throw new InalzConfigError(
+            `Invalid inalz config: "${targetLang}" is not in lang.targets`,
+          )
+        }
+      }
+    }
+    return validation.value
   }
 
   /**

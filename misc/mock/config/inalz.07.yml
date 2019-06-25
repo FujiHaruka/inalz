@@ -1,0 +1,11 @@
+lang:
+  source: en
+  targets:
+    - ja
+documents:
+  - linkMode: path
+    source: pathMode/doc.md
+    targets:
+      # Invalid target lang
+      jas: pathMode/doc_ja.md
+    locale: pathMode/locale.yml
