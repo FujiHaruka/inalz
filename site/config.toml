@@ -1,4 +1,4 @@
-baseURL = "http://inalz.netlify.com/"
+baseURL = "https://inalz.netlify.com/"
 title = "INALZ"
 
 themesDir = "themes"
