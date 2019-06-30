@@ -28,7 +28,12 @@ export class LocaleItemParser {
     this.lang = lang
   }
 
-  parse(yaml: string): LocaleItem[] {
+  /**
+   * yaml string -> LocaleItem[]
+   * used by "build"
+   */
+  parseYaml(yaml: string): LocaleItem[] {
+    const { lang } = this
     const documents = YAML.parseAllDocuments(yaml)
     const errors = pickYamlParseErrors(documents)
     if (errors.length > 0) {
@@ -38,12 +43,16 @@ For details:
 ${JSON.stringify(errors, null, 2)}`,
       )
     }
-    const items = documents.map((document, index) =>
-      this.validateItem(document, index),
-    )
+    const items = documents
+      .map((document, index) => this.validateItem(document, index))
+      .map((item) => new LocaleItem(lang, item))
     return items
   }
 
+  /**
+   * markdown paragraph text -> LocaleItem
+   * used by "sync"
+   */
   parseFromSrc(text: string): LocaleItem {
     const { lang } = this
     const texts = Object.assign(
@@ -68,7 +77,7 @@ ${JSON.stringify(errors, null, 2)}`,
     }
     const yaml = await readFile(yamlPath)
     this.yamlPath = yamlPath
-    return this.parse(yaml)
+    return this.parseYaml(yaml)
   }
 
   private validateItem(document: YAML.ast.Document, index: number) {
@@ -89,7 +98,6 @@ Document:
 ${JSON.stringify({ document: json, index }, null, 2)}`,
       )
     }
-    const item = new LocaleItem(this.lang, validation.value)
-    return item
+    return validation.value
   }
 }
