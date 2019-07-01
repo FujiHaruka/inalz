@@ -1,12 +1,12 @@
 import { uniq } from 'fp-ts/lib/Array'
-import { setoidString } from 'fp-ts/lib/Setoid'
+import { eqString } from 'fp-ts/lib/Eq'
 import unified from 'unified'
 import * as Unist from 'unist'
 import { disableInlineTokenizer } from '../util/disableInlineTokenizer'
 
 const HTML_COMMENT_PREFIX = new RegExp('<!--')
 
-const uniqStr = uniq(setoidString)
+const uniqStr = uniq(eqString)
 
 const _parseMarkdown = (markdown: string) => {
   return unified()
