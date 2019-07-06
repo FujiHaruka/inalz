@@ -3,7 +3,7 @@ import { LocaleItemParser } from '../convert/LocaleItemParser'
 import { Locale } from '../core/Locale'
 import { InalzConfigComponent, Lang } from '../types/InalzConfig'
 import { LocaleComponent } from '../types/Locale'
-import { readFile, writeFile } from '../util/fsUtil'
+import { readFile, writeFile, fileExists } from '../util/fsUtil'
 import { BuildFailedError } from '../util/InalzError'
 import { replaceAll } from '../util/stringUtil'
 import { LocaleItem } from '../core/LocaleItem'
@@ -42,6 +42,14 @@ export class BuildCommand {
     const locale = new Locale(lang, localeItems)
     for (const [targetlang, targetPath] of Object.entries(targetPaths)) {
       const content = this.replaceContent(targetlang, markdown, locale)
+      const alreadyExists = await fileExists(targetPath)
+      if (alreadyExists) {
+        const oldContent = await readFile(targetPath)
+        const unchanged = oldContent === content
+        if (unchanged) {
+          continue
+        }
+      }
       await writeFile(targetPath, content, { mkdirp: true, mode: 0o644 })
     }
   }
