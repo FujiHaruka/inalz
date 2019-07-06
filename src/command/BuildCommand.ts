@@ -59,9 +59,16 @@ export class BuildCommand {
     const { result, replaceCount } = replaceAll(text, sourceText, targetText)
     // 使われているはずなのに置換されていない
     if (replaceCount === 0 && !meta.unused) {
-      const message = `Source text is not used. Do you forget to "inalz sync" before build? Or did you edit the source text?
+      const message = `Source text is not used. Do you forget to execute "inalz sync" before building, or did you edited the source text?
   file: ${this.localePath}
-  source text: "${sourceText}"
+  source text: >-
+${
+  // 各行の先頭ににスペース4つ足す
+  sourceText
+    .split('\n')
+    .map((line) => '    ' + line)
+    .join('\n')
+}
 `
       if (this.strict) {
         throw new BuildFailedError(message)
