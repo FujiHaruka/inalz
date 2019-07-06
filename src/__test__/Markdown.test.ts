@@ -59,4 +59,12 @@ describe('Markdown', () => {
     })
     expect(texts.length).toBe(2)
   })
+
+  it('10: indent', async () => {
+    const markdown = await readFile('misc/mock/md/10.md')
+    const texts = parseMarkdownTexts(markdown)
+    expect(texts[0]).toBe(`item
+  with
+  multiple lines`)
+  })
 })

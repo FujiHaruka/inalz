@@ -3,6 +3,7 @@ import { eqString } from 'fp-ts/lib/Eq'
 import unified from 'unified'
 import * as Unist from 'unist'
 import { disableInlineTokenizer } from '../util/disableInlineTokenizer'
+import { EOL } from 'os'
 
 const HTML_COMMENT_PREFIX = new RegExp('<!--')
 
@@ -23,7 +24,19 @@ const _compileToTexts = (tree: Unist.Node): string[] => {
     switch (type) {
       case 'text':
       case 'html':
-        return [tree.value as string]
+        // 複数行のブロックではインデントを考慮する
+        const hasIndent =
+          tree.position && tree.position.indent!.some((n) => n > 1)
+        if (hasIndent) {
+          const indent = tree.position!.indent!
+          const value = (tree.value as string)
+            .split(EOL)
+            .map((line, i) => ''.padStart(indent[i - 1] - 1) + line)
+            .join(EOL)
+          return [value]
+        } else {
+          return [tree.value as string]
+        }
       default:
         return []
     }
