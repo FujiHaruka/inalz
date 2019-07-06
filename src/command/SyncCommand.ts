@@ -5,6 +5,16 @@ import { LocaleItem } from '../core/LocaleItem'
 import { InalzConfigComponent, Lang } from '../types/InalzConfig'
 import { fileExists, readFile, writeFile } from '../util/fsUtil'
 import { deepEquals } from '../util/objectUtil'
+import { countBy } from '../util/arrayUtil'
+
+export type SyncResult = {
+  /** the locale file has been created / updated / unchanged */
+  status: 'created' | 'updated' | 'unchanged'
+  /** number of outdated documents */
+  outdated: number
+  /** number of outdated documents */
+  unused: number
+}
 
 export class SyncCommand {
   lang: Lang
@@ -26,7 +36,7 @@ export class SyncCommand {
     this.options = SyncCommand.constructOptions(options)
   }
 
-  async sync(sourcePath: string, localePath: string) {
+  async sync(sourcePath: string, localePath: string): Promise<SyncResult> {
     const { lang } = this
 
     const srcText = await readFile(sourcePath)
@@ -37,18 +47,37 @@ export class SyncCommand {
     const parser = new LocaleItemParser(lang)
     const items: LocaleItem[] = texts.map((text) => parser.parseFromSrc(text))
 
-    let yaml: string
     if (await fileExists(localePath)) {
       const oldItems = await parser.load(localePath)
       const mergedItems = mergeLocaleItems(oldItems, items)
       if (deepEquals(oldItems, mergedItems)) {
-        return
+        return {
+          status: 'unchanged',
+          outdated: 0,
+          unused: 0,
+        }
       }
-      yaml = parser.stringify(mergedItems)
+      const yaml = parser.stringify(mergedItems)
+      await writeFile(localePath, yaml, { mkdirp: true })
+      const outdated = countBy(mergedItems, (item) =>
+        Boolean(item.meta && item.meta.outdated),
+      )
+      const unused = countBy(mergedItems, (item) =>
+        Boolean(item.meta && item.meta.unused),
+      )
+      return {
+        status: 'updated',
+        outdated,
+        unused,
+      }
     } else {
-      yaml = parser.stringify(items)
+      const yaml = parser.stringify(items)
+      await writeFile(localePath, yaml, { mkdirp: true })
+      return {
+        status: 'created',
+        outdated: 0,
+        unused: 0,
+      }
     }
-
-    await writeFile(localePath, yaml, { mkdirp: true })
   }
 }
