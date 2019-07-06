@@ -28,6 +28,25 @@ describe('BuildCommand', () => {
     expect(await readFile(targetPaths.ja)).toBe(await readFile(expectedPath))
   })
 
+  it('02: issue #7', async () => {
+    const sourcePath = 'misc/mock/translator/src02.md'
+    const targetPaths = {
+      ja: os.tmpdir() + '/inalz/translation/translation02.md',
+    }
+    const localePath = 'misc/mock/translator/locale02.yml'
+    const expectedPath = 'misc/mock/translator/expected02.md'
+    await new BuildCommand(
+      { lang },
+      {
+        sourcePath,
+        targetPaths,
+        localePath,
+      },
+    ).build()
+
+    expect(await readFile(targetPaths.ja)).toBe(await readFile(expectedPath))
+  })
+
   it('replace method', () => {
     const builder = new BuildCommand(
       {

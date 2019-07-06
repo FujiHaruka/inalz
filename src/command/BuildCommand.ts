@@ -6,6 +6,10 @@ import { LocaleComponent } from '../types/Locale'
 import { readFile, writeFile } from '../util/fsUtil'
 import { BuildFailedError } from '../util/InalzError'
 import { replaceAll } from '../util/stringUtil'
+import { LocaleItem } from '../core/LocaleItem'
+
+const compareBySrcLength = (itemA: LocaleItem, itemB: LocaleItem): number =>
+  itemB.getSourceText().length - itemA.getSourceText().length
 
 export class BuildCommand {
   lang: Lang
@@ -73,14 +77,16 @@ export class BuildCommand {
     markdown: string,
     locale: Locale,
   ): string {
-    const translated = locale.items.reduce((text, item) => {
-      const sourceText = item.getSourceText()
-      let targetText = item.getText(targetLang)
-      if (typeof targetText !== 'string') {
-        targetText = BUILTIN_ACTIONS.COPY
-      }
-      return this.replace(text, sourceText, targetText, item.meta || {})
-    }, markdown)
+    const translated = locale.items
+      .sort(compareBySrcLength)
+      .reduce((text, item) => {
+        const sourceText = item.getSourceText()
+        let targetText = item.getText(targetLang)
+        if (typeof targetText !== 'string') {
+          targetText = BUILTIN_ACTIONS.COPY
+        }
+        return this.replace(text, sourceText, targetText, item.meta || {})
+      }, markdown)
     return translated
   }
 }
