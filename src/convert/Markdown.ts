@@ -9,17 +9,17 @@ const HTML_COMMENT_PREFIX = new RegExp('<!--')
 
 const uniqStr = uniq(eqString)
 
-const _parseMarkdown = (markdown: string) => {
+const parseMarkdown = (markdown: string) => {
   return unified()
     .use(require('remark-parse')) // No type definition
     .use(disableInlineTokenizer)
     .parse(markdown)
 }
 
-const _compileToTexts = (tree: Unist.Node): string[] => {
+const compileToTexts = (tree: Unist.Node): string[] => {
   const { children, type } = tree
   if (Array.isArray(children)) {
-    return children.flatMap((child: Unist.Node) => _compileToTexts(child))
+    return children.flatMap((child: Unist.Node) => compileToTexts(child))
   } else {
     switch (type) {
       case 'text':
@@ -43,7 +43,16 @@ const _compileToTexts = (tree: Unist.Node): string[] => {
   }
 }
 
+const trimMarkdown = (text: string, regs: RegExp[]) =>
+  regs.length === 0
+    ? text
+    : text
+        .split(EOL)
+        .filter((line) => regs.every((reg) => !reg.test(line)))
+        .join(EOL)
+
 export type ParseMarkdownTextsOptions = {
+  lineIgnorePatterns?: string[]
   paragraphIgnorePatterns?: string[]
 }
 
@@ -51,15 +60,19 @@ export const parseMarkdownTexts = (
   markdown: string,
   options: ParseMarkdownTextsOptions = {},
 ) => {
-  const { paragraphIgnorePatterns = [] } = options
-  const ignoreRegExps = [HTML_COMMENT_PREFIX].concat(
-    (paragraphIgnorePatterns || []).map((pattern) => new RegExp(pattern)),
+  const { paragraphIgnorePatterns = [], lineIgnorePatterns = [] } = options
+  const lineIgnoreRegExps = lineIgnorePatterns.map(
+    (pattern) => new RegExp(pattern),
+  )
+  const paragraphIgnoreRegExps = [HTML_COMMENT_PREFIX].concat(
+    paragraphIgnorePatterns.map((pattern) => new RegExp(pattern)),
   )
 
-  const tree = _parseMarkdown(markdown)
-  const texts = uniqStr(_compileToTexts(tree)) // ここで重複を除外
+  const trimmed = trimMarkdown(markdown, lineIgnoreRegExps)
+  const tree = parseMarkdown(trimmed)
+  const texts = uniqStr(compileToTexts(tree)) // ここで重複を除外
   const filtered = texts.filter((text) =>
-    ignoreRegExps.every((reg) => !reg.test(text)),
+    paragraphIgnoreRegExps.every((reg) => !reg.test(text)),
   )
   return filtered
 }

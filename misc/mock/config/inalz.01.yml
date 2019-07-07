@@ -11,3 +11,5 @@ documents:
 options:
   paragraphIgnorePatterns:
     - "^\\[!\\["
+  lineIgnorePatterns:
+    - "^apple"

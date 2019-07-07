@@ -21,10 +21,12 @@ export class SyncCommand {
   options: InalzConfigComponent.SyncOptions
 
   static constructOptions = ({
+    lineIgnorePatterns = [],
     paragraphIgnorePatterns = [],
   }: Partial<
     InalzConfigComponent.SyncOptions
   >): InalzConfigComponent.SyncOptions => ({
+    lineIgnorePatterns,
     paragraphIgnorePatterns,
   })
 
@@ -41,6 +43,7 @@ export class SyncCommand {
 
     const srcText = await readFile(sourcePath)
     const texts = parseMarkdownTexts(srcText, {
+      lineIgnorePatterns: this.options.lineIgnorePatterns,
       paragraphIgnorePatterns: this.options.paragraphIgnorePatterns,
     })
 

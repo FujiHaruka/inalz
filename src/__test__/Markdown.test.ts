@@ -67,4 +67,12 @@ describe('Markdown', () => {
   with
   multiple lines`)
   })
+
+  it('11: lineIgnorePatterns', async () => {
+    const markdown = await readFile('misc/mock/md/11.md')
+    const texts = parseMarkdownTexts(markdown, {
+      lineIgnorePatterns: ['^{.+}$'],
+    })
+    expect(texts.length).toBe(2)
+  })
 })

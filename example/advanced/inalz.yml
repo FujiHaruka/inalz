@@ -12,4 +12,3 @@ documents:
 options:
   paragraphIgnorePatterns:
     - "^{{.+}}$"
-
