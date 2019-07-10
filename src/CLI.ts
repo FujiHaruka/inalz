@@ -33,14 +33,22 @@ export const CLIActions: CLIActions = {
       config.each((config) => new SyncCommand(config).sync()),
     )
     printSyncResult(results)
+    const failed = results.find(({ err }) => Boolean(err))
+    if (failed) {
+      process.exit(1)
+    }
   },
   async build(options) {
     const { cwd } = options
     const config = await InalzConfig.findAndLoad(cwd)
-    const results = await Promise.all<BuildResult[]>(
+    const results = (await Promise.all<BuildResult[]>(
       config.each((config) => new BuildCommand(config).build()),
-    )
-    printBuildResult(results.flat())
+    )).flat()
+    printBuildResult(results)
+    const failed = results.find(({ err }) => Boolean(err))
+    if (failed) {
+      process.exit(1)
+    }
   },
 }
 

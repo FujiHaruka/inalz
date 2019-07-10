@@ -12,10 +12,12 @@ import { fileExists, readFile, writeFile } from '../util/fsUtil'
 import { deepEquals } from '../util/objectUtil'
 
 export type SyncResult = {
-  /** the locale file has been created / updated / unchanged */
-  status: 'created' | 'updated' | 'unchanged'
+  /** the locale file status */
+  status: 'created' | 'updated' | 'unchanged' | 'failed'
   /** locale file path */
   localePath: string
+  /** any error */
+  err?: Error
 }
 
 export class SyncCommand {
@@ -51,37 +53,41 @@ export class SyncCommand {
   async sync(): Promise<SyncResult> {
     const { lang, sourcePath, localePath } = this
 
-    const srcText = await readFile(sourcePath)
-    const texts = parseMarkdownTexts(srcText, {
-      lineIgnorePatterns: this.options.lineIgnorePatterns,
-      paragraphIgnorePatterns: this.options.paragraphIgnorePatterns,
-    })
+    try {
+      const srcText = await readFile(sourcePath)
+      const texts = parseMarkdownTexts(srcText, {
+        lineIgnorePatterns: this.options.lineIgnorePatterns,
+        paragraphIgnorePatterns: this.options.paragraphIgnorePatterns,
+      })
 
-    const parser = new LocaleItemParser(lang)
-    const items: LocaleItem[] = texts.map((text) => parser.parseFromSrc(text))
+      const parser = new LocaleItemParser(lang)
+      const items: LocaleItem[] = texts.map((text) => parser.parseFromSrc(text))
 
-    if (await fileExists(localePath)) {
-      const oldItems = await parser.load(localePath)
-      const mergedItems = mergeLocaleItems(oldItems, items)
-      if (deepEquals(oldItems, mergedItems)) {
-        return {
-          status: 'unchanged',
-          localePath: relative(this.baseDir, localePath),
+      if (await fileExists(localePath)) {
+        const oldItems = await parser.load(localePath)
+        const mergedItems = mergeLocaleItems(oldItems, items)
+        if (deepEquals(oldItems, mergedItems)) {
+          return this.result('unchanged')
         }
+        const yaml = parser.stringify(mergedItems)
+        await writeFile(localePath, yaml, { mkdirp: true })
+        return this.result('updated')
+      } else {
+        const yaml = parser.stringify(items)
+        await writeFile(localePath, yaml, { mkdirp: true })
+        return this.result('created')
       }
-      const yaml = parser.stringify(mergedItems)
-      await writeFile(localePath, yaml, { mkdirp: true })
-      return {
-        status: 'updated',
-        localePath: relative(this.baseDir, localePath),
-      }
-    } else {
-      const yaml = parser.stringify(items)
-      await writeFile(localePath, yaml, { mkdirp: true })
-      return {
-        status: 'created',
-        localePath: relative(this.baseDir, localePath),
-      }
+    } catch (err) {
+      // catch any error
+      return this.result('failed', err)
+    }
+  }
+
+  result(status: SyncResult['status'], err?: Error): SyncResult {
+    return {
+      status,
+      localePath: relative(this.baseDir, this.localePath),
+      err,
     }
   }
 }

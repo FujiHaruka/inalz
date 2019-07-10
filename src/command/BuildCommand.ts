@@ -51,7 +51,6 @@ export class BuildCommand {
     const locale = new Locale(lang, localeItems)
     const results: BuildResult[] = []
     for (const [targetlang, targetPath] of Object.entries(targetPaths)) {
-      const relativeTargetPath = relative(this.baseDir, targetPath)
       try {
         const content = this.replaceContent(targetlang, markdown, locale)
         const alreadyExists = await fileExists(targetPath)
@@ -61,24 +60,14 @@ export class BuildCommand {
           const oldContent = await readFile(targetPath)
           const unchanged = oldContent === content
           if (unchanged) {
-            results.push({
-              status: 'unchanged',
-              targetPath: relativeTargetPath,
-            })
+            results.push(this.result(targetPath, 'unchanged'))
             continue // 書き込まない
           }
         }
         await writeFile(targetPath, content, { mkdirp: true, mode: 0o644 })
-        results.push({
-          status,
-          targetPath: relativeTargetPath,
-        })
+        results.push(this.result(targetPath, status))
       } catch (err) {
-        results.push({
-          status: 'failed',
-          targetPath: relativeTargetPath,
-          err,
-        })
+        results.push(this.result(targetPath, 'failed', err))
       }
     }
     return results
@@ -115,6 +104,18 @@ ${
       }
     }
     return result
+  }
+
+  result(
+    targetPath: string,
+    status: BuildResult['status'],
+    err?: Error,
+  ): BuildResult {
+    return {
+      status,
+      targetPath: relative(this.baseDir, targetPath),
+      err,
+    }
   }
 
   private replaceContent(

@@ -29,6 +29,7 @@ const indented = (lines: string[], indent: number) =>
 export const printSyncResult = (results: SyncResult[]) => {
   const createdCount = countByStatus(results, 'created')
   const updatedCount = countByStatus(results, 'updated')
+  const failedCount = countByStatus(results, 'failed')
 
   log(`Sync completed.`)
   if (createdCount > 0) {
@@ -49,12 +50,23 @@ export const printSyncResult = (results: SyncResult[]) => {
       2,
     )
   }
+  if (failedCount > 0) {
+    strong('\nFAILED:')
+    const failed = results.filter(({ status }) => status === 'failed')
+    indented(failed.map((result) => result.localePath), 2)
+    failed.forEach(({ err }) => {
+      if (err) {
+        error(inspect(err))
+      }
+    })
+  }
 
   strong('\nSUMMARY:')
   indented(
     [
       `${greenIfPositive(createdCount)} created.`,
       `${greenIfPositive(updatedCount)} updated.`,
+      `${redIfPositive(failedCount)} failed.`,
     ],
     2,
   )
