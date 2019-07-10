@@ -14,11 +14,6 @@ export const IOInalzConfig = t.intersection([
           contentDir: t.string,
           localeDir: t.string,
         }),
-        t.strict({
-          linkMode: t.literal('directory'),
-          contentDir: t.string,
-          localeDir: t.string,
-        }),
         t.intersection([
           t.partial({
             linkMode: t.literal('path'),

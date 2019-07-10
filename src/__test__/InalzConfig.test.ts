@@ -31,22 +31,10 @@ describe('InalzConfig', () => {
     )
   })
 
-  it('03: valid "directory" mode', async () => {
-    const path = 'misc/mock/config/inalz.03.yml'
-    const config = await InalzConfig.load(path)
-    expect(config.documents).toContainEqual(
-      resolveDocumentPath('misc/mock/config', {
-        sourcePath: 'directoryMode/en/doc.md',
-        targetPaths: { ja: 'directoryMode/ja/doc.md' },
-        localePath: 'locales/doc.yml',
-      }),
-    )
-  })
-
   it('04: valid multiple documents', async () => {
     const path = 'misc/mock/config/inalz.04.yml'
     const config = await InalzConfig.load(path)
-    expect(config.documents.length).toBe(3)
+    expect(config.documents.length).toBe(2)
   })
 
   it('05: path mode allows directory', async () => {

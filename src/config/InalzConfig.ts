@@ -99,7 +99,6 @@ export class InalzConfig {
     const sourcePathWithParam = (() => {
       switch (document.linkMode) {
         case 'filename':
-        case 'directory':
           return document.contentDir
         case 'path':
           return document.source
@@ -144,15 +143,6 @@ export class InalzConfig {
         }
         return this.resolveFilenameMode(document)
       }
-      case 'directory': {
-        if (!isDirectory) {
-          console.warn(
-            `document contentDir is not directory: ${document.contentDir}`,
-          )
-          return []
-        }
-        return this.resolveDirectoryMode(document)
-      }
       default:
         throw new InalzConfigError(
           `Invalid linkMode "${(document as any).linkMode}"`,
@@ -192,43 +182,6 @@ export class InalzConfig {
         ),
         '.yml',
         { depth: 2 },
-      ),
-    }))
-    return documents
-  }
-
-  private async resolveDirectoryMode(
-    document: InalzConfigComponent.DirectoryModeDocument,
-  ): Promise<InalzConfigComponent.SingleDocument[]> {
-    if (!document.contentDir.includes(LANG_PATH_PARAM)) {
-      throw new InalzConfigError(
-        `Invalid inalz config: if linkMode is "directory", contentDir path must include "${LANG_PATH_PARAM}" parameter`,
-      )
-    }
-    const localeDir = path.resolve(this.configDir, document.localeDir)
-    const contentDir = path.resolve(this.configDir, document.contentDir)
-    const sourceDir = replaceLangParam(contentDir, this.lang.source)
-    const pattern = path.resolve(sourceDir, '**/*.md')
-    const sourcePaths: string[] = await glob(pattern)
-    const documents = sourcePaths.map((sourcePath) => ({
-      sourcePath,
-      targetPaths: Object.fromEntries(
-        this.lang.targets.map((target) => [
-          target,
-          path.resolve(
-            this.configDir,
-            replaceLangParam(contentDir, target),
-            path.relative(sourceDir, sourcePath),
-          ),
-        ]),
-      ),
-      localePath: replaceExt(
-        path.resolve(
-          this.configDir,
-          localeDir,
-          path.relative(sourceDir, sourcePath),
-        ),
-        '.yml',
       ),
     }))
     return documents

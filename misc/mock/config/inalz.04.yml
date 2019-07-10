@@ -11,6 +11,3 @@ documents:
   - linkMode: filename
     contentDir: filenameMode
     localeDir: locales
-  - linkMode: directory
-    contentDir: directoryMode/:lang
-    localeDir: locales

@@ -41,11 +41,6 @@ describe('IOTypes', () => {
           localeDir: 'dir/to/locales',
         },
         {
-          linkMode: 'directory',
-          contentDir: 'dir/to/contents',
-          localeDir: 'dir/to/locales',
-        },
-        {
           linkMode: 'path',
           source: 'path/to/source.md',
           targets: {
