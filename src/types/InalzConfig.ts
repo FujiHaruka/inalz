@@ -9,23 +9,21 @@ export interface InalzConfigInterface {
   options?: InalzConfigComponent.Options
 }
 
-export namespace InalzConfigComponent {
-  export type Document = PathModeDocument
+export type ResolvedDocument = {
+  sourcePath: string
+  targetPaths: {
+    [lang: string]: string
+  }
+  localePath: string
+}
 
-  export type PathModeDocument = {
+export namespace InalzConfigComponent {
+  export type Document = {
     source: string
     targets: {
       [lang: string]: string
     }
     locale: string
-  }
-
-  export type SingleDocument = {
-    sourcePath: string
-    targetPaths: {
-      [lang: string]: string
-    }
-    localePath: string
   }
 
   export type SyncOptions = {

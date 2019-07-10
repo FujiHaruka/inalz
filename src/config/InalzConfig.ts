@@ -1,23 +1,22 @@
 import glob from 'fast-glob'
 import path from 'path'
 import YAML from 'yaml'
-import { LANG_PATH_PARAM } from '../Constants'
-import { InalzConfigComponent, Lang } from '../types/InalzConfig'
+import {
+  InalzConfigComponent,
+  Lang,
+  ResolvedDocument,
+} from '../types/InalzConfig'
 import { firstExistsFile, readFile, statOrNull } from '../util/fsUtil'
 import { InalzConfigError } from '../util/InalzError'
 import { replaceExt, resolveDocumentPath } from '../util/pathUtil'
-import { replaceAll } from '../util/stringUtil'
 import { IOInalzConfig } from './IOInalzConfig'
-
-const replaceLangParam = (dir: string, lang: string) =>
-  replaceAll(dir, LANG_PATH_PARAM, lang).result
 
 export class InalzConfig {
   configDir: string
   configPath: string
 
   lang: Lang = null as any
-  documents: InalzConfigComponent.SingleDocument[] = null as any
+  documents: ResolvedDocument[] = null as any
   options: InalzConfigComponent.Options = {}
 
   private constructor(configPath: string) {
@@ -86,11 +85,8 @@ export class InalzConfig {
 
   async resolveDocument(
     document: InalzConfigComponent.Document,
-  ): Promise<InalzConfigComponent.SingleDocument[]> {
-    const sourcePath = path.resolve(
-      this.configDir,
-      replaceLangParam(document.source, this.lang.source),
-    )
+  ): Promise<ResolvedDocument[]> {
+    const sourcePath = path.resolve(this.configDir, document.source)
     const stat = await statOrNull(sourcePath)
     if (!stat) {
       throw new InalzConfigError(
@@ -112,17 +108,16 @@ export class InalzConfig {
     if (isDirectory) {
       return this.resolvePathMode(document)
     }
-    console.warn(`Source path is neither directory nor file: ${sourcePath}`)
+    console.warn(
+      `[WARNING] sourcePath is neither directory nor file: ${sourcePath}`,
+    )
     return []
   }
 
   private async resolvePathMode(
-    document: InalzConfigComponent.PathModeDocument,
-  ): Promise<InalzConfigComponent.SingleDocument[]> {
-    const sourceDir = path.resolve(
-      this.configDir,
-      replaceLangParam(document.source, this.lang.source),
-    )
+    document: InalzConfigComponent.Document,
+  ): Promise<ResolvedDocument[]> {
+    const sourceDir = path.resolve(this.configDir, document.source)
     const pattern = path.resolve(sourceDir, '**/*.md')
     const sourcePaths: string[] = await glob(pattern)
     const documents = sourcePaths.map((sourcePath) => ({
@@ -132,7 +127,7 @@ export class InalzConfig {
           target,
           path.resolve(
             this.configDir,
-            replaceLangParam(document.targets[target], target),
+            document.targets[target],
             path.relative(sourceDir, sourcePath),
           ),
         ]),
