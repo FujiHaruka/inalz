@@ -36,17 +36,20 @@ describe('IOTypes', () => {
       },
       documents: [
         {
-          linkMode: 'filename',
-          contentDir: 'dir/to/contents',
-          localeDir: 'dir/to/locales',
-        },
-        {
           linkMode: 'path',
           source: 'path/to/source.md',
           targets: {
             ja: 'path/to/target.md',
           },
           locale: 'path/to/locale.yml',
+        },
+        {
+          linkMode: 'path',
+          source: 'path2/to/source.md',
+          targets: {
+            ja: 'path2/to/target.md',
+          },
+          locale: 'path2/to/locale.yml',
         },
       ],
       options: {

@@ -19,18 +19,6 @@ describe('InalzConfig', () => {
     )
   })
 
-  it('02: valid "filename" mode', async () => {
-    const path = 'misc/mock/config/inalz.02.yml'
-    const config = await InalzConfig.load(path)
-    expect(config.documents).toContainEqual(
-      resolveDocumentPath('misc/mock/config', {
-        sourcePath: 'filenameMode/doc.doc.en.md',
-        targetPaths: { ja: 'filenameMode/doc.doc.ja.md' },
-        localePath: 'locales/doc.doc.yml',
-      }),
-    )
-  })
-
   it('04: valid multiple documents', async () => {
     const path = 'misc/mock/config/inalz.04.yml'
     const config = await InalzConfig.load(path)

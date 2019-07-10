@@ -8,6 +8,8 @@ documents:
     targets:
       ja: pathMode/doc_ja.md
     locale: pathMode/locale.yml
-  - linkMode: filename
-    contentDir: filenameMode
-    localeDir: locales
+  - linkMode: path
+    source: pathMode/doc.md
+    targets:
+      ja: pathMode/doc_ja.md
+    locale: pathMode/locale.yml

@@ -10,13 +10,7 @@ export interface InalzConfigInterface {
 }
 
 export namespace InalzConfigComponent {
-  export type Document = FilenameModeDocument | PathModeDocument
-
-  export type FilenameModeDocument = {
-    linkMode: 'filename'
-    contentDir: string
-    localeDir: string
-  }
+  export type Document = PathModeDocument
 
   export type PathModeDocument = {
     linkMode?: 'path'

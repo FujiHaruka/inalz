@@ -1,8 +1,0 @@
-lang:
-  source: en
-  targets:
-    - ja
-documents:
-  - linkMode: filename
-    contentDir: filenameMode
-    localeDir: locales

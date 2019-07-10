@@ -98,8 +98,6 @@ export class InalzConfig {
     }
     const sourcePathWithParam = (() => {
       switch (document.linkMode) {
-        case 'filename':
-          return document.contentDir
         case 'path':
           return document.source
       }
@@ -134,57 +132,11 @@ export class InalzConfig {
         console.warn(`Source path is neither directory nor file: ${sourcePath}`)
         return []
       }
-      case 'filename': {
-        if (!isDirectory) {
-          console.warn(
-            `document contentDir is not directory: ${document.contentDir}`,
-          )
-          return []
-        }
-        return this.resolveFilenameMode(document)
-      }
       default:
         throw new InalzConfigError(
           `Invalid linkMode "${(document as any).linkMode}"`,
         )
     }
-  }
-
-  private async resolveFilenameMode(
-    document: InalzConfigComponent.FilenameModeDocument,
-  ): Promise<InalzConfigComponent.SingleDocument[]> {
-    const pattern = path.resolve(
-      this.configDir,
-      document.contentDir,
-      `**/*.${this.lang.source}.md`,
-    )
-    const files: string[] = await glob(pattern)
-    const targetsExtensions = this.lang.targets.map((target) => `.${target}.md`)
-    const isTarget = (file: string) =>
-      Boolean(targetsExtensions.find((ext) => file.endsWith(ext)))
-    const sourcePaths = files.filter((file) => !isTarget(file))
-    const documents = sourcePaths.map((sourcePath) => ({
-      sourcePath,
-      targetPaths: Object.fromEntries(
-        this.lang.targets.map((target) => [
-          target,
-          replaceExt(sourcePath, `.${target}.md`, { depth: 2 }),
-        ]),
-      ),
-      localePath: replaceExt(
-        path.resolve(
-          this.configDir,
-          document.localeDir,
-          path.relative(
-            path.resolve(this.configDir, document.contentDir),
-            sourcePath,
-          ),
-        ),
-        '.yml',
-        { depth: 2 },
-      ),
-    }))
-    return documents
   }
 
   private async resolvePathMode(
