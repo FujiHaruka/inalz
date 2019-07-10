@@ -1,3 +1,5 @@
+import { printError } from './logUtil'
+
 /**
  * Custom error classes
  */
@@ -32,4 +34,13 @@ export class EmptyYamlDocumentError extends InalzErrorBase {
 
 export class BuildFailedError extends InalzErrorBase {
   name = 'BuildFailedError'
+}
+
+export const handleError = (error: InalzErrorBase) => {
+  if (error.handled) {
+    printError(error)
+    process.exit(1)
+  } else {
+    throw error
+  }
 }

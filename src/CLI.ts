@@ -1,11 +1,10 @@
-import chalk from 'chalk'
 import commander, { Command } from 'commander'
 import { BuildCommand } from './command/BuildCommand'
-import { SyncCommand, SyncResult } from './command/SyncCommand'
+import { SyncCommand } from './command/SyncCommand'
 import { InalzConfig } from './config/InalzConfig'
 import { enableYamlOptions } from './util/enableYamlOptions'
-import { InalzCLIError, InalzErrorBase } from './util/InalzError'
-import { countBy } from './util/arrayUtil'
+import { InalzCLIError, handleError } from './util/InalzError'
+import { printSyncResult } from './util/logUtil'
 
 interface BaseOptions {
   cwd: string
@@ -23,31 +22,6 @@ interface CLIActions {
 const CLICommands = {
   SYNC: 'sync',
   BUILD: 'build',
-}
-
-const handleError = (error: InalzErrorBase) => {
-  if (error.handled) {
-    const message = `[${error.name}] ${error.message}`
-    console.error('\n' + chalk.redBright(message) + '\n')
-    process.exit(1)
-  } else {
-    throw error
-  }
-}
-const greenIfPositive = (count: number) =>
-  count > 0 ? chalk.greenBright(String(count)) : String(count)
-
-const printSyncResult = (results: SyncResult[]) => {
-  const created = greenIfPositive(
-    countBy(results, ({ status }) => status === 'created'),
-  )
-  const updated = greenIfPositive(
-    countBy(results, ({ status }) => status === 'updated'),
-  )
-
-  console.log(`Sync completed:
-  ${created} new files. ${updated} updated files.
-`)
 }
 
 export const CLIActions: CLIActions = {
