@@ -5,6 +5,7 @@ import {
   InalzConfigComponent,
   Lang,
   ResolvedDocument,
+  SingleInalzConfig,
 } from '../types/InalzConfig'
 import { firstExistsFile, readFile, statOrNull } from '../util/fsUtil'
 import { InalzConfigError } from '../util/InalzError'
@@ -81,6 +82,18 @@ export class InalzConfig {
       }
     }
     return validation.value
+  }
+
+  each(callback: (config: SingleInalzConfig) => any) {
+    return this.documents
+      .map(
+        (document): SingleInalzConfig => ({
+          lang: this.lang,
+          document,
+          options: this.options,
+        }),
+      )
+      .map((config) => callback(config))
   }
 
   async resolveDocument(

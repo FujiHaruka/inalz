@@ -17,6 +17,12 @@ export type ResolvedDocument = {
   localePath: string
 }
 
+export type SingleInalzConfig = {
+  lang: Lang
+  document: ResolvedDocument
+  options: InalzConfigComponent.Options
+}
+
 export namespace InalzConfigComponent {
   export type Document = {
     source: string

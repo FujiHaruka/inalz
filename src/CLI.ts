@@ -29,23 +29,14 @@ export const CLIActions: CLIActions = {
     const { cwd } = options
     const config = await InalzConfig.findAndLoad(cwd)
     const results = await Promise.all(
-      config.documents.map(({ sourcePath, localePath }) =>
-        new SyncCommand(config.lang, config.options).sync(
-          sourcePath,
-          localePath,
-        ),
-      ),
+      config.each((config) => new SyncCommand(config).sync()),
     )
     printSyncResult(results)
   },
   async build(options) {
     const { cwd } = options
     const config = await InalzConfig.findAndLoad(cwd)
-    await Promise.all(
-      config.documents.map((document) =>
-        new BuildCommand(config, document).build(),
-      ),
-    )
+    await Promise.all(config.each((config) => new BuildCommand(config).build()))
   },
 }
 

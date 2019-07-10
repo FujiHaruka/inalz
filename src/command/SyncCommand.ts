@@ -2,7 +2,11 @@ import { LocaleItemParser } from '../convert/LocaleItemParser'
 import { parseMarkdownTexts } from '../convert/Markdown'
 import { mergeLocaleItems } from '../convert/mergeLocaleItems'
 import { LocaleItem } from '../core/LocaleItem'
-import { InalzConfigComponent, Lang } from '../types/InalzConfig'
+import {
+  InalzConfigComponent,
+  Lang,
+  SingleInalzConfig,
+} from '../types/InalzConfig'
 import { fileExists, readFile, writeFile } from '../util/fsUtil'
 import { deepEquals } from '../util/objectUtil'
 import { countBy } from '../util/arrayUtil'
@@ -19,6 +23,8 @@ export type SyncResult = {
 export class SyncCommand {
   lang: Lang
   options: InalzConfigComponent.SyncOptions
+  sourcePath: string
+  localePath: string
 
   static constructOptions = ({
     lineIgnorePatterns = [],
@@ -30,16 +36,19 @@ export class SyncCommand {
     paragraphIgnorePatterns,
   })
 
-  constructor(
-    lang: Lang,
-    options: Partial<InalzConfigComponent.SyncOptions> = {},
-  ) {
+  constructor({
+    lang,
+    document: { sourcePath, localePath },
+    options,
+  }: SingleInalzConfig) {
     this.lang = lang
     this.options = SyncCommand.constructOptions(options)
+    this.sourcePath = sourcePath
+    this.localePath = localePath
   }
 
-  async sync(sourcePath: string, localePath: string): Promise<SyncResult> {
-    const { lang } = this
+  async sync(): Promise<SyncResult> {
+    const { lang, sourcePath, localePath } = this
 
     const srcText = await readFile(sourcePath)
     const texts = parseMarkdownTexts(srcText, {

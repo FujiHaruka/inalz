@@ -16,14 +16,15 @@ describe('BuildCommand', () => {
     }
     const localePath = 'misc/mock/translator/locale01.yml'
     const expectedPath = 'misc/mock/translator/expected01.md'
-    await new BuildCommand(
-      { lang },
-      {
+    await new BuildCommand({
+      lang,
+      document: {
         sourcePath,
         targetPaths,
         localePath,
       },
-    ).build()
+      options: {},
+    }).build()
 
     expect(await readFile(targetPaths.ja)).toBe(await readFile(expectedPath))
   })
@@ -35,29 +36,29 @@ describe('BuildCommand', () => {
     }
     const localePath = 'misc/mock/translator/locale02.yml'
     const expectedPath = 'misc/mock/translator/expected02.md'
-    await new BuildCommand(
-      { lang },
-      {
+    await new BuildCommand({
+      lang,
+      document: {
         sourcePath,
         targetPaths,
         localePath,
       },
-    ).build()
+      options: {},
+    }).build()
 
     expect(await readFile(targetPaths.ja)).toBe(await readFile(expectedPath))
   })
 
   it('replace method', () => {
-    const builder = new BuildCommand(
-      {
-        lang,
-      },
-      {
+    const builder = new BuildCommand({
+      lang,
+      document: {
         sourcePath: 'sourcePath',
         targetPaths: {},
         localePath: '',
       },
-    )
+      options: {},
+    })
     builder.strict = true
 
     expect(() => builder.replace('hello', 'not matched', '', {})).toThrow()
