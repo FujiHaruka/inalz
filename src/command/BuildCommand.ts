@@ -1,7 +1,7 @@
 import { BUILTIN_ACTIONS } from '../Constants'
 import { LocaleItemParser } from '../convert/LocaleItemParser'
 import { Locale } from '../core/Locale'
-import { InalzConfigComponent, Lang } from '../types/InalzConfig'
+import { Lang, ResolvedDocument } from '../types/InalzConfig'
 import { LocaleComponent } from '../types/Locale'
 import { readFile, writeFile, fileExists } from '../util/fsUtil'
 import { BuildFailedError } from '../util/InalzError'
@@ -20,11 +20,7 @@ export class BuildCommand {
 
   constructor(
     { lang }: { lang: Lang },
-    {
-      sourcePath,
-      targetPaths,
-      localePath,
-    }: InalzConfigComponent.SingleDocument,
+    { sourcePath, targetPaths, localePath }: ResolvedDocument,
   ) {
     this.lang = lang
     this.sourcePath = sourcePath
