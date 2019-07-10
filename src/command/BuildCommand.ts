@@ -1,17 +1,28 @@
 import { BUILTIN_ACTIONS } from '../Constants'
 import { LocaleItemParser } from '../convert/LocaleItemParser'
 import { Locale } from '../core/Locale'
-import { Lang, ResolvedDocument, SingleInalzConfig } from '../types/InalzConfig'
+import { Lang, SingleInalzConfig } from '../types/InalzConfig'
 import { LocaleComponent } from '../types/Locale'
 import { readFile, writeFile, fileExists } from '../util/fsUtil'
 import { BuildFailedError } from '../util/InalzError'
 import { replaceAll } from '../util/stringUtil'
 import { LocaleItem } from '../core/LocaleItem'
+import { relative } from 'path'
+
+export type BuildResult = {
+  /** the target file changed status */
+  status: 'created' | 'updated' | 'unchanged' | 'failed'
+  /** target file path */
+  targetPath: string
+  /** any error */
+  err?: Error
+}
 
 const compareBySrcLength = (itemA: LocaleItem, itemB: LocaleItem): number =>
   itemB.getSourceText().length - itemA.getSourceText().length
 
 export class BuildCommand {
+  baseDir: string
   lang: Lang
   sourcePath: string
   targetPaths: { [lang: string]: string }
@@ -19,9 +30,11 @@ export class BuildCommand {
   strict: boolean = false
 
   constructor({
+    baseDir,
     lang,
     document: { sourcePath, targetPaths, localePath },
   }: SingleInalzConfig) {
+    this.baseDir = baseDir
     this.lang = lang
     this.sourcePath = sourcePath
     this.targetPaths = targetPaths
@@ -31,23 +44,44 @@ export class BuildCommand {
   /**
    * Build tranlration document
    */
-  async build() {
+  async build(): Promise<BuildResult[]> {
     const { lang, sourcePath, localePath, targetPaths } = this
     const markdown = await readFile(sourcePath)
     const localeItems = await new LocaleItemParser(lang).load(localePath)
     const locale = new Locale(lang, localeItems)
+    const results: BuildResult[] = []
     for (const [targetlang, targetPath] of Object.entries(targetPaths)) {
-      const content = this.replaceContent(targetlang, markdown, locale)
-      const alreadyExists = await fileExists(targetPath)
-      if (alreadyExists) {
-        const oldContent = await readFile(targetPath)
-        const unchanged = oldContent === content
-        if (unchanged) {
-          continue
+      const relativeTargetPath = relative(this.baseDir, targetPath)
+      try {
+        const content = this.replaceContent(targetlang, markdown, locale)
+        const alreadyExists = await fileExists(targetPath)
+        let status: BuildResult['status'] = 'created'
+        if (alreadyExists) {
+          status = 'updated'
+          const oldContent = await readFile(targetPath)
+          const unchanged = oldContent === content
+          if (unchanged) {
+            results.push({
+              status: 'unchanged',
+              targetPath: relativeTargetPath,
+            })
+            continue // 書き込まない
+          }
         }
+        await writeFile(targetPath, content, { mkdirp: true, mode: 0o644 })
+        results.push({
+          status,
+          targetPath: relativeTargetPath,
+        })
+      } catch (err) {
+        results.push({
+          status: 'failed',
+          targetPath: relativeTargetPath,
+          err,
+        })
       }
-      await writeFile(targetPath, content, { mkdirp: true, mode: 0o644 })
     }
+    return results
   }
 
   replace(

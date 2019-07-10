@@ -1,10 +1,10 @@
 import commander, { Command } from 'commander'
-import { BuildCommand } from './command/BuildCommand'
-import { SyncCommand } from './command/SyncCommand'
+import { BuildCommand, BuildResult } from './command/BuildCommand'
+import { SyncCommand, SyncResult } from './command/SyncCommand'
 import { InalzConfig } from './config/InalzConfig'
 import { enableYamlOptions } from './util/enableYamlOptions'
 import { InalzCLIError, handleError } from './util/InalzError'
-import { printSyncResult } from './util/logUtil'
+import { printSyncResult, printBuildResult } from './util/logUtil'
 
 interface BaseOptions {
   cwd: string
@@ -29,7 +29,7 @@ export const CLIActions: CLIActions = {
   async sync(options) {
     const { cwd } = options
     const config = await InalzConfig.findAndLoad(cwd)
-    const results = await Promise.all(
+    const results = await Promise.all<SyncResult>(
       config.each((config) => new SyncCommand(config).sync()),
     )
     printSyncResult(results)
@@ -37,7 +37,10 @@ export const CLIActions: CLIActions = {
   async build(options) {
     const { cwd } = options
     const config = await InalzConfig.findAndLoad(cwd)
-    await Promise.all(config.each((config) => new BuildCommand(config).build()))
+    const results = await Promise.all<BuildResult[]>(
+      config.each((config) => new BuildCommand(config).build()),
+    )
+    printBuildResult(results.flat())
   },
 }
 
