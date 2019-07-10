@@ -35,7 +35,7 @@ export namespace InalzConfigComponent {
     localePath: string
   }
 
-  export type LinkMode = 'filename' | 'directory' | 'path'
+  export type LinkMode = 'filename' | 'path'
 
   export type SyncOptions = {
     lineIgnorePatterns: string[]
