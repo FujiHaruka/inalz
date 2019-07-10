@@ -36,7 +36,6 @@ describe('IOTypes', () => {
       },
       documents: [
         {
-          linkMode: 'path',
           source: 'path/to/source.md',
           targets: {
             ja: 'path/to/target.md',
@@ -44,7 +43,6 @@ describe('IOTypes', () => {
           locale: 'path/to/locale.yml',
         },
         {
-          linkMode: 'path',
           source: 'path2/to/source.md',
           targets: {
             ja: 'path2/to/target.md',
@@ -69,21 +67,6 @@ describe('IOTypes', () => {
     {
       const config = copy(CONFIG)
       delete config.lang
-      const validation = IOInalzConfig.decode(config)
-      expect(validation.isLeft()).toBeTruthy()
-    }
-    {
-      const config = copy(CONFIG)
-      config.documents = [
-        {
-          linkMode: 'directory', // invalid linkMode
-          source: 'path/to/source.md',
-          targets: {
-            ja: 'path/to/target.md',
-          },
-          locale: 'path/to/locale.yml',
-        } as any,
-      ]
       const validation = IOInalzConfig.decode(config)
       expect(validation.isLeft()).toBeTruthy()
     }

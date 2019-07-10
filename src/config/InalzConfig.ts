@@ -72,10 +72,7 @@ export class InalzConfig {
     }
     const { lang, documents } = validation.value
     const targets = new Set(lang.targets)
-    const pathModeDocs = documents.filter(
-      (d) => d.linkMode === 'path',
-    ) as InalzConfigComponent.PathModeDocument[]
-    for (const document of pathModeDocs) {
+    for (const document of documents) {
       for (const targetLang of Object.keys(document.targets)) {
         if (!targets.has(targetLang)) {
           throw new InalzConfigError(
@@ -87,24 +84,12 @@ export class InalzConfig {
     return validation.value
   }
 
-  /**
-   * resolve `Document` to "path" linkMode
-   */
   async resolveDocument(
     document: InalzConfigComponent.Document,
   ): Promise<InalzConfigComponent.SingleDocument[]> {
-    if (!document.linkMode) {
-      document.linkMode = 'path'
-    }
-    const sourcePathWithParam = (() => {
-      switch (document.linkMode) {
-        case 'path':
-          return document.source
-      }
-    })()
     const sourcePath = path.resolve(
       this.configDir,
-      replaceLangParam(sourcePathWithParam, this.lang.source),
+      replaceLangParam(document.source, this.lang.source),
     )
     const stat = await statOrNull(sourcePath)
     if (!stat) {
@@ -115,28 +100,20 @@ export class InalzConfig {
     const isDirectory = stat.isDirectory()
     const isFile = stat.isFile()
 
-    switch (document.linkMode) {
-      case 'path': {
-        if (isFile) {
-          return [
-            {
-              sourcePath: document.source,
-              targetPaths: document.targets,
-              localePath: document.locale,
-            },
-          ]
-        }
-        if (isDirectory) {
-          return this.resolvePathMode(document)
-        }
-        console.warn(`Source path is neither directory nor file: ${sourcePath}`)
-        return []
-      }
-      default:
-        throw new InalzConfigError(
-          `Invalid linkMode "${(document as any).linkMode}"`,
-        )
+    if (isFile) {
+      return [
+        {
+          sourcePath: document.source,
+          targetPaths: document.targets,
+          localePath: document.locale,
+        },
+      ]
     }
+    if (isDirectory) {
+      return this.resolvePathMode(document)
+    }
+    console.warn(`Source path is neither directory nor file: ${sourcePath}`)
+    return []
   }
 
   private async resolvePathMode(

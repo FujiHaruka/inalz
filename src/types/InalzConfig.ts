@@ -13,7 +13,6 @@ export namespace InalzConfigComponent {
   export type Document = PathModeDocument
 
   export type PathModeDocument = {
-    linkMode?: 'path'
     source: string
     targets: {
       [lang: string]: string
@@ -28,8 +27,6 @@ export namespace InalzConfigComponent {
     }
     localePath: string
   }
-
-  export type LinkMode = 'filename' | 'path'
 
   export type SyncOptions = {
     lineIgnorePatterns: string[]

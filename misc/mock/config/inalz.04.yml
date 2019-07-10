@@ -3,13 +3,11 @@ lang:
   targets:
     - ja
 documents:
-  - linkMode: path
-    source: pathMode/doc.md
+  - source: pathMode/doc.md
     targets:
       ja: pathMode/doc_ja.md
     locale: pathMode/locale.yml
-  - linkMode: path
-    source: pathMode/doc.md
+  - source: pathMode/doc.md
     targets:
       ja: pathMode/doc_ja.md
     locale: pathMode/locale.yml

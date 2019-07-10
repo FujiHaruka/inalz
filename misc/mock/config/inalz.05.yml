@@ -3,8 +3,7 @@ lang:
   targets:
     - ja
 documents:
-  - linkMode: path
-    source: pathMode/dir
+  - source: pathMode/dir
     targets:
       ja: pathMode/ja
     locale: pathMode/locales

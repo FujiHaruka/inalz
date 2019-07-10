@@ -8,16 +8,11 @@ export const IOInalzConfig = t.intersection([
       targets: t.array(t.string),
     }),
     documents: t.array(
-      t.intersection([
-        t.partial({
-          linkMode: t.literal('path'),
-        }),
-        t.type({
-          source: t.string,
-          targets: t.record(t.string, t.string),
-          locale: t.string,
-        }),
-      ]),
+      t.type({
+        source: t.string,
+        targets: t.record(t.string, t.string),
+        locale: t.string,
+      }),
     ),
   }),
   t.partial({
