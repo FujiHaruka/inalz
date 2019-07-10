@@ -88,6 +88,7 @@ export class InalzConfig {
     return this.documents
       .map(
         (document): SingleInalzConfig => ({
+          baseDir: this.configDir,
           lang: this.lang,
           document,
           options: this.options,

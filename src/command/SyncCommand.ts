@@ -1,3 +1,4 @@
+import { relative } from 'path'
 import { LocaleItemParser } from '../convert/LocaleItemParser'
 import { parseMarkdownTexts } from '../convert/Markdown'
 import { mergeLocaleItems } from '../convert/mergeLocaleItems'
@@ -9,18 +10,16 @@ import {
 } from '../types/InalzConfig'
 import { fileExists, readFile, writeFile } from '../util/fsUtil'
 import { deepEquals } from '../util/objectUtil'
-import { countBy } from '../util/arrayUtil'
 
 export type SyncResult = {
   /** the locale file has been created / updated / unchanged */
   status: 'created' | 'updated' | 'unchanged'
-  /** number of outdated documents */
-  outdated: number
-  /** number of outdated documents */
-  unused: number
+  /** locale file path */
+  localePath: string
 }
 
 export class SyncCommand {
+  baseDir: string
   lang: Lang
   options: InalzConfigComponent.SyncOptions
   sourcePath: string
@@ -37,10 +36,12 @@ export class SyncCommand {
   })
 
   constructor({
+    baseDir,
     lang,
     document: { sourcePath, localePath },
     options,
   }: SingleInalzConfig) {
+    this.baseDir = baseDir
     this.lang = lang
     this.options = SyncCommand.constructOptions(options)
     this.sourcePath = sourcePath
@@ -65,30 +66,21 @@ export class SyncCommand {
       if (deepEquals(oldItems, mergedItems)) {
         return {
           status: 'unchanged',
-          outdated: 0,
-          unused: 0,
+          localePath: relative(this.baseDir, localePath),
         }
       }
       const yaml = parser.stringify(mergedItems)
       await writeFile(localePath, yaml, { mkdirp: true })
-      const outdated = countBy(mergedItems, (item) =>
-        Boolean(item.meta && item.meta.outdated),
-      )
-      const unused = countBy(mergedItems, (item) =>
-        Boolean(item.meta && item.meta.unused),
-      )
       return {
         status: 'updated',
-        outdated,
-        unused,
+        localePath: relative(this.baseDir, localePath),
       }
     } else {
       const yaml = parser.stringify(items)
       await writeFile(localePath, yaml, { mkdirp: true })
       return {
         status: 'created',
-        outdated: 0,
-        unused: 0,
+        localePath: relative(this.baseDir, localePath),
       }
     }
   }

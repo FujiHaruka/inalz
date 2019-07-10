@@ -19,6 +19,7 @@ describe('SyncCommand', () => {
 
     await rmIfExists(localePath)
     const syncer = new SyncCommand({
+      baseDir: '',
       lang,
       document: { sourcePath, localePath, targetPaths: {} },
       options: {},
@@ -38,6 +39,7 @@ describe('SyncCommand', () => {
 
     await rmIfExists(localePath)
     const syncer = new SyncCommand({
+      baseDir: '',
       lang,
       document: { sourcePath, localePath, targetPaths: {} },
       options: {},
@@ -59,6 +61,7 @@ describe('SyncCommand', () => {
     await rmIfExists(localePath)
     await fs.promises.copyFile(workingLocPath, localePath)
     const syncer = new SyncCommand({
+      baseDir: '',
       lang,
       document: { sourcePath, localePath, targetPaths: {} },
       options: {},
@@ -80,6 +83,7 @@ describe('SyncCommand', () => {
     await rmIfExists(localePath)
     await fs.promises.copyFile(workingLocPath, localePath)
     const syncer = new SyncCommand({
+      baseDir: '',
       lang,
       document: { sourcePath, localePath, targetPaths: {} },
       options: {},

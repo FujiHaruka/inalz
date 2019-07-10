@@ -17,6 +17,7 @@ describe('BuildCommand', () => {
     const localePath = 'misc/mock/translator/locale01.yml'
     const expectedPath = 'misc/mock/translator/expected01.md'
     await new BuildCommand({
+      baseDir: '',
       lang,
       document: {
         sourcePath,
@@ -37,6 +38,7 @@ describe('BuildCommand', () => {
     const localePath = 'misc/mock/translator/locale02.yml'
     const expectedPath = 'misc/mock/translator/expected02.md'
     await new BuildCommand({
+      baseDir: '',
       lang,
       document: {
         sourcePath,
@@ -51,6 +53,7 @@ describe('BuildCommand', () => {
 
   it('replace method', () => {
     const builder = new BuildCommand({
+      baseDir: '',
       lang,
       document: {
         sourcePath: 'sourcePath',

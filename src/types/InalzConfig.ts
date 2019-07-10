@@ -18,6 +18,7 @@ export type ResolvedDocument = {
 }
 
 export type SingleInalzConfig = {
+  baseDir: string
   lang: Lang
   document: ResolvedDocument
   options: InalzConfigComponent.Options

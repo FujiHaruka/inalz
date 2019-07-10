@@ -20,8 +20,9 @@ interface CLIActions {
 }
 
 const CLICommands = {
-  SYNC: 'sync',
   BUILD: 'build',
+  INSPECT: 'inspect',
+  SYNC: 'sync',
 }
 
 export const CLIActions: CLIActions = {
