@@ -12,9 +12,9 @@
   "dependencies": {
     "chalk": "^2.4.2",
     "commander": "^2.20.0",
-    "fast-glob": "^3.0.1",
+    "fast-glob": "^3.0.4",
     "fast-levenshtein": "^2.0.6",
-    "io-ts": "^1.10.2",
+    "io-ts": "^1.10.4",
     "please-upgrade-node": "^3.1.1",
     "remark-parse": "^6.0.3",
     "unified": "^7.1.0",
@@ -23,7 +23,7 @@
   "devDependencies": {
     "@types/fast-levenshtein": "0.0.1",
     "@types/jest": "^24.0.15",
-    "@types/node": "^12.0.10",
+    "@types/node": "^12.6.2",
     "@types/yaml": "^1.0.2",
     "jest": "^24.8.0",
     "prettier": "^1.18.2",
@@ -34,7 +34,7 @@
     "tslint-config-prettier": "^1.18.0",
     "tslint-config-standard": "^8.0.1",
     "tslint-plugin-prettier": "^2.0.1",
-    "typescript": "^3.5.2"
+    "typescript": "^3.5.3"
   },
   "engines": {
     "node": ">=12"
