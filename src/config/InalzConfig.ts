@@ -11,6 +11,7 @@ import { firstExistsFile, readFile, statOrNull } from '../util/fsUtil'
 import { InalzConfigError } from '../util/InalzError'
 import { replaceExt, resolveDocumentPath } from '../util/pathUtil'
 import { IOInalzConfig } from './IOInalzConfig'
+import { isLeft } from 'fp-ts/lib/Either'
 
 export const InalzConfigDefaultOptions: InalzConfigComponent.Options = {
   lineIgnorePatterns: [],
@@ -70,13 +71,13 @@ export class InalzConfig {
 
   static validate(config: any) {
     const validation = IOInalzConfig.decode(config)
-    if (validation.isLeft()) {
+    if (isLeft(validation)) {
       throw new InalzConfigError(
         // TODO: error details
         `Invaid inalz config`,
       )
     }
-    const { lang, documents } = validation.value
+    const { lang, documents } = validation.right
     const targets = new Set(lang.targets)
     for (const document of documents) {
       for (const targetLang of Object.keys(document.targets)) {
@@ -87,7 +88,7 @@ export class InalzConfig {
         }
       }
     }
-    return validation.value
+    return validation.right
   }
 
   each(callback: (config: SingleInalzConfig) => any) {

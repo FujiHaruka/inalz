@@ -10,6 +10,7 @@ import {
   YamlParseError,
 } from '../util/InalzError'
 import { IOLocaleItem } from './IOLocaleItem'
+import { isLeft } from 'fp-ts/lib/Either'
 
 const pickYamlParseErrors = (documents: YAML.ast.Document[]) =>
   documents
@@ -89,8 +90,7 @@ ${JSON.stringify(errors, null, 2)}`,
     }
     const validation = IOLocaleItem.decode(json)
 
-    if (validation.isLeft()) {
-      const errors = validation.value
+    if (isLeft(validation)) {
       throw new InvalidLocaleItemError(
         // TODO: error details
         `Invalid locale items in ${this.yamlPath}
@@ -98,6 +98,6 @@ Document:
 ${JSON.stringify({ document: json, index }, null, 2)}`,
       )
     }
-    return validation.value
+    return validation.right
   }
 }

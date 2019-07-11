@@ -4,6 +4,7 @@ import { IOLocaleItem } from '../convert/IOLocaleItem'
 import { InalzConfigInterface } from '../types/InalzConfig'
 import { LocaleComponent } from '../types/Locale'
 import { copy } from '../util/objectUtil'
+import { isRight, isLeft } from 'fp-ts/lib/Either'
 
 describe('IOTypes', () => {
   it('IOInalzConfig static type checking', () => {
@@ -56,11 +57,11 @@ describe('IOTypes', () => {
     }
     {
       const validation = IOInalzConfig.decode(CONFIG)
-      expect(validation.isRight()).toBeTruthy()
-      if (validation.isLeft()) {
+      expect(isRight(validation)).toBeTruthy()
+      if (isLeft(validation)) {
         throw new Error()
       }
-      expect(validation.value.options!.paragraphIgnorePatterns).toEqual([
+      expect(validation.right.options!.paragraphIgnorePatterns).toEqual([
         '^ignore',
       ])
     }
@@ -68,7 +69,7 @@ describe('IOTypes', () => {
       const config = copy(CONFIG)
       delete config.lang
       const validation = IOInalzConfig.decode(config)
-      expect(validation.isLeft()).toBeTruthy()
+      expect(isLeft(validation)).toBeTruthy()
     }
   })
 
@@ -85,19 +86,19 @@ describe('IOTypes', () => {
     }
     {
       const validation = IOLocaleItem.decode(ITEM)
-      expect(validation.isRight()).toBeTruthy()
+      expect(isRight(validation)).toBeTruthy()
     }
     {
       const item = copy(ITEM)
       delete item.meta
       const validation = IOLocaleItem.decode(item)
-      expect(validation.isRight()).toBeTruthy()
+      expect(isRight(validation)).toBeTruthy()
     }
     {
       const item = copy(ITEM)
       item.texts = ['text'] as any
       const validation = IOLocaleItem.decode(item)
-      expect(validation.isLeft()).toBeTruthy()
+      expect(isLeft(validation)).toBeTruthy()
     }
   })
 })
