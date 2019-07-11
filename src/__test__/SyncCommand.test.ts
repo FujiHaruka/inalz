@@ -5,6 +5,7 @@ import { SyncCommand } from '../command/SyncCommand'
 import { LocaleItemParser } from '../convert/LocaleItemParser'
 import { Lang } from '../types/InalzConfig'
 import { rmIfExists } from '../util/fsUtil'
+import { InalzConfigDefaultOptions } from '../config/InalzConfig'
 
 describe('SyncCommand', () => {
   const lang: Lang = {
@@ -22,7 +23,7 @@ describe('SyncCommand', () => {
       baseDir: '',
       lang,
       document: { sourcePath, localePath, targetPaths: {} },
-      options: {},
+      options: InalzConfigDefaultOptions,
     })
     await syncer.sync()
 
@@ -42,7 +43,7 @@ describe('SyncCommand', () => {
       baseDir: '',
       lang,
       document: { sourcePath, localePath, targetPaths: {} },
-      options: {},
+      options: InalzConfigDefaultOptions,
     })
     await syncer.sync()
 
@@ -64,7 +65,7 @@ describe('SyncCommand', () => {
       baseDir: '',
       lang,
       document: { sourcePath, localePath, targetPaths: {} },
-      options: {},
+      options: InalzConfigDefaultOptions,
     })
     await syncer.sync()
 
@@ -86,7 +87,7 @@ describe('SyncCommand', () => {
       baseDir: '',
       lang,
       document: { sourcePath, localePath, targetPaths: {} },
-      options: {},
+      options: InalzConfigDefaultOptions,
     })
     await syncer.sync()
 

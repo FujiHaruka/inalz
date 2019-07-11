@@ -4,7 +4,12 @@ import { SyncCommand, SyncResult } from './command/SyncCommand'
 import { InalzConfig } from './config/InalzConfig'
 import { enableYamlOptions } from './util/enableYamlOptions'
 import { InalzCLIError, handleError } from './util/InalzError'
-import { printSyncResult, printBuildResult } from './util/logUtil'
+import {
+  printSyncResult,
+  printBuildResult,
+  printValidateResult,
+} from './util/logUtil'
+import { ValidateCommand } from './command/ValidateCommand'
 
 interface BaseOptions {
   cwd: string
@@ -14,19 +19,16 @@ interface SyncOptions extends BaseOptions {}
 
 interface BuildOptions extends BaseOptions {}
 
-interface CLIActions {
-  sync: (options: SyncOptions) => Promise<void>
-  build: (options: BuildOptions) => Promise<void>
-}
+interface ValidateOptions extends BaseOptions {}
 
 const CLICommands = {
   BUILD: 'build',
-  INSPECT: 'inspect',
+  VALIDATE: 'validate',
   SYNC: 'sync',
 }
 
-export const CLIActions: CLIActions = {
-  async sync(options) {
+export const CLIActions = {
+  async sync(options: SyncOptions) {
     const { cwd } = options
     const config = await InalzConfig.findAndLoad(cwd)
     const results = await Promise.all<SyncResult>(
@@ -38,7 +40,7 @@ export const CLIActions: CLIActions = {
       process.exit(1)
     }
   },
-  async build(options) {
+  async build(options: BuildOptions) {
     const { cwd } = options
     const config = await InalzConfig.findAndLoad(cwd)
     const results = (await Promise.all<BuildResult[]>(
@@ -50,9 +52,17 @@ export const CLIActions: CLIActions = {
       process.exit(1)
     }
   },
+  async validate(options: ValidateOptions) {
+    const { cwd } = options
+    const config = await InalzConfig.findAndLoad(cwd)
+    const results = await Promise.all(
+      config.each((config) => new ValidateCommand(config).validate()),
+    )
+    printValidateResult(results)
+  },
 }
 
-export const CLI = (actions: CLIActions) => (argv: string[]) => {
+export const CLI = (actions: typeof CLIActions) => (argv: string[]) => {
   enableYamlOptions()
 
   commander.version(require('../package.json').version, '-v, --version')
@@ -66,9 +76,16 @@ export const CLI = (actions: CLIActions) => (argv: string[]) => {
 
   commander
     .command(CLICommands.BUILD)
-    .description('Build translations from locale files')
+    .description('Build translated documents from locale files')
     .action((options) =>
       actions.build({ ...options, cwd: process.cwd() }).catch(handleError),
+    )
+
+  commander
+    .command(CLICommands.VALIDATE)
+    .description('Validate locale files')
+    .action((options) =>
+      actions.validate({ ...options, cwd: process.cwd() }).catch(handleError),
     )
 
   commander.parse(argv)

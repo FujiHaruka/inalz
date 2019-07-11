@@ -12,7 +12,7 @@ import { InalzConfigError } from '../util/InalzError'
 import { replaceExt, resolveDocumentPath } from '../util/pathUtil'
 import { IOInalzConfig } from './IOInalzConfig'
 
-const DefaultOptions: InalzConfigComponent.Options = {
+export const InalzConfigDefaultOptions: InalzConfigComponent.Options = {
   lineIgnorePatterns: [],
   paragraphIgnorePatterns: [],
   documentExtension: '.md',
@@ -24,7 +24,7 @@ export class InalzConfig {
 
   lang: Lang = null as any
   documents: ResolvedDocument[] = null as any
-  options: InalzConfigComponent.Options = DefaultOptions
+  options: InalzConfigComponent.Options = InalzConfigDefaultOptions
 
   private constructor(configPath: string) {
     configPath = path.resolve(process.cwd(), configPath)

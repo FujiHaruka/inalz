@@ -3,6 +3,7 @@ import { countBy } from './arrayUtil'
 import { SyncResult } from '../command/SyncCommand'
 import { BuildResult } from '../command/BuildCommand'
 import { inspect } from 'util'
+import { ValidateResult } from '../command/ValidateCommand'
 
 // --- helpers
 
@@ -116,6 +117,43 @@ export const printBuildResult = (results: BuildResult[]) => {
     ],
     2,
   )
+}
+
+export const printValidateResult = (results: ValidateResult[]) => {
+  const invalidResults = results.filter(
+    (result) => result.unused > 0 || result.outdated > 0 || result.err,
+  )
+  for (const result of invalidResults) {
+    const { localePath, unused, outdated, err } = result
+    if (err) {
+      log('')
+      log(chalk.redBright(err.message))
+    } else {
+      strong('\n' + localePath)
+      indented(
+        [
+          `${redIfPositive(outdated)} outdated.`,
+          `${redIfPositive(unused)} unused.`,
+        ],
+        2,
+      )
+    }
+  }
+  if (invalidResults.length === 0) {
+    indented([chalk.greenBright('OK.') + ` All locale files are valid.`], 2)
+  } else {
+    log('')
+    indented([chalk.redBright('NG.') + ' Some locale files are invalid.'], 2)
+    log('')
+    indented(
+      [
+        'You need fix above warnings before run `inalz build`',
+        'For outdated block, you need modify translation texts and remove `outdated` annotation.',
+        'For unused block, you need remove the YAML document block.',
+      ].map((line) => chalk.grey(line)),
+      2,
+    )
+  }
 }
 
 export const printError = (err: Error) => {

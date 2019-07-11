@@ -1,0 +1,41 @@
+texts:
+  en: Hello world. 1
+  ja: ハローワールド。
+---
+meta:
+  outdated: true
+texts:
+  en: Hello world. 2
+  ja: ハローワールド。
+---
+meta:
+  outdated: true
+# error: the same key in map
+meta:
+texts:
+  en: Hello world. 3
+  ja: ハローワールド。
+---
+texts:
+  en: Hello world. 4
+  # error: invalid yaml
+  ja: [foo](foo)
+---
+meta:
+  unused: true
+texts:
+  en: Hello world. 5
+  # error: Aliased anchor not found
+  ja: **ハローワールド。**
+---
+meta:
+  unused: true
+texts:
+  en: Hello world. 6
+  ja: ハローワールド。
+---
+meta:
+  unused: true
+texts:
+  en: Hello world. 7
+  ja: ハローワールド。

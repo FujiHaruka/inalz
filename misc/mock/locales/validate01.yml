@@ -1,0 +1,37 @@
+texts:
+  en: Hello world. 1
+  ja: ハローワールド。
+---
+meta:
+  outdated: true
+texts:
+  en: Hello world. 2
+  ja: ハローワールド。
+---
+meta:
+  outdated: true
+texts:
+  en: Hello world. 3
+  ja: ハローワールド。
+---
+texts:
+  en: Hello world. 4
+  ja: ハローワールド。
+---
+meta:
+  unused: true
+texts:
+  en: Hello world. 5
+  ja: ハローワールド。
+---
+meta:
+  unused: true
+texts:
+  en: Hello world. 6
+  ja: ハローワールド。
+---
+meta:
+  unused: true
+texts:
+  en: Hello world. 7
+  ja: ハローワールド。

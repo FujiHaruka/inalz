@@ -2,6 +2,7 @@ import os from 'os'
 import { BuildCommand } from '../command/BuildCommand'
 import { Lang } from '../types/InalzConfig'
 import { readFile } from '../util/fsUtil'
+import { InalzConfigDefaultOptions } from '../config/InalzConfig'
 
 describe('BuildCommand', () => {
   const lang: Lang = {
@@ -24,7 +25,7 @@ describe('BuildCommand', () => {
         targetPaths,
         localePath,
       },
-      options: {},
+      options: InalzConfigDefaultOptions,
     }).build()
 
     expect(await readFile(targetPaths.ja)).toBe(await readFile(expectedPath))
@@ -45,7 +46,7 @@ describe('BuildCommand', () => {
         targetPaths,
         localePath,
       },
-      options: {},
+      options: InalzConfigDefaultOptions,
     }).build()
 
     expect(await readFile(targetPaths.ja)).toBe(await readFile(expectedPath))
@@ -60,7 +61,7 @@ describe('BuildCommand', () => {
         targetPaths: {},
         localePath: '',
       },
-      options: {},
+      options: InalzConfigDefaultOptions,
     })
     builder.strict = true
 
