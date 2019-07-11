@@ -27,16 +27,6 @@ export class SyncCommand {
   sourcePath: string
   localePath: string
 
-  static constructOptions = ({
-    lineIgnorePatterns = [],
-    paragraphIgnorePatterns = [],
-  }: Partial<
-    InalzConfigComponent.SyncOptions
-  >): InalzConfigComponent.SyncOptions => ({
-    lineIgnorePatterns,
-    paragraphIgnorePatterns,
-  })
-
   constructor({
     baseDir,
     lang,
@@ -45,7 +35,7 @@ export class SyncCommand {
   }: SingleInalzConfig) {
     this.baseDir = baseDir
     this.lang = lang
-    this.options = SyncCommand.constructOptions(options)
+    this.options = options
     this.sourcePath = sourcePath
     this.localePath = localePath
   }

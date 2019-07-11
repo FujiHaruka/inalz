@@ -6,7 +6,7 @@ export type Lang = {
 export interface InalzConfigInterface {
   lang: Lang
   documents: InalzConfigComponent.Document[]
-  options?: InalzConfigComponent.Options
+  options?: Partial<InalzConfigComponent.Options>
 }
 
 export type ResolvedDocument = {
@@ -36,8 +36,9 @@ export namespace InalzConfigComponent {
   export type SyncOptions = {
     lineIgnorePatterns: string[]
     paragraphIgnorePatterns: string[]
+    documentExtension: string
   }
   export type BuildOptions = {}
 
-  export type Options = Partial<SyncOptions> & Partial<BuildOptions>
+  export type Options = SyncOptions & BuildOptions
 }

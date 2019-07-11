@@ -12,13 +12,19 @@ import { InalzConfigError } from '../util/InalzError'
 import { replaceExt, resolveDocumentPath } from '../util/pathUtil'
 import { IOInalzConfig } from './IOInalzConfig'
 
+const DefaultOptions: InalzConfigComponent.Options = {
+  lineIgnorePatterns: [],
+  paragraphIgnorePatterns: [],
+  documentExtension: '.md',
+}
+
 export class InalzConfig {
   configDir: string
   configPath: string
 
   lang: Lang = null as any
   documents: ResolvedDocument[] = null as any
-  options: InalzConfigComponent.Options = {}
+  options: InalzConfigComponent.Options = DefaultOptions
 
   private constructor(configPath: string) {
     configPath = path.resolve(process.cwd(), configPath)
@@ -36,7 +42,7 @@ export class InalzConfig {
     ))
       .flat()
       .map((document) => resolveDocumentPath(this.configDir, document))
-    this.options = conf.options || {}
+    this.options = { ...this.options, ...(conf.options || {}) }
   }
 
   static async load(configPath: string) {
@@ -132,7 +138,10 @@ export class InalzConfig {
     document: InalzConfigComponent.Document,
   ): Promise<ResolvedDocument[]> {
     const sourceDir = path.resolve(this.configDir, document.source)
-    const pattern = path.resolve(sourceDir, '**/*.md')
+    const pattern = path.resolve(
+      sourceDir,
+      `**/*${this.options.documentExtension}`,
+    )
     const sourcePaths: string[] = await glob(pattern)
     const documents = sourcePaths.map((sourcePath) => ({
       sourcePath,
