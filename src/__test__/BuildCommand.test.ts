@@ -11,12 +11,12 @@ describe('BuildCommand', () => {
   }
 
   it('01', async () => {
-    const sourcePath = 'misc/mock/translator/src01.md'
+    const sourcePath = 'misc/mock/build/src01.md'
     const targetPaths = {
       ja: os.tmpdir() + '/inalz/translation/translation01.md',
     }
-    const localePath = 'misc/mock/translator/locale01.yml'
-    const expectedPath = 'misc/mock/translator/expected01.md'
+    const localePath = 'misc/mock/build/locale01.yml'
+    const expectedPath = 'misc/mock/build/expected01.md'
     await new BuildCommand({
       baseDir: '',
       lang,
@@ -32,12 +32,12 @@ describe('BuildCommand', () => {
   })
 
   it('02: issue #7', async () => {
-    const sourcePath = 'misc/mock/translator/src02.md'
+    const sourcePath = 'misc/mock/build/src02.md'
     const targetPaths = {
       ja: os.tmpdir() + '/inalz/translation/translation02.md',
     }
-    const localePath = 'misc/mock/translator/locale02.yml'
-    const expectedPath = 'misc/mock/translator/expected02.md'
+    const localePath = 'misc/mock/build/locale02.yml'
+    const expectedPath = 'misc/mock/build/expected02.md'
     await new BuildCommand({
       baseDir: '',
       lang,
