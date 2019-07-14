@@ -47,7 +47,6 @@ export class SyncCommand {
       const srcText = await readFile(sourcePath)
       const texts = splitIntoBlockTexts(srcText, {
         lineIgnorePatterns: this.options.lineIgnorePatterns,
-        paragraphIgnorePatterns: this.options.paragraphIgnorePatterns,
       })
 
       const parser = new LocaleItemParser(lang)

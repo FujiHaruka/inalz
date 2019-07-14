@@ -35,8 +35,6 @@ export namespace InalzConfigComponent {
 
   export type SyncOptions = {
     lineIgnorePatterns: string[]
-    // TODO: Remove
-    paragraphIgnorePatterns: string[]
     documentExtension: string
   }
   export type BuildOptions = {

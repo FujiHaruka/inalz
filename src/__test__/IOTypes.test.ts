@@ -52,7 +52,7 @@ describe('IOTypes', () => {
         },
       ],
       options: {
-        paragraphIgnorePatterns: ['^ignore'],
+        lineIgnorePatterns: ['^ignore'],
       },
     }
     {
@@ -61,9 +61,7 @@ describe('IOTypes', () => {
       if (isLeft(validation)) {
         throw new Error()
       }
-      expect(validation.right.options!.paragraphIgnorePatterns).toEqual([
-        '^ignore',
-      ])
+      expect(validation.right.options!.lineIgnorePatterns).toEqual(['^ignore'])
     }
     {
       const config = copy(CONFIG)

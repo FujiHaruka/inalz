@@ -18,7 +18,6 @@ export const IOInalzConfig = t.intersection([
   t.partial({
     options: t.partial({
       lineIgnorePatterns: t.array(t.string),
-      paragraphIgnorePatterns: t.array(t.string),
       documentExtension: t.string,
     }),
   }),

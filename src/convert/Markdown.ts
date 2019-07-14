@@ -1,13 +1,10 @@
 import { flow } from 'fp-ts/lib/function'
-import { EOL } from 'os'
 import { MdParser, MdTreeProcessor } from '../util/mdHelper'
 import { Locale } from '../core/Locale'
-import { BUILTIN_ACTIONS } from '../Constants'
 import { removeIgnoredLine, restoreIgnoredLine } from '../util/ignoreLineHelper'
 
 export type ParseMarkdownTextsOptions = {
   lineIgnorePatterns?: string[]
-  paragraphIgnorePatterns?: string[]
 }
 
 export const splitIntoBlockTexts = (

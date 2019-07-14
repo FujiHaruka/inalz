@@ -15,7 +15,6 @@ import { isLeft } from 'fp-ts/lib/Either'
 
 export const InalzConfigDefaultOptions: InalzConfigComponent.Options = {
   lineIgnorePatterns: [],
-  paragraphIgnorePatterns: [],
   documentExtension: '.md',
 }
 
