@@ -32,7 +32,7 @@ documents:
       zh: dir/to/zh
     locale: dir/to/locale
 options:
-  paragraphIgnorePatterns: "^{{.+}}$"
+  lineIgnorePatterns: "^{{.+}}$"
 ```
 
 ### lang
@@ -60,7 +60,7 @@ options:
 
 `options` フィールドはオプションを記述します。
 
--   `paragraphIgnorePatterns`: source の Markdown ドキュメントをブロック要素に分割したあと、Locale ファイルに取り入れるにあたって無視するパターンを記述します。JavaScript の[正規表現](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)で記述できます。このオプションは、[hugo](https://gohugo.io/) など Markdown ファイルをテンプレートとして使うようなケースで役立ちます。
+-   `lineIgnorePatterns`: source の Markdown ドキュメント内で Locale ファイルに取り込みたくない行を JavaScript の[正規表現](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)で記述します。このパターンにマッチする行は無視されます。このオプションは、[hugo](https://gohugo.io/) など Markdown ファイルをテンプレートとして使うようなケースで役立ちます。
 
 ## Inalz コマンド
 
