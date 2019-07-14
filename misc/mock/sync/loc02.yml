@@ -11,6 +11,10 @@ texts:
   ja: __COPY__
 ---
 texts:
+  en: list item is duplicated
+  ja: __COPY__
+---
+texts:
   en: quote sentence.
   ja: __COPY__
 ---

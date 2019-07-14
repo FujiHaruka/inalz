@@ -50,6 +50,7 @@ describe('SyncCommand', () => {
     const parser = new LocaleItemParser(lang)
     const items = await parser.load(localePath)
     const expected = await parser.load(expectedLocPath)
+    expect(items.length).toBe(expected.length)
     expect(items).toEqual(expected)
   })
 

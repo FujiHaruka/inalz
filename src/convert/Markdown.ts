@@ -1,44 +1,9 @@
 import { flow } from 'fp-ts/lib/function'
-import unified from 'unified'
-import * as Unist from 'unist'
-import { disableInlineTokenizer } from '../util/disableInlineTokenizer'
 import { EOL } from 'os'
+import { MdParser, MdTreeProcessor } from '../util/mdHelper'
+import { Locale } from '../core/Locale'
 
 const HTML_COMMENT_PREFIX = new RegExp('<!--')
-
-const parseMarkdown = (markdown: string) => {
-  return unified()
-    .use(require('remark-parse')) // No type definition
-    .use(disableInlineTokenizer)
-    .parse(markdown)
-}
-
-const compileToTexts = (tree: Unist.Node): string[] => {
-  const { children, type } = tree
-  if (Array.isArray(children)) {
-    return children.flatMap((child: Unist.Node) => compileToTexts(child))
-  } else {
-    switch (type) {
-      case 'text':
-      case 'html':
-        // 複数行のブロックではインデントを考慮する
-        const hasIndent =
-          tree.position && tree.position.indent!.some((n) => n > 1)
-        if (hasIndent) {
-          const indent = tree.position!.indent!
-          const value = (tree.value as string)
-            .split(EOL)
-            .map((line, i) => ''.padStart(indent[i - 1] - 1) + line)
-            .join(EOL)
-          return [value]
-        } else {
-          return [tree.value as string]
-        }
-      default:
-        return []
-    }
-  }
-}
 
 const removeIgnoredLines = (text: string, regs: RegExp[]) =>
   regs.length === 0
@@ -73,8 +38,20 @@ export const splitIntoBlockTexts = (
 
   return flow(
     remove,
-    parseMarkdown,
-    compileToTexts,
+    MdParser.parse,
+    MdTreeProcessor.toBlockTexts,
     filter,
+  )(markdown)
+}
+
+export const replaceMarkdownWithLocale = (
+  markdown: string,
+  locale: Locale,
+  targetLang: string,
+) => {
+  return flow(
+    MdParser.parse,
+    (tree) => MdTreeProcessor.replaceByLocale(tree, locale, targetLang),
+    MdParser.stringify,
   )(markdown)
 }

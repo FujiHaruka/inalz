@@ -12,6 +12,8 @@ describe('mergeLocaleItems', () => {
   const toPlain = (items: LocaleItem[]) => items.map((item) => item.toObject())
   const toInstance = (items: LocaleComponent.Item[]) =>
     items.map((item) => new LocaleItem(lang, item))
+  const filterUsed = (items: LocaleItem[]) =>
+    items.filter((item) => !(item.meta && item.meta.unused))
 
   it('01', () => {
     const prevItems: LocaleItem[] = []
@@ -37,6 +39,7 @@ describe('mergeLocaleItems', () => {
       },
     ])
     const items = mergeLocaleItems(prevItems, nextItems)
+    expect(filterUsed(items).length).toBe(nextItems.length)
     expect(toPlain(items)).toEqual([
       {
         texts: {
@@ -70,6 +73,7 @@ describe('mergeLocaleItems', () => {
     ])
     const nextItems: LocaleItem[] = []
     const items = mergeLocaleItems(prevItems, nextItems)
+    expect(filterUsed(items).length).toBe(nextItems.length)
     expect(toPlain(items)).toEqual([
       {
         meta: {
@@ -122,6 +126,7 @@ describe('mergeLocaleItems', () => {
       },
     ])
     const items = mergeLocaleItems(prevItems, nextItems)
+    expect(filterUsed(items).length).toBe(nextItems.length)
     expect(toPlain(items)).toEqual([
       { texts: { en: 'a', ja: 'あ' } },
       { texts: { en: 'bc', ja: 'い' }, meta: { outdated: true } },
@@ -182,6 +187,7 @@ describe('mergeLocaleItems', () => {
       },
     ])
     const items = mergeLocaleItems(prevItems, nextItems)
+    expect(filterUsed(items).length).toBe(nextItems.length)
     expect(toPlain(items)).toEqual([
       { texts: { en: 'aaab', ja: 'あ' }, meta: { outdated: true } },
       { texts: { en: 'bbbb', ja: 'い' } },
@@ -232,6 +238,7 @@ describe('mergeLocaleItems', () => {
       },
     ])
     const items = mergeLocaleItems(prevItems, nextItems)
+    expect(filterUsed(items).length).toBe(nextItems.length)
     expect(toPlain(items)).toEqual([
       { texts: { en: 'aaab', ja: 'あ' }, meta: { outdated: true } },
       { texts: { en: 'dddx', ja: 'え' }, meta: { outdated: true } },
@@ -318,6 +325,7 @@ describe('mergeLocaleItems', () => {
       },
     ])
     const items = mergeLocaleItems(prevItems, nextItems)
+    expect(filterUsed(items).length).toBe(nextItems.length)
     // console.log(JSON.stringify(toPlain(items)))
     expect(toPlain(items)).toEqual([
       { texts: { en: 'aaab', ja: 'あ' }, meta: { outdated: true } },
