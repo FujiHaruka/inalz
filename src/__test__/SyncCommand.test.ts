@@ -88,7 +88,10 @@ describe('SyncCommand', () => {
       baseDir: '',
       lang,
       document: { sourcePath, localePath, targetPaths: {} },
-      options: InalzConfigDefaultOptions,
+      options: {
+        ...InalzConfigDefaultOptions,
+        lineIgnorePatterns: ['<!--.+-->'],
+      },
     })
     await syncer.sync()
 

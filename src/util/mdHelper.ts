@@ -2,7 +2,6 @@ import unified, { Processor } from 'unified'
 import * as Unist from 'unist'
 import { EOL } from 'os'
 import { copy, bind } from './objectUtil'
-import { InconsistentLocaleFileError } from './InalzError'
 import { Locale } from '../core/Locale'
 import { BUILTIN_ACTIONS } from '../Constants'
 
@@ -46,6 +45,9 @@ export const MdParser = {
     return unified()
       .use(require('remark-stringify'), {
         listItemIndent: '1',
+        fences: true,
+        rule: '-',
+        emphasis: '*',
       })
       .use(DisableInline.disableInlineEscape)
       .stringify(tree)
@@ -103,14 +105,10 @@ export const MdTreeProcessor = bind({
     locale: Locale,
     targetLang: string,
   ): Unist.Node {
+    // TODO: validation の時点でエラーにする
     const items = locale.items.filter(
       (item) => !(item.meta && item.meta.unused),
     )
-    // validation
-    // TODO: 本当は sourceText が一致しているかも見るべき？
-    if (this.countBlock(tree) !== items.length) {
-      throw new InconsistentLocaleFileError()
-    }
     const texts = items.map((item) => item.getText(targetLang)!)
     return this._replace(tree, texts)
   },
@@ -134,8 +132,8 @@ export const MdTreeProcessor = bind({
         case 'text':
         case 'html':
           const newValue = texts.shift()
-          if (!newValue) {
-            throw new Error()
+          if (newValue === undefined) {
+            throw new Error('Failed to shift texts')
           }
           if (newValue === BUILTIN_ACTIONS.COPY) {
             return

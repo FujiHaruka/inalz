@@ -1,4 +1,4 @@
-import { readFile } from '../util/fsUtil'
+import { readFile, writeFile } from '../util/fsUtil'
 import { flow } from 'fp-ts/lib/function'
 import { MdParser, MdTreeProcessor } from '../util/mdHelper'
 
@@ -9,9 +9,8 @@ describe('Markdown helpers', () => {
       flow(
         MdParser.parse,
         MdParser.stringify,
-        MdParser.parse,
       )(markdown),
-    ).toEqual(MdParser.parse(markdown))
+    ).toEqual(markdown)
   })
 
   it('MdTreeProcessor.countBlock', async () => {

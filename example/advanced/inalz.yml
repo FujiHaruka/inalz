@@ -10,5 +10,5 @@ documents:
       zh: docs/zh
     locale: locales
 options:
-  paragraphIgnorePatterns:
+  lineIgnorePatterns:
     - "^{{.+}}$"

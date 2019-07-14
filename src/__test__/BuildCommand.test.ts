@@ -51,20 +51,4 @@ describe('BuildCommand', () => {
 
     expect(await readFile(targetPaths.ja)).toBe(await readFile(expectedPath))
   })
-
-  it('replace method', () => {
-    const builder = new BuildCommand({
-      baseDir: '',
-      lang,
-      document: {
-        sourcePath: 'sourcePath',
-        targetPaths: {},
-        localePath: '',
-      },
-      options: InalzConfigDefaultOptions,
-    })
-    builder.strict = true
-
-    expect(() => builder.replace('hello', 'not matched', '', {})).toThrow()
-  })
 })

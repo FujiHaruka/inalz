@@ -49,13 +49,13 @@ describe('Markdown', () => {
   it('08: comment out', async () => {
     const markdown = await readFile('misc/mock/md/08.md')
     const texts = splitIntoBlockTexts(markdown)
-    expect(texts.length).toBe(1)
+    expect(texts.length).toBe(3)
   })
 
   it('09: ignore patterns', async () => {
     const markdown = await readFile('misc/mock/md/09.md')
     const texts = splitIntoBlockTexts(markdown, {
-      paragraphIgnorePatterns: ['^ignore', '^#\\s'],
+      lineIgnorePatterns: ['^ignore', '^#\\s'],
     })
     expect(texts.length).toBe(2)
   })
