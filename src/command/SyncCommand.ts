@@ -1,6 +1,6 @@
 import { relative } from 'path'
 import { LocaleItemParser } from '../convert/LocaleItemParser'
-import { parseMarkdownTexts } from '../convert/Markdown'
+import { splitIntoBlockTexts } from '../convert/Markdown'
 import { mergeLocaleItems } from '../convert/mergeLocaleItems'
 import { LocaleItem } from '../core/LocaleItem'
 import {
@@ -45,7 +45,7 @@ export class SyncCommand {
 
     try {
       const srcText = await readFile(sourcePath)
-      const texts = parseMarkdownTexts(srcText, {
+      const texts = splitIntoBlockTexts(srcText, {
         lineIgnorePatterns: this.options.lineIgnorePatterns,
         paragraphIgnorePatterns: this.options.paragraphIgnorePatterns,
       })

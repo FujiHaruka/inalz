@@ -1,13 +1,10 @@
-import { uniq } from 'fp-ts/lib/Array'
-import { eqString } from 'fp-ts/lib/Eq'
+import { flow } from 'fp-ts/lib/function'
 import unified from 'unified'
 import * as Unist from 'unist'
 import { disableInlineTokenizer } from '../util/disableInlineTokenizer'
 import { EOL } from 'os'
 
 const HTML_COMMENT_PREFIX = new RegExp('<!--')
-
-const uniqStr = uniq(eqString)
 
 const parseMarkdown = (markdown: string) => {
   return unified()
@@ -43,7 +40,7 @@ const compileToTexts = (tree: Unist.Node): string[] => {
   }
 }
 
-const trimMarkdown = (text: string, regs: RegExp[]) =>
+const removeIgnoredLines = (text: string, regs: RegExp[]) =>
   regs.length === 0
     ? text
     : text
@@ -56,10 +53,10 @@ export type ParseMarkdownTextsOptions = {
   paragraphIgnorePatterns?: string[]
 }
 
-export const parseMarkdownTexts = (
+export const splitIntoBlockTexts = (
   markdown: string,
   options: ParseMarkdownTextsOptions = {},
-) => {
+): string[] => {
   const { paragraphIgnorePatterns = [], lineIgnorePatterns = [] } = options
   const lineIgnoreRegExps = lineIgnorePatterns.map(
     (pattern) => new RegExp(pattern),
@@ -67,12 +64,17 @@ export const parseMarkdownTexts = (
   const paragraphIgnoreRegExps = [HTML_COMMENT_PREFIX].concat(
     paragraphIgnorePatterns.map((pattern) => new RegExp(pattern)),
   )
+  const remove = (markdown: string) =>
+    removeIgnoredLines(markdown, lineIgnoreRegExps)
+  const filter = (texts: string[]) =>
+    texts.filter((text) =>
+      paragraphIgnoreRegExps.every((reg) => !reg.test(text)),
+    )
 
-  const trimmed = trimMarkdown(markdown, lineIgnoreRegExps)
-  const tree = parseMarkdown(trimmed)
-  const texts = uniqStr(compileToTexts(tree)) // ここで重複を除外
-  const filtered = texts.filter((text) =>
-    paragraphIgnoreRegExps.every((reg) => !reg.test(text)),
-  )
-  return filtered
+  return flow(
+    remove,
+    parseMarkdown,
+    compileToTexts,
+    filter,
+  )(markdown)
 }
