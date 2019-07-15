@@ -18,7 +18,6 @@ export const groupByChangeStatus = <T extends UniqKey>(
     ]
   }
 
-  // NOTE: items が一意でないと index が -1 以外単調増加になることを保証できない
   const findPrevIndex = indexFinder(prevItems)
 
   // Has the same length as nextItems

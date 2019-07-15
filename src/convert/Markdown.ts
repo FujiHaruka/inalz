@@ -36,6 +36,7 @@ export const replaceMarkdownWithLocale = (
 
   return flow(
     MdParser.parse,
+    (tree) => MdTreeProcessor.validateReplaceByLocale(tree, locale),
     (tree) => MdTreeProcessor.replaceByLocale(tree, locale, targetLang),
     MdParser.stringify,
     restore,

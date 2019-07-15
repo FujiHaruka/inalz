@@ -15,11 +15,19 @@ export const switchStatus = <T>(
   }
 }
 
+/**
+ * findIndex() 関数を返す。
+ * 内部的に副作用がある。同じ key をもつ item が複数あるとき、次の index を探すようにする
+ * そのため、同一 key による findIndx(key) を複数回実行すると返り値が変わり、最終的に undefined になる
+ */
 export const indexFinder = (items: UniqKey[]) => {
-  const entries = items.map(({ key }, index) => [key, index] as const)
-  const keyIndexes = Object.fromEntries(entries) as { [key: string]: number }
+  const keyIndexes = Object.fromEntries(
+    items.map(({ key }) => [key, [] as number[]]),
+  )
+  items.forEach(({ key }, index) => keyIndexes[key].push(index))
   return function findIndex(key: string) {
-    return Number.isFinite(keyIndexes[key]) ? keyIndexes[key] : -1
+    const index = (keyIndexes[key] || []).shift()
+    return index === undefined ? -1 : index
   }
 }
 

@@ -36,8 +36,8 @@ export class BuildFailedError extends InalzErrorBase {
   name = 'BuildFailedError'
 }
 
-export class InconsistentLocaleFileError extends InalzErrorBase {
-  name = 'InconsistentLocaleFileError'
+export class InconsistentSourceTextError extends InalzErrorBase {
+  name = 'InconsistentSourceTextError'
 }
 
 export const handleError = (error: InalzErrorBase) => {

@@ -4,6 +4,22 @@ import { EOL } from 'os'
 import { copy, bind } from './objectUtil'
 import { Locale } from '../core/Locale'
 import { BUILTIN_ACTIONS } from '../Constants'
+import { InconsistentSourceTextError } from './InalzError'
+
+const getStringValue = (node: Unist.Node) => {
+  // 複数行のブロックではインデントを考慮する
+  const hasIndent = node.position && node.position.indent!.some((n) => n > 1)
+  if (hasIndent) {
+    const indent = node.position!.indent!
+    const value = (node.value as string)
+      .split(EOL)
+      .map((line, i) => ''.padStart(indent[i - 1] - 1) + line)
+      .join(EOL)
+    return value
+  } else {
+    return node.value as string
+  }
+}
 
 /**
  * remark で markdown の inline を無効にする
@@ -63,19 +79,7 @@ export const MdTreeProcessor = bind({
       switch (type) {
         case 'text':
         case 'html':
-          // 複数行のブロックではインデントを考慮する
-          const hasIndent =
-            tree.position && tree.position.indent!.some((n) => n > 1)
-          if (hasIndent) {
-            const indent = tree.position!.indent!
-            const value = (tree.value as string)
-              .split(EOL)
-              .map((line, i) => ''.padStart(indent[i - 1] - 1) + line)
-              .join(EOL)
-            return [value]
-          } else {
-            return [tree.value as string]
-          }
+          return [getStringValue(tree)]
         default:
           return []
       }
@@ -105,12 +109,20 @@ export const MdTreeProcessor = bind({
     locale: Locale,
     targetLang: string,
   ): Unist.Node {
-    // TODO: validation の時点でエラーにする
     const items = locale.items.filter(
       (item) => !(item.meta && item.meta.unused),
     )
     const texts = items.map((item) => item.getText(targetLang)!)
     return this._replace(tree, texts)
+  },
+
+  validateReplaceByLocale(tree: Unist.Node, locale: Locale): Unist.Node {
+    const items = locale.items.filter(
+      (item) => !(item.meta && item.meta.unused),
+    )
+    const texts = items.map((item) => item.getSourceText())
+    this._validateReplaceMutably(tree, texts)
+    return tree
   },
 
   /**
@@ -139,6 +151,27 @@ export const MdTreeProcessor = bind({
             return
           }
           tree.value = newValue
+          return
+        default:
+          return
+      }
+    }
+  },
+
+  _validateReplaceMutably(tree: Unist.Node, texts: string[]) {
+    const { children, type } = tree
+    if (Array.isArray(children)) {
+      children.forEach((child) => this._validateReplaceMutably(child, texts))
+    } else {
+      switch (type) {
+        case 'text':
+        case 'html':
+          const givenValue = texts.shift()
+          const value = getStringValue(tree)
+          if (value !== givenValue) {
+            throw new InconsistentSourceTextError(`source in document: ${value}
+source in locale: ${givenValue}`)
+          }
           return
         default:
           return
