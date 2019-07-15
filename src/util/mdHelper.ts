@@ -4,7 +4,10 @@ import { EOL } from 'os'
 import { copy, bind } from './objectUtil'
 import { Locale } from '../core/Locale'
 import { BUILTIN_ACTIONS } from '../Constants'
-import { InconsistentSourceTextError } from './InalzError'
+import {
+  InconsistentSourceTextError,
+  InvalidLocaleItemLengthError,
+} from './InalzError'
 
 const getStringValue = (node: Unist.Node) => {
   // 複数行のブロックではインデントを考慮する
@@ -120,6 +123,10 @@ export const MdTreeProcessor = bind({
     const items = locale.items.filter(
       (item) => !(item.meta && item.meta.unused),
     )
+    const count = this.countBlock(tree)
+    if (count !== items.length) {
+      throw new InvalidLocaleItemLengthError()
+    }
     const texts = items.map((item) => item.getSourceText())
     this._validateReplaceMutably(tree, texts)
     return tree
@@ -169,8 +176,9 @@ export const MdTreeProcessor = bind({
           const givenValue = texts.shift()
           const value = getStringValue(tree)
           if (value !== givenValue) {
-            throw new InconsistentSourceTextError(`source in document: ${value}
-source in locale: ${givenValue}`)
+            throw new InconsistentSourceTextError(`
+source text in document: ${value}
+source text in locale: ${givenValue}`)
           }
           return
         default:

@@ -156,6 +156,12 @@ export const printValidateResult = (results: ValidateResult[]) => {
   }
 }
 
+export const printValidationFailed = () => {
+  error(
+    'Validation failed. You must resolve merging after `sync`. You can see more detail with `inalz validate`',
+  )
+}
+
 export const printError = (err: Error) => {
   const message = `[${err.name}] ${err.message}`
   error(message)

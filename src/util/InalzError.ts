@@ -36,6 +36,10 @@ export class BuildFailedError extends InalzErrorBase {
   name = 'BuildFailedError'
 }
 
+export class InvalidLocaleItemLengthError extends InalzErrorBase {
+  name = 'InvalidLocaleItemLengthError'
+}
+
 export class InconsistentSourceTextError extends InalzErrorBase {
   name = 'InconsistentSourceTextError'
 }

@@ -8,8 +8,9 @@ import {
   printSyncResult,
   printBuildResult,
   printValidateResult,
+  printValidationFailed,
 } from './util/logUtil'
-import { ValidateCommand } from './command/ValidateCommand'
+import { ValidateCommand, ValidateResult } from './command/ValidateCommand'
 
 interface BaseOptions {
   cwd: string
@@ -43,6 +44,16 @@ export const CLIActions = {
   async build(options: BuildOptions) {
     const { cwd } = options
     const config = await InalzConfig.findAndLoad(cwd)
+    const validationResults = await Promise.all<ValidateResult>(
+      config.each((config) => new ValidateCommand(config).validate()),
+    )
+    const validationFailed = validationResults.some(
+      ({ unused, outdated, err }) => Boolean(unused > 0 || outdated > 0 || err),
+    )
+    if (validationFailed) {
+      printValidationFailed()
+      process.exit(1)
+    }
     const results = (await Promise.all<BuildResult[]>(
       config.each((config) => new BuildCommand(config).build()),
     )).flat()
@@ -55,7 +66,7 @@ export const CLIActions = {
   async validate(options: ValidateOptions) {
     const { cwd } = options
     const config = await InalzConfig.findAndLoad(cwd)
-    const results = await Promise.all(
+    const results = await Promise.all<ValidateResult>(
       config.each((config) => new ValidateCommand(config).validate()),
     )
     printValidateResult(results)
