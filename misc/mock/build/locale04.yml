@@ -1,0 +1,23 @@
+texts:
+  en: apple 1
+  ja: アップル 1
+---
+texts:
+  en: apple 2
+  ja: __COPY__
+---
+texts:
+  en: apple 3
+  ja: __COPY__
+---
+texts:
+  en: apple 3
+  ja: アップル 3
+---
+texts:
+  en: apple 4
+  ja: __COPY__
+---
+texts:
+  en: apple 3
+  ja: りんご 3

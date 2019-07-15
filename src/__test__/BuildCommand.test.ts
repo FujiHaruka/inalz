@@ -59,7 +59,6 @@ describe('BuildCommand', () => {
     const targetPaths = {
       ja: os.tmpdir() + '/inalz/translation/translation03.md',
     }
-    console.log(targetPaths)
     const localePath = 'misc/mock/build/locale03.yml'
     const expectedPath = 'misc/mock/build/expected03.md'
     const results = await new BuildCommand({
@@ -76,6 +75,29 @@ describe('BuildCommand', () => {
           '^\\s*{% \\w+ %}\\s*$',
           '^{% sample lang="yaml" %}$',
         ],
+      },
+    }).build()
+    expect(results.filter(({ err }) => Boolean(err))).toEqual([])
+    expect(await readFile(targetPaths.ja)).toBe(await readFile(expectedPath))
+  })
+
+  it('04', async () => {
+    const sourcePath = 'misc/mock/build/src04.md'
+    const targetPaths = {
+      ja: os.tmpdir() + '/inalz/translation/translation04.md',
+    }
+    const localePath = 'misc/mock/build/locale04.yml'
+    const expectedPath = 'misc/mock/build/expected04.md'
+    const results = await new BuildCommand({
+      baseDir: '',
+      lang,
+      document: {
+        sourcePath,
+        targetPaths,
+        localePath,
+      },
+      options: {
+        ...InalzConfigDefaultOptions,
       },
     }).build()
     expect(results.filter(({ err }) => Boolean(err))).toEqual([])

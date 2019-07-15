@@ -127,4 +127,22 @@ describe('SyncCommand', () => {
     const expected = await parser.load(expectedLocPath)
     expect(items).toEqual(expected)
   })
+
+  it('06: merge 3 (add duplicated paragraph)', async () => {
+    const sourcePath = 'misc/mock/sync/src06.md'
+    const workingLocPath = 'misc/mock/sync/loc06.yml'
+    const localePath = path.join(os.tmpdir(), 'loc06.yml')
+
+    await rmIfExists(localePath)
+    await fs.promises.copyFile(workingLocPath, localePath)
+    const syncer = new SyncCommand({
+      baseDir: '',
+      lang,
+      document: { sourcePath, localePath, targetPaths: {} },
+      options: InalzConfigDefaultOptions,
+    })
+    const result = await syncer.sync()
+    expect(result.err).toBeUndefined()
+    expect(result.status).toBe('unchanged')
+  })
 })
