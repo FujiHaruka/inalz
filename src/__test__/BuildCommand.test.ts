@@ -17,7 +17,7 @@ describe('BuildCommand', () => {
     }
     const localePath = 'misc/mock/build/locale01.yml'
     const expectedPath = 'misc/mock/build/expected01.md'
-    await new BuildCommand({
+    const results = await new BuildCommand({
       baseDir: '',
       lang,
       document: {
@@ -28,6 +28,7 @@ describe('BuildCommand', () => {
       options: InalzConfigDefaultOptions,
     }).build()
 
+    expect(results.filter(({ err }) => Boolean(err))).toEqual([])
     expect(await readFile(targetPaths.ja)).toBe(await readFile(expectedPath))
   })
 
@@ -38,7 +39,7 @@ describe('BuildCommand', () => {
     }
     const localePath = 'misc/mock/build/locale02.yml'
     const expectedPath = 'misc/mock/build/expected02.md'
-    await new BuildCommand({
+    const results = await new BuildCommand({
       baseDir: '',
       lang,
       document: {
@@ -49,6 +50,35 @@ describe('BuildCommand', () => {
       options: InalzConfigDefaultOptions,
     }).build()
 
+    expect(results.filter(({ err }) => Boolean(err))).toEqual([])
+    expect(await readFile(targetPaths.ja)).toBe(await readFile(expectedPath))
+  })
+
+  it('03', async () => {
+    const sourcePath = 'misc/mock/build/src03.md'
+    const targetPaths = {
+      ja: os.tmpdir() + '/inalz/translation/translation03.md',
+    }
+    console.log(targetPaths)
+    const localePath = 'misc/mock/build/locale03.yml'
+    const expectedPath = 'misc/mock/build/expected03.md'
+    const results = await new BuildCommand({
+      baseDir: '',
+      lang,
+      document: {
+        sourcePath,
+        targetPaths,
+        localePath,
+      },
+      options: {
+        ...InalzConfigDefaultOptions,
+        lineIgnorePatterns: [
+          '^\\s*{% \\w+ %}\\s*$',
+          '^{% sample lang="yaml" %}$',
+        ],
+      },
+    }).build()
+    expect(results.filter(({ err }) => Boolean(err))).toEqual([])
     expect(await readFile(targetPaths.ja)).toBe(await readFile(expectedPath))
   })
 })

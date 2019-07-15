@@ -1,0 +1,249 @@
+texts:
+  en: >-
+    {% panel style="success", title="Feedback and Contributing" %}
+
+    **Provide feedback on new kubectl docs at the [survey](https://www.surveymonkey.com/r/JH35X82)**
+  ja: __COPY__
+---
+texts:
+  en: >-
+    See [CONTRIBUTING](https://github.com/kubernetes/kubectl/blob/master/docs/book/CONTRIBUTING.md) for
+
+    instructions on filing/fixing issues and adding new content.
+  ja: ""
+---
+texts:
+  en: '{% panel style="info", title="TL;DR" %}'
+  ja: __COPY__
+---
+texts:
+  en: Kubectl is the Kubernetes cli
+  ja: Kubectl は Kubernetes の CLI
+---
+texts:
+  en: Kubectl provides a swiss army knife of functionality for working with Kubernetes clusters
+  ja: Kubectl は Kubernetes クラスタを扱うための十徳ナイフ
+---
+texts:
+  en: Kubectl may be used to deploy and manage applications on Kubernetes
+  ja: Kubectl は Kubernetes 上のアプリケーションのデプロイと管理に使う
+---
+texts:
+  en: Kubectl may be used for scripting and building higher-level frameworks
+  ja: Kubectl はより高レベルのフレームワークを記述・構築するために使うこともできる
+---
+texts:
+  en: Kubectl
+  ja: __COPY__
+---
+texts:
+  en: Kubectl is the Kubernetes cli version of a swiss army knife, and can do many things.
+  ja: Kubectl は Kubenetes の CLI バージョンで、多くの仕事ができる十徳ナイフです。
+---
+texts:
+  en: >-
+    While this Book is focused on using Kubectl to declaratively manage Applications in Kubernetes, it
+
+    also covers other Kubectl functions.
+  ja: この本は、Kubectl を使って Kubernetes 内のアプリケーションを宣言的に管理することにフォーカスしていますが、Kubectl の他の機能も網羅しています。
+---
+texts:
+  en: Command Families
+  ja: コマンドの分類
+---
+texts:
+  en: "Most Kubectl commands typically fall into one of a few categories:"
+  ja: Kubectl コマンドは一般的に以下のカテゴリの一つに分類されます。
+---
+texts:
+  en: Type
+  ja: 種類
+---
+texts:
+  en: Used For
+  ja: 用途
+---
+texts:
+  en: Description
+  ja: 説明
+---
+texts:
+  en: Declarative Resource Management
+  ja: 宣言的リソース管理
+---
+texts:
+  en: Deployment and Operations (e.g. GitOps)
+  ja: デプロイと (GitOps のような) オペレーション
+---
+texts:
+  en: Declaratively manage Kubernetes Workloads using Resource Config
+  ja: リソース設定を使い Kubernetes ワークロードを宣言的に管理する
+---
+texts:
+  en: Imperative Resource Management
+  ja: 命令的リソース管理
+---
+texts:
+  en: Development Only
+  ja: デプロイのみ
+---
+texts:
+  en: Run commands to manage Kubernetes Workloads using Command Line arguments and flags
+  ja: コマンドラインに引数とフラグを与えて Kubernetes ワークロードを管理するコマンドを実行する
+---
+texts:
+  en: Printing Workload State
+  ja: ワークロードの状態を表示
+---
+texts:
+  en: Debugging
+  ja: デバッグ
+---
+texts:
+  en: Print information about Workloads
+  ja: ワークロードについての情報を表示する
+---
+texts:
+  en: Interacting with Containers
+  ja: コンテナの相互作用
+---
+texts:
+  en: Debugging
+  ja: __COPY__
+---
+texts:
+  en: Exec, Attach, Cp, Logs
+  ja: Exec、Attach、Cp、Logs
+---
+texts:
+  en: Cluster Management
+  ja: クラスタ管理
+---
+texts:
+  en: Cluster Ops
+  ja: クラスタ Ops
+---
+texts:
+  en: Drain and Cordon Nodes
+  ja: __COPY__
+---
+texts:
+  en: Declarative Application Management
+  ja: 宣言的なアプリケーション管理
+---
+texts:
+  en: >-
+    The preferred approach for managing Resources is through
+
+    declarative files called Resource Config used with the Kubectl *Apply* command.
+
+    This command reads a local (or remote) file structure and modifies cluster state to
+
+    reflect the declared intent.
+  ja: リソースを管理する方法は、リソース設定と呼ばれる宣言的なファイルを置き、Kubectl **Apply** コマンドで管理するのが推奨方法です。このコマンドはローカル (またはリモート) にあるファイル群を読み込み、そこに宣言された望ましい状態に合わせてクラスタの状態を変更します。
+---
+texts:
+  en: >-
+    {% panel style="info", title="Apply" %}
+
+    Apply is the preferred mechanism for managing Resources in a Kubernetes cluster.
+  ja: >-
+    {% panel style="info", title="Apply" %}
+
+    Apply は Kubernetes のリソースを管理するための推奨方法です。
+---
+texts:
+  en: Printing state about Workloads
+  ja: ワークロードの状態を表示
+---
+texts:
+  en: Users will need to view Workload state.
+  ja: ワークロードの状態を確認する必要があるときに使用します。
+---
+texts:
+  en: Printing summarize state and information about Resources
+  ja: リソースの状態とその情報を要約して表示する
+---
+texts:
+  en: Printing complete state and information about Resources
+  ja: リソースの状態とその情報を完全に表示する
+---
+texts:
+  en: Printing specific fields from Resources
+  ja: リソースから特定のフィールドを表示する
+---
+texts:
+  en: Query Resources matching labels
+  ja: ラベルにマッチするリソースを検索する
+---
+texts:
+  en: Debugging Workloads
+  ja: ワークロードのデバッグ
+---
+texts:
+  en: "Kubectl supports debugging by providing commands for:"
+  ja: Kubectl はデバッグをサポートするために以下のようなコマンドを提供します。
+---
+texts:
+  en: Printing Container logs
+  ja: コンテナのログを表示する
+---
+texts:
+  en: Printing cluster events
+  ja: クラスタのイベントを表示する
+---
+texts:
+  en: Exec or attaching to a Container
+  ja: コンテナに対して Exec やアタッチを実行する
+---
+texts:
+  en: Copying files from Containers in the cluster to a user's filesystem
+  ja: クラスタ内のコンテナにあるファイルをユーザーのファイルシステムにコピーする
+---
+texts:
+  en: Cluster Management
+  ja: __COPY__
+---
+texts:
+  en: >-
+    On occasion, users may need to perform operations to the Nodes of cluster.  Kubectl supports
+
+    commands to drain Workloads from a Node so that it can be decommission or debugged.
+  ja: 時には、クラスタの Node に何らかの操作を実行したくなることがあります。Kubectl は Node からワークロードをドレイン？するコマンドをサポートしています。それを使うと、ワークロードを停止したりデバッグしたりできます。
+---
+texts:
+  en: Porcelain
+  ja: 命令的なコマンド
+---
+texts:
+  en: >-
+    Users may find using Resource Config overly verbose for *Development* and prefer to work with
+
+    the cluster *imperatively* with a shell-like workflow.  Kubectl offers porcelain commands for
+
+    generating and modifying Resources.
+  ja: リソース設定のファイルを書くのは**開発**時には冗長にすぎると感じる人がいるかもしれません。そういうときには、シェルのようなワークフローでクラスタを**命令的**に扱いたくなります。Kubectl はリソースを生成・変更するためのユーザーフレンドリーなコマンドを提供しています。
+---
+texts:
+  en: Generating + creating Resources such as Deployments, StatefulSets, Services, ConfigMaps, etc
+  ja: Deployment、StatefulSet、Service、ConfigMap などのリソースを生成・作成する
+---
+texts:
+  en: Setting fields on Resources
+  ja: リソースにフィールドを設定する
+---
+texts:
+  en: Editing (live) Resources in a text editor
+  ja: テキストエディタでリソースを (稼働させたまま) 編集する
+---
+texts:
+  en: >-
+    {% panel style="danger", title="Porcelain For Dev Only" %}
+
+    Porcelain commands are time saving for experimenting with workloads in a dev cluster, but shouldn't
+
+    be used for production.
+  ja: >-
+    {% panel style="danger", title="開発用" %}
+
+    命令的なコマンドはユーザーフレンドリーであるため開発用クラスタ内でワークロードを試行錯誤する上で時間の節約になりますが、本番で使うべきではありません。
