@@ -1,4 +1,7 @@
-import { removeIgnoredLine, restoreIgnoredLine } from '../util/ignoreLineUtil'
+import {
+  replaceIgnoringPatterns,
+  restoreIgnoredLines,
+} from '../util/ignoreLineUtil'
 import { EOL } from 'os'
 
 describe('ignoreLineHelper', () => {
@@ -17,8 +20,8 @@ describe('ignoreLineHelper', () => {
       IGNORE,
       IGNORE,
     ].join(EOL)
-    const [removed, lines] = removeIgnoredLine(original, regs)
-    const restored = restoreIgnoredLine(removed, lines)
+    const [removed, lines] = replaceIgnoringPatterns(original, regs)
+    const restored = restoreIgnoredLines(removed, lines)
     expect(restored).toBe(original)
   })
 
@@ -35,8 +38,8 @@ describe('ignoreLineHelper', () => {
       IGNORE,
       IGNORE,
     ].join(EOL)
-    const [removed, lines] = removeIgnoredLine(original, regs)
-    const restored = restoreIgnoredLine(removed, lines)
+    const [removed, lines] = replaceIgnoringPatterns(original, regs)
+    const restored = restoreIgnoredLines(removed, lines)
     expect(restored).toBe(original)
   })
 })

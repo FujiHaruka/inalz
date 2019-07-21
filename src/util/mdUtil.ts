@@ -9,6 +9,8 @@ import {
   InvalidLocaleItemLengthError,
 } from './InalzError'
 
+const IGNORE = BUILTIN_ACTIONS.IGNORE.slice(2)
+
 const getStringValue = (node: Unist.Node) => {
   // 複数行のブロックではインデントを考慮する
   const hasIndent = node.position && node.position.indent!.some((n) => n > 1)
@@ -82,7 +84,11 @@ export const MdTreeProcessor = bind({
       switch (type) {
         case 'text':
         case 'html':
-          return [getStringValue(tree)]
+          if (tree.value === IGNORE) {
+            return []
+          }
+          const value = getStringValue(tree)
+          return [value]
         default:
           return []
       }
@@ -100,6 +106,9 @@ export const MdTreeProcessor = bind({
       switch (type) {
         case 'text':
         case 'html':
+          if (tree.value === IGNORE) {
+            return 0
+          }
           return 1
         default:
           return 0
@@ -150,6 +159,9 @@ export const MdTreeProcessor = bind({
       switch (type) {
         case 'text':
         case 'html':
+          if (tree.value === IGNORE) {
+            return
+          }
           const newValue = texts.shift()
           if (newValue === undefined) {
             throw new Error('Failed to shift texts')
@@ -173,8 +185,11 @@ export const MdTreeProcessor = bind({
       switch (type) {
         case 'text':
         case 'html':
-          const givenValue = texts.shift()
+          if (tree.value === IGNORE) {
+            return
+          }
           const value = getStringValue(tree)
+          const givenValue = texts.shift()
           if (value !== givenValue) {
             throw new InconsistentSourceTextError(`
 source text in document: ${value}

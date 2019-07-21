@@ -1,7 +1,10 @@
 import { flow } from 'fp-ts/lib/function'
 import { MdParser, MdTreeProcessor } from '../util/mdUtil'
 import { Locale } from '../core/Locale'
-import { removeIgnoredLine, restoreIgnoredLine } from '../util/ignoreLineUtil'
+import {
+  replaceIgnoringPatterns,
+  restoreIgnoredLines,
+} from '../util/ignoreLineUtil'
 
 export type ParseMarkdownTextsOptions = {
   lineIgnorePatterns?: string[]
@@ -14,7 +17,7 @@ export const splitIntoBlockTexts = (
   const { lineIgnorePatterns = [] } = options
   const ignoringRegs = lineIgnorePatterns.map((pattern) => new RegExp(pattern))
   const remove = (markdown: string) =>
-    removeIgnoredLine(markdown, ignoringRegs)[0]
+    replaceIgnoringPatterns(markdown, ignoringRegs)[0]
 
   return flow(
     remove,
@@ -31,8 +34,8 @@ export const replaceMarkdownWithLocale = (
 ) => {
   const { lineIgnorePatterns = [] } = options
   const ignoringRegs = lineIgnorePatterns.map((pattern) => new RegExp(pattern))
-  const [text, lines] = removeIgnoredLine(markdown, ignoringRegs)
-  const restore = (markdown: string) => restoreIgnoredLine(markdown, lines)
+  const [text, lines] = replaceIgnoringPatterns(markdown, ignoringRegs)
+  const restore = (markdown: string) => restoreIgnoredLines(markdown, lines)
 
   return flow(
     MdParser.parse,
