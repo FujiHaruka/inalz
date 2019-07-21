@@ -1,6 +1,6 @@
 import { readFile, writeFile } from '../util/fsUtil'
 import { flow } from 'fp-ts/lib/function'
-import { MdParser, MdTreeProcessor } from '../util/mdHelper'
+import { MdParser, MdTreeProcessor } from '../util/mdUtil'
 
 describe('Markdown helpers', () => {
   it('MdParser parse / stringify', async () => {

@@ -1,7 +1,7 @@
 import { flow } from 'fp-ts/lib/function'
-import { MdParser, MdTreeProcessor } from '../util/mdHelper'
+import { MdParser, MdTreeProcessor } from '../util/mdUtil'
 import { Locale } from '../core/Locale'
-import { removeIgnoredLine, restoreIgnoredLine } from '../util/ignoreLineHelper'
+import { removeIgnoredLine, restoreIgnoredLine } from '../util/ignoreLineUtil'
 
 export type ParseMarkdownTextsOptions = {
   lineIgnorePatterns?: string[]

@@ -1,4 +1,4 @@
-import { removeIgnoredLine, restoreIgnoredLine } from '../util/ignoreLineHelper'
+import { removeIgnoredLine, restoreIgnoredLine } from '../util/ignoreLineUtil'
 import { EOL } from 'os'
 
 describe('ignoreLineHelper', () => {
