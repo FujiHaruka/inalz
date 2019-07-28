@@ -58,7 +58,10 @@ export class BuildCommand {
           markdown,
           locale,
           targetLang,
-          { lineIgnorePatterns: this.options.lineIgnorePatterns },
+          {
+            lineIgnorePatterns: this.options.lineIgnorePatterns,
+            markdownOptions: this.options.markdownOptions,
+          },
         )
         const alreadyExists = await fileExists(targetPath)
         let status: BuildResult['status'] = 'created'

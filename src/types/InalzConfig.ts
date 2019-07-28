@@ -1,3 +1,5 @@
+import { RemarkStringifyOptions } from 'remark-stringify/types'
+
 export type Lang = {
   source: string
   targets: string[]
@@ -39,6 +41,7 @@ export namespace InalzConfigComponent {
   }
   export type BuildOptions = {
     lineIgnorePatterns: string[]
+    markdownOptions: Partial<RemarkStringifyOptions>
   }
 
   export type Options = SyncOptions & BuildOptions

@@ -1,6 +1,7 @@
 import unified, { Processor } from 'unified'
 import * as Unist from 'unist'
 import { EOL } from 'os'
+import { RemarkStringifyOptions } from 'remark-stringify/types'
 import { copy, bind } from './objectUtil'
 import { Locale } from '../core/Locale'
 import { BUILTIN_ACTIONS } from '../Constants'
@@ -58,17 +59,21 @@ const DisableInline = {
 export const MdParser = {
   parse(text: string): Unist.Node {
     return unified()
-      .use(require('remark-parse')) // No type definition
+      .use(require('remark-parse'))
       .use(DisableInline.disableInlineTokenizer)
       .parse(text)
   },
-  stringify(tree: Unist.Node): string {
+  stringify(
+    tree: Unist.Node,
+    options: Partial<RemarkStringifyOptions> = {},
+  ): string {
     return unified()
       .use(require('remark-stringify'), {
         listItemIndent: '1',
         fences: true,
         rule: '-',
         emphasis: '*',
+        ...options,
       })
       .use(DisableInline.disableInlineEscape)
       .stringify(tree)

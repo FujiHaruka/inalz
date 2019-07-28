@@ -60,4 +60,10 @@ describe('InalzConfig', () => {
     const config = YAML.parse(yaml)
     expect(() => InalzConfig.validate(config)).toThrow()
   })
+
+  it('08: markdown options', async () => {
+    const path = 'misc/mock/config/inalz.08.yml'
+    const config = await InalzConfig.load(path)
+    expect(config.options.markdownOptions.gfm).toBe(false)
+  })
 })

@@ -1,4 +1,5 @@
 import { flow } from 'fp-ts/lib/function'
+import { RemarkStringifyOptions } from 'remark-stringify/types'
 import { MdParser, MdTreeProcessor } from '../util/mdUtil'
 import { Locale } from '../core/Locale'
 import {
@@ -6,13 +7,9 @@ import {
   restoreIgnoredLines,
 } from '../util/ignoreLineUtil'
 
-export type ParseMarkdownTextsOptions = {
-  lineIgnorePatterns?: string[]
-}
-
 export const splitIntoBlockTexts = (
   markdown: string,
-  options: ParseMarkdownTextsOptions = {},
+  options: { lineIgnorePatterns?: string[] } = {},
 ): string[] => {
   const { lineIgnorePatterns = [] } = options
   const ignoringRegs = lineIgnorePatterns.map((pattern) => new RegExp(pattern))
@@ -30,9 +27,12 @@ export const replaceMarkdownWithLocale = (
   markdown: string,
   locale: Locale,
   targetLang: string,
-  options: ParseMarkdownTextsOptions = {},
+  options: {
+    lineIgnorePatterns?: string[]
+    markdownOptions?: Partial<RemarkStringifyOptions>
+  } = {},
 ) => {
-  const { lineIgnorePatterns = [] } = options
+  const { lineIgnorePatterns = [], markdownOptions = {} } = options
   const ignoringRegs = lineIgnorePatterns.map((pattern) => new RegExp(pattern))
   const [text, lines] = replaceIgnoringPatterns(markdown, ignoringRegs)
   const restore = (markdown: string) => restoreIgnoredLines(markdown, lines)
@@ -41,7 +41,7 @@ export const replaceMarkdownWithLocale = (
     MdParser.parse,
     (tree) => MdTreeProcessor.validateReplaceByLocale(tree, locale),
     (tree) => MdTreeProcessor.replaceByLocale(tree, locale, targetLang),
-    MdParser.stringify,
+    (tree) => MdParser.stringify(tree, markdownOptions),
     restore,
   )(text)
 }

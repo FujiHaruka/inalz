@@ -1,0 +1,8 @@
+lang:
+  source: en
+  targets:
+    - ja
+documents: []
+options:
+  markdownOptions:
+    gfm: false
