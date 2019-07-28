@@ -166,3 +166,7 @@ export const printError = (err: Error) => {
   const message = `[${err.name}] ${err.message}`
   error(message)
 }
+
+export const printWarning = (message: string) => {
+  console.warn(chalk.yellowBright(message))
+}

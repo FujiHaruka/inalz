@@ -8,7 +8,5 @@ documents:
       ja: pathMode/doc_ja.md
     locale: pathMode/locale.yml
 options:
-  paragraphIgnorePatterns:
-    - "^\\[!\\["
   lineIgnorePatterns:
     - "^apple"

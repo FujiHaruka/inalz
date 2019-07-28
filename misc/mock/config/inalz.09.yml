@@ -1,0 +1,14 @@
+lang:
+  source: en
+  targets:
+    - ja
+  # additional
+  foo: 1
+documents: []
+options:
+  # missspelled
+  markdownOptioning:
+    gfm: false
+# additional
+foo: 1
+bar: 2

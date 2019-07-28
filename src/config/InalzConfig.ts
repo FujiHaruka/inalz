@@ -12,6 +12,8 @@ import { InalzConfigError } from '../util/InalzError'
 import { replaceExt, resolveDocumentPath } from '../util/pathUtil'
 import { IOInalzConfig } from './IOInalzConfig'
 import { isLeft } from 'fp-ts/lib/Either'
+import { deepEquals } from '../util/objectUtil'
+import { printWarning } from '../util/logUtil'
 
 export const InalzConfigDefaultOptions: InalzConfigComponent.Options = {
   lineIgnorePatterns: [],
@@ -69,7 +71,8 @@ export class InalzConfig {
     return InalzConfig.load(found)
   }
 
-  static validate(config: any) {
+  static validate(config: any, options: { strict?: boolean } = {}) {
+    const { strict = false } = options
     const validation = IOInalzConfig.decode(config)
     if (isLeft(validation)) {
       throw new InalzConfigError(
@@ -88,7 +91,28 @@ export class InalzConfig {
         }
       }
     }
-    return validation.right
+    const validConfig = validation.right
+    const equals = deepEquals(config, validConfig)
+    if (!equals) {
+      const deepDiff = require('deep-diff') // no type def
+      const additional = deepDiff(validConfig, config)
+        .filter((d: any) => d.kind === 'N')
+        .map((d: any) => d.path.join('.'))
+      if (strict) {
+        throw new InalzConfigError(
+          `Detected additional fields in inalz config: ${JSON.stringify(
+            additional,
+          )}`,
+        )
+      } else {
+        printWarning(
+          `Detected additional fields in inalz config. They are just ignored: ${JSON.stringify(
+            additional,
+          )}`,
+        )
+      }
+    }
+    return validConfig
   }
 
   each(callback: (config: SingleInalzConfig) => any) {

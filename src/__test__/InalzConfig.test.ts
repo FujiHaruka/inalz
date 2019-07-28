@@ -66,4 +66,11 @@ describe('InalzConfig', () => {
     const config = await InalzConfig.load(path)
     expect(config.options.markdownOptions.gfm).toBe(false)
   })
+
+  it('09: Warning with additional properties', async () => {
+    const path = 'misc/mock/config/inalz.09.yml'
+    const yaml = await readFile(path)
+    const config = YAML.parse(yaml)
+    expect(() => InalzConfig.validate(config, { strict: true })).toThrow()
+  })
 })

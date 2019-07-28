@@ -12,6 +12,7 @@
   "dependencies": {
     "chalk": "^2.4.2",
     "commander": "^2.20.0",
+    "deep-diff": "^1.0.2",
     "fast-glob": "^3.0.4",
     "fast-levenshtein": "^2.0.6",
     "fp-ts": "^2.0.3",
