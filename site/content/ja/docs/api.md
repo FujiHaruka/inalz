@@ -33,6 +33,9 @@ documents:
     locale: dir/to/locale
 options:
   lineIgnorePatterns: "^{{.+}}$"
+  documentExtension: ".hbs"
+  markdownOptions:
+    commonmark: true
 ```
 
 ### lang
@@ -61,6 +64,8 @@ options:
 `options` フィールドはオプションを記述します。
 
 -   `lineIgnorePatterns`: source の Markdown ドキュメント内で Locale ファイルに取り込みたくない行を JavaScript の[正規表現](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)で記述します。このパターンにマッチする行は無視されます。このオプションは、[hugo](https://gohugo.io/) など Markdown ファイルをテンプレートとして使うようなケースで役立ちます。
+-   `documentExtension`: documents にディレクトリを指定した場合、対象となる Markdown ドキュメントの拡張子を指定できます。デフォルトでは `.md` です。
+-   `markdownOptions`: Markdown をコンパイルする際のオプションを指定できます。このオプションは [remark-stringify](https://github.com/remarkjs/remark/tree/master/packages/remark-stringify) にそのまま渡されます。詳細は remark-stringify を参照してください。
 
 ## Inalz コマンド
 
