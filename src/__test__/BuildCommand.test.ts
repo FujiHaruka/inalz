@@ -103,4 +103,27 @@ describe('BuildCommand', () => {
     expect(results.filter(({ err }) => Boolean(err))).toEqual([])
     expect(await readFile(targetPaths.ja)).toBe(await readFile(expectedPath))
   })
+
+  it('05: allow empty document', async () => {
+    const sourcePath = 'misc/mock/build/src05.md'
+    const targetPaths = {
+      ja: os.tmpdir() + '/inalz/translation/translation05.md',
+    }
+    const localePath = 'misc/mock/build/locale05.yml'
+    const expectedPath = 'misc/mock/build/src05.md'
+    const results = await new BuildCommand({
+      baseDir: '',
+      lang,
+      document: {
+        sourcePath,
+        targetPaths,
+        localePath,
+      },
+      options: {
+        ...InalzConfigDefaultOptions,
+      },
+    }).build()
+    expect(results.filter(({ err }) => Boolean(err))).toEqual([])
+    expect(await readFile(targetPaths.ja)).toBe(await readFile(expectedPath))
+  })
 })

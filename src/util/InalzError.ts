@@ -28,10 +28,6 @@ export class InvalidLocaleItemError extends InalzErrorBase {
   name = 'InvalidLocaleItemError'
 }
 
-export class EmptyYamlDocumentError extends InalzErrorBase {
-  name = 'EmptyYamlDocumentError'
-}
-
 export class BuildFailedError extends InalzErrorBase {
   name = 'BuildFailedError'
 }

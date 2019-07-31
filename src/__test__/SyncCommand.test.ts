@@ -145,4 +145,23 @@ describe('SyncCommand', () => {
     expect(result.err).toBeUndefined()
     expect(result.status).toBe('unchanged')
   })
+
+  it('07: allow empty document', async () => {
+    const sourcePath = 'misc/mock/sync/src07.md'
+    const localePath = path.join(os.tmpdir(), 'loc07.yml')
+
+    await rmIfExists(localePath)
+    const syncer = new SyncCommand({
+      baseDir: '',
+      lang,
+      document: { sourcePath, localePath, targetPaths: {} },
+      options: InalzConfigDefaultOptions,
+    })
+    const result = await syncer.sync()
+    expect(result.err).toBeUndefined()
+
+    const parser = new LocaleItemParser(lang)
+    const items = await parser.load(localePath)
+    expect(items).toEqual([])
+  })
 })

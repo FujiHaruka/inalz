@@ -4,13 +4,16 @@ import { LocaleItem } from '../core/LocaleItem'
 import { Lang } from '../types/InalzConfig'
 import { fileExists, readFile } from '../util/fsUtil'
 import {
-  EmptyYamlDocumentError,
   InvalidLocaleItemError,
   LocaleNotFoundError,
   YamlParseError,
 } from '../util/InalzError'
 import { IOLocaleItem } from './IOLocaleItem'
 import { isLeft } from 'fp-ts/lib/Either'
+import { LocaleComponent } from '../types/Locale'
+
+const EMPTY_ITEMS_MESSAGE =
+  '# There is no locale items, but this file has a meaning for "build" command.\n'
 
 const pickYamlParseErrors = (documents: YAML.ast.Document[]) =>
   documents
@@ -46,6 +49,7 @@ ${JSON.stringify(errors, null, 2)}`,
     }
     const items = documents
       .map((document, index) => this.validateItem(document, index))
+      .filter((item): item is LocaleComponent.Item => Boolean(item))
       .map((item) => new LocaleItem(lang, item))
     return items
   }
@@ -69,6 +73,10 @@ ${JSON.stringify(errors, null, 2)}`,
   }
 
   stringify(items: LocaleItem[]): string {
+    if (items.length === 0) {
+      // 空の場合はそのままだと空ファイルになるのでコメントだけ残す
+      return EMPTY_ITEMS_MESSAGE
+    }
     return items.map((item) => YAML.stringify(item.toObject())).join('---\n')
   }
 
@@ -81,12 +89,14 @@ ${JSON.stringify(errors, null, 2)}`,
     return this.parseYaml(yaml)
   }
 
-  private validateItem(document: YAML.ast.Document, index: number) {
+  private validateItem(
+    document: YAML.ast.Document,
+    index: number,
+  ): LocaleComponent.Item | null {
     const json = document.toJSON()
     if (!json) {
-      throw new EmptyYamlDocumentError(
-        `Found empty document in ${this.yamlPath}`,
-      )
+      // 空 yaml は valid
+      return null
     }
     const validation = IOLocaleItem.decode(json)
 
