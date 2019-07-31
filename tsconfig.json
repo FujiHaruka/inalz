@@ -3,7 +3,6 @@
     "target": "ES2018",
     "module": "commonjs",
     "lib": ["es2019"],
-    "sourceMap": true,
     "outDir": "dist",
     "alwaysStrict": true,
     "noImplicitAny": true,
