@@ -1,11 +1,14 @@
 import fs from 'fs'
-import os from 'os'
+import os, { EOL } from 'os'
 import path from 'path'
 import { SyncCommand } from '../command/SyncCommand'
 import { LocaleItemParser } from '../convert/LocaleItemParser'
-import { Lang } from '../types/InalzConfig'
+import { Lang, InalzMiddleware } from '../types/InalzConfig'
 import { rmIfExists } from '../util/fsUtil'
-import { InalzConfigDefaultOptions } from '../config/InalzConfig'
+import {
+  InalzConfigDefaultOptions,
+  InalzConfigDefaultMiddlewareModules,
+} from '../config/InalzConfig'
 
 describe('SyncCommand', () => {
   const lang: Lang = {
@@ -24,6 +27,7 @@ describe('SyncCommand', () => {
       lang,
       document: { sourcePath, localePath, targetPaths: {} },
       options: InalzConfigDefaultOptions,
+      middlewareModules: InalzConfigDefaultMiddlewareModules,
     })
     const result = await syncer.sync()
     expect(result.err).toBeUndefined()
@@ -45,6 +49,7 @@ describe('SyncCommand', () => {
       lang,
       document: { sourcePath, localePath, targetPaths: {} },
       options: InalzConfigDefaultOptions,
+      middlewareModules: InalzConfigDefaultMiddlewareModules,
     })
     const result = await syncer.sync()
     expect(result.err).toBeUndefined()
@@ -69,6 +74,7 @@ describe('SyncCommand', () => {
       lang,
       document: { sourcePath, localePath, targetPaths: {} },
       options: InalzConfigDefaultOptions,
+      middlewareModules: InalzConfigDefaultMiddlewareModules,
     })
     const result = await syncer.sync()
     expect(result.err).toBeUndefined()
@@ -95,6 +101,7 @@ describe('SyncCommand', () => {
         ...InalzConfigDefaultOptions,
         lineIgnorePatterns: ['<!--.+-->'],
       },
+      middlewareModules: InalzConfigDefaultMiddlewareModules,
     })
     const result = await syncer.sync()
     expect(result.err).toBeUndefined()
@@ -118,6 +125,7 @@ describe('SyncCommand', () => {
       lang,
       document: { sourcePath, localePath, targetPaths: {} },
       options: InalzConfigDefaultOptions,
+      middlewareModules: InalzConfigDefaultMiddlewareModules,
     })
     const result = await syncer.sync()
     expect(result.err).toBeUndefined()
@@ -140,6 +148,7 @@ describe('SyncCommand', () => {
       lang,
       document: { sourcePath, localePath, targetPaths: {} },
       options: InalzConfigDefaultOptions,
+      middlewareModules: InalzConfigDefaultMiddlewareModules,
     })
     const result = await syncer.sync()
     expect(result.err).toBeUndefined()
@@ -156,6 +165,7 @@ describe('SyncCommand', () => {
       lang,
       document: { sourcePath, localePath, targetPaths: {} },
       options: InalzConfigDefaultOptions,
+      middlewareModules: InalzConfigDefaultMiddlewareModules,
     })
     const result = await syncer.sync()
     expect(result.err).toBeUndefined()
@@ -163,5 +173,36 @@ describe('SyncCommand', () => {
     const parser = new LocaleItemParser(lang)
     const items = await parser.load(localePath)
     expect(items).toEqual([])
+  })
+
+  it('08: preSync middleware', async () => {
+    const sourcePath = 'misc/mock/sync/src08.md'
+    const expectedLocPath = 'misc/mock/sync/loc08.yml'
+    const localePath = path.join(os.tmpdir(), 'locale08.yml')
+
+    const removeFirstLine: InalzMiddleware = (text, meta) =>
+      text
+        .split(EOL)
+        .slice(1)
+        .join(EOL)
+
+    await rmIfExists(localePath)
+    const syncer = new SyncCommand({
+      baseDir: '',
+      lang,
+      document: { sourcePath, localePath, targetPaths: {} },
+      options: InalzConfigDefaultOptions,
+      middlewareModules: {
+        preSync: [removeFirstLine],
+        postBuild: [],
+      },
+    })
+    const result = await syncer.sync()
+    expect(result.err).toBeUndefined()
+
+    const parser = new LocaleItemParser(lang)
+    const items = await parser.load(localePath)
+    const expected = await parser.load(expectedLocPath)
+    expect(items).toEqual(expected)
   })
 })

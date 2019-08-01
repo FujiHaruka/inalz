@@ -21,6 +21,16 @@ export const InalzConfigDefaultOptions: InalzConfigComponent.Options = {
   markdownOptions: {},
 }
 
+export const InalzConfigDefaultMiddlewares: InalzConfigComponent.Middlewares = {
+  preSync: [],
+  postBuild: [],
+}
+
+export const InalzConfigDefaultMiddlewareModules: InalzConfigComponent.MiddlewareModules = {
+  preSync: [],
+  postBuild: [],
+}
+
 export class InalzConfig {
   configDir: string
   configPath: string
@@ -28,6 +38,8 @@ export class InalzConfig {
   lang: Lang = null as any
   documents: ResolvedDocument[] = null as any
   options: InalzConfigComponent.Options = InalzConfigDefaultOptions
+  middlewares: InalzConfigComponent.Middlewares = null as any
+  middlewareModules: InalzConfigComponent.MiddlewareModules = null as any
 
   private constructor(configPath: string) {
     configPath = path.resolve(process.cwd(), configPath)
@@ -46,6 +58,15 @@ export class InalzConfig {
       .flat()
       .map((document) => resolveDocumentPath(this.configDir, document))
     this.options = { ...this.options, ...(conf.options || {}) }
+    this.middlewares = {
+      ...InalzConfigDefaultMiddlewares,
+      ...(conf.middlewares || {}),
+    }
+    const requireMw = this.requireMiddleware.bind(this)
+    this.middlewareModules = {
+      preSync: this.middlewares.preSync.map(requireMw),
+      postBuild: this.middlewares.postBuild.map(requireMw),
+    }
   }
 
   static async load(configPath: string) {
@@ -123,6 +144,7 @@ export class InalzConfig {
           lang: this.lang,
           document,
           options: this.options,
+          middlewareModules: this.middlewareModules,
         }),
       )
       .map((config) => callback(config))
@@ -190,5 +212,16 @@ export class InalzConfig {
       ),
     }))
     return documents
+  }
+
+  private requireMiddleware(
+    name: string,
+  ): InalzConfigComponent.MiddlewareModules {
+    const isRelativePath = name.startsWith('./')
+    if (isRelativePath) {
+      return require(path.resolve(this.configDir, name))
+    } else {
+      return require(name)
+    }
   }
 }

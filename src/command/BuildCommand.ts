@@ -1,4 +1,3 @@
-import { BUILTIN_ACTIONS } from '../Constants'
 import { LocaleItemParser } from '../convert/LocaleItemParser'
 import { Locale } from '../core/Locale'
 import {
@@ -6,9 +5,7 @@ import {
   SingleInalzConfig,
   InalzConfigComponent,
 } from '../types/InalzConfig'
-import { LocaleComponent } from '../types/Locale'
 import { readFile, writeFile, fileExists } from '../util/fsUtil'
-import { BuildFailedError } from '../util/InalzError'
 import { relative } from 'path'
 import { replaceMarkdownWithLocale } from '../convert/Markdown'
 
@@ -28,12 +25,14 @@ export class BuildCommand {
   targetPaths: { [lang: string]: string }
   localePath: string
   options: InalzConfigComponent.BuildOptions
+  middlewareModules: InalzConfigComponent.MiddlewareModules
 
   constructor({
     baseDir,
     lang,
     document: { sourcePath, targetPaths, localePath },
     options,
+    middlewareModules,
   }: SingleInalzConfig) {
     this.baseDir = baseDir
     this.lang = lang
@@ -41,6 +40,7 @@ export class BuildCommand {
     this.targetPaths = targetPaths
     this.localePath = localePath
     this.options = options
+    this.middlewareModules = middlewareModules
   }
 
   /**
@@ -54,15 +54,15 @@ export class BuildCommand {
     const results: BuildResult[] = []
     for (const [targetLang, targetPath] of Object.entries(targetPaths)) {
       try {
-        const content = replaceMarkdownWithLocale(
-          markdown,
-          locale,
-          targetLang,
-          {
-            lineIgnorePatterns: this.options.lineIgnorePatterns,
-            markdownOptions: this.options.markdownOptions,
-          },
+        let content = replaceMarkdownWithLocale(markdown, locale, targetLang, {
+          lineIgnorePatterns: this.options.lineIgnorePatterns,
+          markdownOptions: this.options.markdownOptions,
+        })
+        content = this.middlewareModules.postBuild.reduce(
+          (text, mw) => mw(text, { filepath: targetPath }),
+          content,
         )
+
         const alreadyExists = await fileExists(targetPath)
         let status: BuildResult['status'] = 'created'
         if (alreadyExists) {

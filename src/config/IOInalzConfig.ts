@@ -24,6 +24,12 @@ export const IOInalzConfig = t.exact(
           markdownOptions: t.record(t.string, t.unknown),
         }),
       ),
+      middlewares: t.exact(
+        t.partial({
+          preSync: t.array(t.string),
+          postBuild: t.array(t.string),
+        }),
+      ),
     }),
   ]),
 )

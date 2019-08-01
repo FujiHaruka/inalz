@@ -1,8 +1,11 @@
 import os from 'os'
 import { BuildCommand } from '../command/BuildCommand'
-import { Lang } from '../types/InalzConfig'
+import { Lang, InalzMiddleware } from '../types/InalzConfig'
 import { readFile } from '../util/fsUtil'
-import { InalzConfigDefaultOptions } from '../config/InalzConfig'
+import {
+  InalzConfigDefaultOptions,
+  InalzConfigDefaultMiddlewareModules,
+} from '../config/InalzConfig'
 
 describe('BuildCommand', () => {
   const lang: Lang = {
@@ -26,6 +29,7 @@ describe('BuildCommand', () => {
         localePath,
       },
       options: InalzConfigDefaultOptions,
+      middlewareModules: InalzConfigDefaultMiddlewareModules,
     }).build()
 
     expect(results.filter(({ err }) => Boolean(err))).toEqual([])
@@ -48,6 +52,7 @@ describe('BuildCommand', () => {
         localePath,
       },
       options: InalzConfigDefaultOptions,
+      middlewareModules: InalzConfigDefaultMiddlewareModules,
     }).build()
 
     expect(results.filter(({ err }) => Boolean(err))).toEqual([])
@@ -76,6 +81,7 @@ describe('BuildCommand', () => {
           '^{% sample lang="yaml" %}$',
         ],
       },
+      middlewareModules: InalzConfigDefaultMiddlewareModules,
     }).build()
     expect(results.filter(({ err }) => Boolean(err))).toEqual([])
     expect(await readFile(targetPaths.ja)).toBe(await readFile(expectedPath))
@@ -99,6 +105,7 @@ describe('BuildCommand', () => {
       options: {
         ...InalzConfigDefaultOptions,
       },
+      middlewareModules: InalzConfigDefaultMiddlewareModules,
     }).build()
     expect(results.filter(({ err }) => Boolean(err))).toEqual([])
     expect(await readFile(targetPaths.ja)).toBe(await readFile(expectedPath))
@@ -122,7 +129,37 @@ describe('BuildCommand', () => {
       options: {
         ...InalzConfigDefaultOptions,
       },
+      middlewareModules: InalzConfigDefaultMiddlewareModules,
     }).build()
+    expect(results.filter(({ err }) => Boolean(err))).toEqual([])
+    expect(await readFile(targetPaths.ja)).toBe(await readFile(expectedPath))
+  })
+
+  it('06: postBuild middleware', async () => {
+    const sourcePath = 'misc/mock/build/src06.md'
+    const targetPaths = {
+      ja: os.tmpdir() + '/inalz/translation/translation06.md',
+    }
+    const localePath = 'misc/mock/build/locale06.yml'
+    const expectedPath = 'misc/mock/build/expected06.md'
+
+    const appendHeaderLine: InalzMiddleware = (text, meta) =>
+      'HEADER\n\n' + text
+    const results = await new BuildCommand({
+      baseDir: '',
+      lang,
+      document: {
+        sourcePath,
+        targetPaths,
+        localePath,
+      },
+      options: InalzConfigDefaultOptions,
+      middlewareModules: {
+        preSync: [],
+        postBuild: [appendHeaderLine],
+      },
+    }).build()
+
     expect(results.filter(({ err }) => Boolean(err))).toEqual([])
     expect(await readFile(targetPaths.ja)).toBe(await readFile(expectedPath))
   })

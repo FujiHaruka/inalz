@@ -9,6 +9,7 @@ export interface InalzConfigInterface {
   lang: Lang
   documents: InalzConfigComponent.Document[]
   options?: Partial<InalzConfigComponent.Options>
+  middlewares?: Partial<InalzConfigComponent.Middlewares>
 }
 
 export type ResolvedDocument = {
@@ -24,7 +25,13 @@ export type SingleInalzConfig = {
   lang: Lang
   document: ResolvedDocument
   options: InalzConfigComponent.Options
+  middlewareModules: InalzConfigComponent.MiddlewareModules
 }
+
+export type InalzMiddleware = (
+  text: string,
+  meta: { filepath: string },
+) => string
 
 export namespace InalzConfigComponent {
   export type Document = {
@@ -45,4 +52,13 @@ export namespace InalzConfigComponent {
   }
 
   export type Options = SyncOptions & BuildOptions
+
+  export type Middlewares = {
+    preSync: string[]
+    postBuild: string[]
+  }
+
+  export type MiddlewareModules = {
+    [P in keyof Middlewares]: InalzMiddleware[]
+  }
 }

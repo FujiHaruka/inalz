@@ -26,25 +26,34 @@ export class SyncCommand {
   options: InalzConfigComponent.SyncOptions
   sourcePath: string
   localePath: string
+  middlewareModules: InalzConfigComponent.MiddlewareModules
 
   constructor({
     baseDir,
     lang,
     document: { sourcePath, localePath },
     options,
+    middlewareModules,
   }: SingleInalzConfig) {
     this.baseDir = baseDir
     this.lang = lang
     this.options = options
     this.sourcePath = sourcePath
     this.localePath = localePath
+    this.middlewareModules = middlewareModules
   }
 
   async sync(): Promise<SyncResult> {
     const { lang, sourcePath, localePath } = this
 
     try {
-      const srcText = await readFile(sourcePath)
+      let srcText = await readFile(sourcePath)
+
+      srcText = this.middlewareModules.preSync.reduce(
+        (text, mw) => mw(text, { filepath: sourcePath }),
+        srcText,
+      )
+
       const texts = splitIntoBlockTexts(srcText, {
         lineIgnorePatterns: this.options.lineIgnorePatterns,
       })

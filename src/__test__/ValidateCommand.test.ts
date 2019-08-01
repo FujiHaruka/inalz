@@ -1,5 +1,8 @@
 import { ValidateCommand } from '../command/ValidateCommand'
-import { InalzConfigDefaultOptions } from '../config/InalzConfig'
+import {
+  InalzConfigDefaultOptions,
+  InalzConfigDefaultMiddlewareModules,
+} from '../config/InalzConfig'
 
 describe('ValidateCommand', () => {
   it('01', async () => {
@@ -17,6 +20,7 @@ describe('ValidateCommand', () => {
         },
       },
       options: InalzConfigDefaultOptions,
+      middlewareModules: InalzConfigDefaultMiddlewareModules,
     })
     const result = await command.validate()
     expect(result).toEqual({
@@ -41,6 +45,7 @@ describe('ValidateCommand', () => {
         },
       },
       options: InalzConfigDefaultOptions,
+      middlewareModules: InalzConfigDefaultMiddlewareModules,
     })
     const result = await command.validate()
     expect(result.err).toBeTruthy()
