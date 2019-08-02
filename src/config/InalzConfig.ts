@@ -22,13 +22,13 @@ export const InalzConfigDefaultOptions: InalzConfigComponent.Options = {
 }
 
 export const InalzConfigDefaultMiddlewares: InalzConfigComponent.Middlewares = {
-  preSync: [],
-  postBuild: [],
+  processSource: [],
+  processTarget: [],
 }
 
 export const InalzConfigDefaultMiddlewareModules: InalzConfigComponent.MiddlewareModules = {
-  preSync: [],
-  postBuild: [],
+  processSource: [],
+  processTarget: [],
 }
 
 export class InalzConfig {
@@ -64,8 +64,8 @@ export class InalzConfig {
     }
     const requireMw = this.requireMiddleware.bind(this)
     this.middlewareModules = {
-      preSync: this.middlewares.preSync.map(requireMw),
-      postBuild: this.middlewares.postBuild.map(requireMw),
+      processSource: this.middlewares.processSource.map(requireMw),
+      processTarget: this.middlewares.processTarget.map(requireMw),
     }
   }
 

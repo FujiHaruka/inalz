@@ -5,7 +5,7 @@ import {
   SingleInalzConfig,
   InalzConfigComponent,
 } from '../types/InalzConfig'
-import { readFile, writeFile, fileExists } from '../util/fsUtil'
+import { readFile, writeFile, fileExists, readSource } from '../util/fsUtil'
 import { relative } from 'path'
 import { replaceMarkdownWithLocale } from '../convert/Markdown'
 
@@ -48,17 +48,20 @@ export class BuildCommand {
    */
   async build(): Promise<BuildResult[]> {
     const { lang, sourcePath, localePath, targetPaths } = this
-    const markdown = await readFile(sourcePath)
+    const srcText = await readSource(
+      sourcePath,
+      this.middlewareModules.processSource,
+    )
     const localeItems = await new LocaleItemParser(lang).load(localePath)
     const locale = new Locale(lang, localeItems)
     const results: BuildResult[] = []
     for (const [targetLang, targetPath] of Object.entries(targetPaths)) {
       try {
-        let content = replaceMarkdownWithLocale(markdown, locale, targetLang, {
+        let content = replaceMarkdownWithLocale(srcText, locale, targetLang, {
           lineIgnorePatterns: this.options.lineIgnorePatterns,
           markdownOptions: this.options.markdownOptions,
         })
-        content = this.middlewareModules.postBuild.reduce(
+        content = this.middlewareModules.processTarget.reduce(
           (text, mw) => mw(text, { filepath: targetPath }),
           content,
         )

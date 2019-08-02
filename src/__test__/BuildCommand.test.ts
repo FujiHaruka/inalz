@@ -135,7 +135,7 @@ describe('BuildCommand', () => {
     expect(await readFile(targetPaths.ja)).toBe(await readFile(expectedPath))
   })
 
-  it('06: postBuild middleware', async () => {
+  it('06: processTarget middleware', async () => {
     const sourcePath = 'misc/mock/build/src06.md'
     const targetPaths = {
       ja: os.tmpdir() + '/inalz/translation/translation06.md',
@@ -155,8 +155,8 @@ describe('BuildCommand', () => {
       },
       options: InalzConfigDefaultOptions,
       middlewareModules: {
-        preSync: [],
-        postBuild: [appendHeaderLine],
+        processSource: [],
+        processTarget: [appendHeaderLine],
       },
     }).build()
 

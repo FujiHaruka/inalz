@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import { InalzMiddleware } from '../types/InalzConfig'
 
 export const statOrNull = async (path: string) => {
   try {
@@ -47,4 +48,13 @@ export const writeFile = async (
     })
   }
   await fs.promises.writeFile(filePath, content, { mode })
+}
+
+export const readSource = async (
+  filepath: string,
+  middlewares: InalzMiddleware[],
+) => {
+  let srcText = await readFile(filepath)
+  srcText = middlewares.reduce((text, mw) => mw(text, { filepath }), srcText)
+  return srcText
 }

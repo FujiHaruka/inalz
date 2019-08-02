@@ -26,8 +26,8 @@ export const IOInalzConfig = t.exact(
       ),
       middlewares: t.exact(
         t.partial({
-          preSync: t.array(t.string),
-          postBuild: t.array(t.string),
+          processSource: t.array(t.string),
+          processTarget: t.array(t.string),
         }),
       ),
     }),

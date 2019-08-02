@@ -175,7 +175,7 @@ describe('SyncCommand', () => {
     expect(items).toEqual([])
   })
 
-  it('08: preSync middleware', async () => {
+  it('08: processSource middleware', async () => {
     const sourcePath = 'misc/mock/sync/src08.md'
     const expectedLocPath = 'misc/mock/sync/loc08.yml'
     const localePath = path.join(os.tmpdir(), 'locale08.yml')
@@ -193,8 +193,8 @@ describe('SyncCommand', () => {
       document: { sourcePath, localePath, targetPaths: {} },
       options: InalzConfigDefaultOptions,
       middlewareModules: {
-        preSync: [removeFirstLine],
-        postBuild: [],
+        processSource: [removeFirstLine],
+        processTarget: [],
       },
     })
     const result = await syncer.sync()

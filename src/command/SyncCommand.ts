@@ -8,7 +8,7 @@ import {
   Lang,
   SingleInalzConfig,
 } from '../types/InalzConfig'
-import { fileExists, readFile, writeFile } from '../util/fsUtil'
+import { fileExists, readFile, writeFile, readSource } from '../util/fsUtil'
 import { deepEquals } from '../util/objectUtil'
 
 export type SyncResult = {
@@ -47,11 +47,9 @@ export class SyncCommand {
     const { lang, sourcePath, localePath } = this
 
     try {
-      let srcText = await readFile(sourcePath)
-
-      srcText = this.middlewareModules.preSync.reduce(
-        (text, mw) => mw(text, { filepath: sourcePath }),
-        srcText,
+      const srcText = await readSource(
+        sourcePath,
+        this.middlewareModules.processSource,
       )
 
       const texts = splitIntoBlockTexts(srcText, {

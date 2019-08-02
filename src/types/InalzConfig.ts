@@ -54,8 +54,8 @@ export namespace InalzConfigComponent {
   export type Options = SyncOptions & BuildOptions
 
   export type Middlewares = {
-    preSync: string[]
-    postBuild: string[]
+    processSource: string[]
+    processTarget: string[]
   }
 
   export type MiddlewareModules = {
