@@ -36,9 +36,14 @@ options:
   documentExtension: ".hbs"
   markdownOptions:
     commonmark: true
+middlewares:
+  processSource:
+    - ./path/to/middleware/processSource.js
+  processTarget:
+    - ./path/to/middleware/processTarget.js
 ```
 
-### lang
+### `lang` (必須)
 
 `lang` フィールドは言語についてです。翻訳元言語と、翻訳先言語を記述します。
 
@@ -47,7 +52,7 @@ options:
 
 言語名には任意の文字列を指定できます。
 
-### documents
+### `documents` (必須)
 
 `documents` フィールドにはファイルのマッピングを記述します。
 
@@ -59,13 +64,20 @@ options:
 
 `source` にディレクトリを指定した場合、ディレクトリ下のすべての Markdown ファイルが再帰的に検索され、翻訳対象になります。`source` のファイル名に応じて Locale ファイルと翻訳ドキュメントファイルが生成されます。上の例では、`source` が `dir/to/en` ですが、`dir/to/en/doc.md` というファイルが見つかれば、Locale ファイル `dir/to/locale/doc.md` と翻訳ファイル `dir/to/ja/doc.md`、`dir/to/zh/doc.md` が対応します。
 
-## options
+### `options` (オプショナル)
 
 `options` フィールドはオプションを記述します。
 
 -   `lineIgnorePatterns`: source の Markdown ドキュメント内で Locale ファイルに取り込みたくない行を JavaScript の[正規表現](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)で記述します。このパターンにマッチする行は無視されます。このオプションは、[hugo](https://gohugo.io/) など Markdown ファイルをテンプレートとして使うようなケースで役立ちます。
 -   `documentExtension`: documents にディレクトリを指定した場合、対象となる Markdown ドキュメントの拡張子を指定できます。デフォルトでは `.md` です。
 -   `markdownOptions`: Markdown をコンパイルする際のオプションを指定できます。このオプションは [remark-stringify](https://github.com/remarkjs/remark/tree/master/packages/remark-stringify) にそのまま渡されます。詳細は remark-stringify を参照してください。
+
+### `middlewares` (オプショナル)
+
+`middlewares` フィールドはドキュメントの読み込み・書き込み処理に挿入するスクリプトのパスを記述します。スクリプトは JavaScript のモジュールであり、`(text: string, meta: { filepath: string }) => string` という型の関数でなければなりません。
+
+- `processSource` - 元ドキュメントファイルを読み込み後に、ドキュメントのコンテンツを変換するためのスクリプトです。スクリプトの相対パスの配列を与えます。
+- `processTarget` - 翻訳ドキュメントの書き込み前に、ドキュメントのコンテンツをを変換するためのスクリプトです。スクリプトの相対パスの配列を与えます。
 
 ## Inalz コマンド
 
