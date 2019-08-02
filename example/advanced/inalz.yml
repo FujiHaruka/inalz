@@ -12,3 +12,6 @@ documents:
 options:
   lineIgnorePatterns:
     - "^{{.+}}$"
+middlewares:
+  processTarget:
+    - ./middlewares/appendFooter
