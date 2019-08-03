@@ -1,7 +1,7 @@
 {
   "name": "inalz",
   "description": "Markdown document i18n for mentenable translation",
-  "version": "0.10.1",
+  "version": "0.11.0",
   "author": "FujiHaruka",
   "bin": {
     "inalz": "./bin/inalz"
