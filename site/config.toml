@@ -44,7 +44,7 @@ pygmentsUseClasses = true
       homepage_button_text = 'ドキュメントを読む'
 
 [params]
-  google_analytics_id=""
+  google_analytics_id="UA-143063367-5"
   # homepage_intro = 'Whisper is a documentation theme built with Hugo. The design and functionality is intentionally minimal.'
   # homepage_image = '/images/terminal.gif'
 
