@@ -14,7 +14,7 @@ describe('ValidateCommand', () => {
       },
       document: {
         sourcePath: '',
-        localePath: 'misc/mock/locales/validate01.yml',
+        localePath: 'misc/testdata/locales/validate01.yml',
         targetPaths: {
           ja: '',
         },
@@ -24,7 +24,7 @@ describe('ValidateCommand', () => {
     })
     const result = await command.validate()
     expect(result).toEqual({
-      localePath: 'misc/mock/locales/validate01.yml',
+      localePath: 'misc/testdata/locales/validate01.yml',
       unused: 3,
       outdated: 2,
     })
@@ -39,7 +39,7 @@ describe('ValidateCommand', () => {
       },
       document: {
         sourcePath: '',
-        localePath: 'misc/mock/locales/validate02.yml',
+        localePath: 'misc/testdata/locales/validate02.yml',
         targetPaths: {
           ja: '',
         },

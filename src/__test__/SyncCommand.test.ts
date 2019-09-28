@@ -17,8 +17,8 @@ describe('SyncCommand', () => {
   }
 
   it('01', async () => {
-    const sourcePath = 'misc/mock/sync/src01.md'
-    const expectedLocPath = 'misc/mock/sync/loc01.yml'
+    const sourcePath = 'misc/testdata/sync/src01.md'
+    const expectedLocPath = 'misc/testdata/sync/loc01.yml'
     const localePath = path.join(os.tmpdir(), 'locale01.yml')
 
     await rmIfExists(localePath)
@@ -39,8 +39,8 @@ describe('SyncCommand', () => {
   })
 
   it('02', async () => {
-    const sourcePath = 'misc/mock/sync/src02.md'
-    const expectedLocPath = 'misc/mock/sync/loc02.yml'
+    const sourcePath = 'misc/testdata/sync/src02.md'
+    const expectedLocPath = 'misc/testdata/sync/loc02.yml'
     const localePath = path.join(os.tmpdir(), 'locale02.yml')
 
     await rmIfExists(localePath)
@@ -62,9 +62,9 @@ describe('SyncCommand', () => {
   })
 
   it('03: merge', async () => {
-    const sourcePath = 'misc/mock/sync/src03.md'
-    const workingLocPath = 'misc/mock/sync/loc03.working.yml'
-    const expectedLocPath = 'misc/mock/sync/loc03.yml'
+    const sourcePath = 'misc/testdata/sync/src03.md'
+    const workingLocPath = 'misc/testdata/sync/loc03.working.yml'
+    const expectedLocPath = 'misc/testdata/sync/loc03.yml'
     const localePath = path.join(os.tmpdir(), 'loc03.yml')
 
     await rmIfExists(localePath)
@@ -86,9 +86,9 @@ describe('SyncCommand', () => {
   })
 
   it('04: merge', async () => {
-    const sourcePath = 'misc/mock/sync/src04.md'
-    const workingLocPath = 'misc/mock/sync/loc04.working.yml'
-    const expectedLocPath = 'misc/mock/sync/loc04.yml'
+    const sourcePath = 'misc/testdata/sync/src04.md'
+    const workingLocPath = 'misc/testdata/sync/loc04.working.yml'
+    const expectedLocPath = 'misc/testdata/sync/loc04.yml'
     const localePath = path.join(os.tmpdir(), 'loc04.yml')
 
     await rmIfExists(localePath)
@@ -113,9 +113,9 @@ describe('SyncCommand', () => {
   })
 
   it('05: merge 2 (add duplicated paragraph)', async () => {
-    const sourcePath = 'misc/mock/sync/src05.md'
-    const workingLocPath = 'misc/mock/sync/loc05.working.yml'
-    const expectedLocPath = 'misc/mock/sync/loc05.yml'
+    const sourcePath = 'misc/testdata/sync/src05.md'
+    const workingLocPath = 'misc/testdata/sync/loc05.working.yml'
+    const expectedLocPath = 'misc/testdata/sync/loc05.yml'
     const localePath = path.join(os.tmpdir(), 'loc05.yml')
 
     await rmIfExists(localePath)
@@ -137,8 +137,8 @@ describe('SyncCommand', () => {
   })
 
   it('06: merge 3 (add duplicated paragraph)', async () => {
-    const sourcePath = 'misc/mock/sync/src06.md'
-    const workingLocPath = 'misc/mock/sync/loc06.yml'
+    const sourcePath = 'misc/testdata/sync/src06.md'
+    const workingLocPath = 'misc/testdata/sync/loc06.yml'
     const localePath = path.join(os.tmpdir(), 'loc06.yml')
 
     await rmIfExists(localePath)
@@ -156,7 +156,7 @@ describe('SyncCommand', () => {
   })
 
   it('07: allow empty document', async () => {
-    const sourcePath = 'misc/mock/sync/src07.md'
+    const sourcePath = 'misc/testdata/sync/src07.md'
     const localePath = path.join(os.tmpdir(), 'loc07.yml')
 
     await rmIfExists(localePath)
@@ -176,8 +176,8 @@ describe('SyncCommand', () => {
   })
 
   it('08: processSource middleware', async () => {
-    const sourcePath = 'misc/mock/sync/src08.md'
-    const expectedLocPath = 'misc/mock/sync/loc08.yml'
+    const sourcePath = 'misc/testdata/sync/src08.md'
+    const expectedLocPath = 'misc/testdata/sync/loc08.yml'
     const localePath = path.join(os.tmpdir(), 'locale08.yml')
 
     const removeFirstLine: InalzMiddleware = (text, meta) =>

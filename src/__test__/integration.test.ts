@@ -4,7 +4,7 @@ import { readFile } from '../util/fsUtil'
 
 describe('inalz integration', () => {
   it('01', async () => {
-    const cwd = path.resolve('misc/mock/integration/01')
+    const cwd = path.resolve('misc/testdata/integration/01')
 
     await CLIActions.sync({ cwd })
     await CLIActions.build({ cwd })

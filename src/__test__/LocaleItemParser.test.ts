@@ -9,7 +9,7 @@ describe('LocaleItemParser', () => {
   }
   it('parse valid locales successfuly', async () => {
     {
-      const yaml = await readFile('misc/mock/locales/valid01.yml')
+      const yaml = await readFile('misc/testdata/locales/valid01.yml')
       const parser = new LocaleItemParser(LANG)
       const items = parser.parseYaml(yaml)
       expect(items).toBeTruthy()
@@ -19,15 +19,15 @@ describe('LocaleItemParser', () => {
   it('failed to parse invalid locales', async () => {
     const parser = new LocaleItemParser(LANG)
     {
-      const yaml = await readFile('misc/mock/locales/invalid01.yml')
+      const yaml = await readFile('misc/testdata/locales/invalid01.yml')
       expect(() => parser.parseYaml(yaml)).toThrow()
     }
     {
-      const yaml = await readFile('misc/mock/locales/invalid02.yml')
+      const yaml = await readFile('misc/testdata/locales/invalid02.yml')
       expect(() => parser.parseYaml(yaml)).toThrow()
     }
     {
-      const yaml = await readFile('misc/mock/locales/invalid03.yml')
+      const yaml = await readFile('misc/testdata/locales/invalid03.yml')
       expect(() => parser.parseYaml(yaml)).toThrow()
     }
   })

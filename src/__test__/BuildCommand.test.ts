@@ -14,12 +14,12 @@ describe('BuildCommand', () => {
   }
 
   it('01', async () => {
-    const sourcePath = 'misc/mock/build/src01.md'
+    const sourcePath = 'misc/testdata/build/src01.md'
     const targetPaths = {
       ja: os.tmpdir() + '/inalz/translation/translation01.md',
     }
-    const localePath = 'misc/mock/build/locale01.yml'
-    const expectedPath = 'misc/mock/build/expected01.md'
+    const localePath = 'misc/testdata/build/locale01.yml'
+    const expectedPath = 'misc/testdata/build/expected01.md'
     const results = await new BuildCommand({
       baseDir: '',
       lang,
@@ -37,12 +37,12 @@ describe('BuildCommand', () => {
   })
 
   it('02: issue #7', async () => {
-    const sourcePath = 'misc/mock/build/src02.md'
+    const sourcePath = 'misc/testdata/build/src02.md'
     const targetPaths = {
       ja: os.tmpdir() + '/inalz/translation/translation02.md',
     }
-    const localePath = 'misc/mock/build/locale02.yml'
-    const expectedPath = 'misc/mock/build/expected02.md'
+    const localePath = 'misc/testdata/build/locale02.yml'
+    const expectedPath = 'misc/testdata/build/expected02.md'
     const results = await new BuildCommand({
       baseDir: '',
       lang,
@@ -60,12 +60,12 @@ describe('BuildCommand', () => {
   })
 
   it('03', async () => {
-    const sourcePath = 'misc/mock/build/src03.md'
+    const sourcePath = 'misc/testdata/build/src03.md'
     const targetPaths = {
       ja: os.tmpdir() + '/inalz/translation/translation03.md',
     }
-    const localePath = 'misc/mock/build/locale03.yml'
-    const expectedPath = 'misc/mock/build/expected03.md'
+    const localePath = 'misc/testdata/build/locale03.yml'
+    const expectedPath = 'misc/testdata/build/expected03.md'
     const results = await new BuildCommand({
       baseDir: '',
       lang,
@@ -88,12 +88,12 @@ describe('BuildCommand', () => {
   })
 
   it('04', async () => {
-    const sourcePath = 'misc/mock/build/src04.md'
+    const sourcePath = 'misc/testdata/build/src04.md'
     const targetPaths = {
       ja: os.tmpdir() + '/inalz/translation/translation04.md',
     }
-    const localePath = 'misc/mock/build/locale04.yml'
-    const expectedPath = 'misc/mock/build/expected04.md'
+    const localePath = 'misc/testdata/build/locale04.yml'
+    const expectedPath = 'misc/testdata/build/expected04.md'
     const results = await new BuildCommand({
       baseDir: '',
       lang,
@@ -112,12 +112,12 @@ describe('BuildCommand', () => {
   })
 
   it('05: allow empty document', async () => {
-    const sourcePath = 'misc/mock/build/src05.md'
+    const sourcePath = 'misc/testdata/build/src05.md'
     const targetPaths = {
       ja: os.tmpdir() + '/inalz/translation/translation05.md',
     }
-    const localePath = 'misc/mock/build/locale05.yml'
-    const expectedPath = 'misc/mock/build/src05.md'
+    const localePath = 'misc/testdata/build/locale05.yml'
+    const expectedPath = 'misc/testdata/build/src05.md'
     const results = await new BuildCommand({
       baseDir: '',
       lang,
@@ -136,12 +136,12 @@ describe('BuildCommand', () => {
   })
 
   it('06: processTarget middleware', async () => {
-    const sourcePath = 'misc/mock/build/src06.md'
+    const sourcePath = 'misc/testdata/build/src06.md'
     const targetPaths = {
       ja: os.tmpdir() + '/inalz/translation/translation06.md',
     }
-    const localePath = 'misc/mock/build/locale06.yml'
-    const expectedPath = 'misc/mock/build/expected06.md'
+    const localePath = 'misc/testdata/build/locale06.yml'
+    const expectedPath = 'misc/testdata/build/expected06.md'
 
     const appendHeaderLine: InalzMiddleware = (text, meta) =>
       'HEADER\n\n' + text

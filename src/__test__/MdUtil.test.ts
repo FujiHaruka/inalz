@@ -4,7 +4,7 @@ import { MdParser, MdTreeProcessor } from '../util/mdUtil'
 
 describe('Markdown helpers', () => {
   it('MdParser parse / stringify', async () => {
-    const markdown = await readFile('misc/mock/md/sample01.md')
+    const markdown = await readFile('misc/testdata/md/sample01.md')
     expect(
       flow(
         MdParser.parse,
@@ -14,7 +14,7 @@ describe('Markdown helpers', () => {
   })
 
   it('MdTreeProcessor.countBlock', async () => {
-    const markdown = await readFile('misc/mock/md/sample01.md')
+    const markdown = await readFile('misc/testdata/md/sample01.md')
     const count = flow(
       MdParser.parse,
       MdTreeProcessor.countBlock,
@@ -23,7 +23,7 @@ describe('Markdown helpers', () => {
   })
 
   it('MdTreeProcessor._replace', async () => {
-    const markdown = await readFile('misc/mock/md/sample02.md')
+    const markdown = await readFile('misc/testdata/md/sample02.md')
     const texts = ['1', '__COPY__', '3', '4', '5', '6']
     const replaced = flow(
       MdParser.parse,
