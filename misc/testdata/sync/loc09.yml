@@ -1,0 +1,16 @@
+texts:
+  en: >-
+    title: Inalz
+
+    draft: true
+
+    weight: 10
+  ja: __COPY__
+---
+texts:
+  en: '*"Write continuously, translate continuously."*'
+  ja: __COPY__
+---
+texts:
+  en: a Markdown document i18n tool for maintainable translation
+  ja: __COPY__

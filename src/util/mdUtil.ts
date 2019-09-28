@@ -12,6 +12,8 @@ import {
 
 const IGNORE = BUILTIN_ACTIONS.IGNORE.slice(2)
 
+const FrontMatterOptions = ['yaml', 'toml', { type: 'json', fence: { open: '{', close: '}' } }]
+
 const getStringValue = (node: Unist.Node) => {
   // 複数行のブロックではインデントを考慮する
   const hasIndent = node.position && node.position.indent!.some((n) => n > 1)
@@ -60,6 +62,7 @@ export const MdParser = {
   parse(text: string): Unist.Node {
     return unified()
       .use(require('remark-parse'))
+      .use(require('remark-frontmatter'), FrontMatterOptions)
       .use(DisableInline.disableInlineTokenizer)
       .parse(text)
   },
@@ -76,6 +79,7 @@ export const MdParser = {
         ...options,
       })
       .use(DisableInline.disableInlineEscape)
+      .use(require('remark-frontmatter'), FrontMatterOptions)
       .stringify(tree)
   },
 }
@@ -89,6 +93,9 @@ export const MdTreeProcessor = bind({
       switch (type) {
         case 'text':
         case 'html':
+        case 'yaml':
+        case 'toml':
+        case 'json':
           if (tree.value === IGNORE) {
             return []
           }
@@ -111,6 +118,9 @@ export const MdTreeProcessor = bind({
       switch (type) {
         case 'text':
         case 'html':
+        case 'yaml':
+        case 'toml':
+        case 'json':
           if (tree.value === IGNORE) {
             return 0
           }
@@ -164,6 +174,9 @@ export const MdTreeProcessor = bind({
       switch (type) {
         case 'text':
         case 'html':
+        case 'yaml':
+        case 'toml':
+        case 'json':
           if (tree.value === IGNORE) {
             return
           }
@@ -190,6 +203,9 @@ export const MdTreeProcessor = bind({
       switch (type) {
         case 'text':
         case 'html':
+        case 'yaml':
+        case 'toml':
+        case 'json':
           if (tree.value === IGNORE) {
             return
           }

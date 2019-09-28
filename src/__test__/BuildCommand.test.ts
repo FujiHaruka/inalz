@@ -163,4 +163,27 @@ describe('BuildCommand', () => {
     expect(results.filter(({ err }) => Boolean(err))).toEqual([])
     expect(await readFile(targetPaths.ja)).toBe(await readFile(expectedPath))
   })
+
+  it('07: support front matter', async () => {
+    const sourcePath = 'misc/testdata/build/src07.md'
+    const targetPaths = {
+      ja: os.tmpdir() + '/inalz/translation/translation07.md',
+    }
+    const localePath = 'misc/testdata/build/locale07.yml'
+    const expectedPath = 'misc/testdata/build/expected07.md'
+
+    const results = await new BuildCommand({
+      baseDir: '',
+      lang,
+      document: {
+        sourcePath,
+        targetPaths,
+        localePath,
+      },
+      options: InalzConfigDefaultOptions,
+      middlewareModules: InalzConfigDefaultMiddlewareModules,
+    }).build()
+    expect(results.filter(({ err }) => Boolean(err))).toEqual([])
+    expect(await readFile(targetPaths.ja)).toBe(await readFile(expectedPath))
+  })
 })

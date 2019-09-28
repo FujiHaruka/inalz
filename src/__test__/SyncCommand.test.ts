@@ -205,4 +205,26 @@ describe('SyncCommand', () => {
     const expected = await parser.load(expectedLocPath)
     expect(items).toEqual(expected)
   })
+
+  it('09: support front matter', async () => {
+    const sourcePath = 'misc/testdata/sync/src09.md'
+    const expectedLocPath = 'misc/testdata/sync/loc09.yml'
+    const localePath = path.join(os.tmpdir(), 'locale09.yml')
+
+    await rmIfExists(localePath)
+    const syncer = new SyncCommand({
+      baseDir: '',
+      lang,
+      document: { sourcePath, localePath, targetPaths: {} },
+      options: InalzConfigDefaultOptions,
+      middlewareModules: InalzConfigDefaultMiddlewareModules,
+    })
+    const result = await syncer.sync()
+    expect(result.err).toBeUndefined()
+
+    const parser = new LocaleItemParser(lang)
+    const items = await parser.load(localePath)
+    const expected = await parser.load(expectedLocPath)
+    expect(items).toEqual(expected)
+  })
 })
