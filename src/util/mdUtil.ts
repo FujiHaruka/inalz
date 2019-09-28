@@ -12,6 +12,7 @@ import {
 
 const IGNORE = BUILTIN_ACTIONS.IGNORE.slice(2)
 
+const TextTypes = new Set(['text', 'html', 'yaml', 'toml', 'json'])
 const FrontMatterOptions = ['yaml', 'toml', { type: 'json', fence: { open: '{', close: '}' } }]
 
 const getStringValue = (node: Unist.Node) => {
@@ -90,19 +91,14 @@ export const MdTreeProcessor = bind({
     if (Array.isArray(children)) {
       return children.flatMap((child: Unist.Node) => this.toBlockTexts(child))
     } else {
-      switch (type) {
-        case 'text':
-        case 'html':
-        case 'yaml':
-        case 'toml':
-        case 'json':
-          if (tree.value === IGNORE) {
-            return []
-          }
-          const value = getStringValue(tree)
-          return [value]
-        default:
+      if (TextTypes.has(type)) {
+        if (tree.value === IGNORE) {
           return []
+        }
+        const value = getStringValue(tree)
+        return [value]
+      } else {
+        return []
       }
     }
   },
@@ -115,18 +111,13 @@ export const MdTreeProcessor = bind({
         0,
       )
     } else {
-      switch (type) {
-        case 'text':
-        case 'html':
-        case 'yaml':
-        case 'toml':
-        case 'json':
-          if (tree.value === IGNORE) {
-            return 0
-          }
-          return 1
-        default:
+      if (TextTypes.has(type)) {
+        if (tree.value === IGNORE) {
           return 0
+        }
+        return 1
+      } else {
+        return 0
       }
     }
   },
@@ -171,26 +162,21 @@ export const MdTreeProcessor = bind({
     if (Array.isArray(children)) {
       children.forEach((child) => this._replaceMutably(child, texts))
     } else {
-      switch (type) {
-        case 'text':
-        case 'html':
-        case 'yaml':
-        case 'toml':
-        case 'json':
-          if (tree.value === IGNORE) {
-            return
-          }
-          const newValue = texts.shift()
-          if (newValue === undefined) {
-            throw new Error('Failed to shift texts')
-          }
-          if (newValue === BUILTIN_ACTIONS.COPY) {
-            return
-          }
-          tree.value = newValue
+      if (TextTypes.has(type)) {
+        if (tree.value === IGNORE) {
           return
-        default:
+        }
+        const newValue = texts.shift()
+        if (newValue === undefined) {
+          throw new Error('Failed to shift texts')
+        }
+        if (newValue === BUILTIN_ACTIONS.COPY) {
           return
+        }
+        tree.value = newValue
+        return
+      } else {
+        return
       }
     }
   },
@@ -200,25 +186,20 @@ export const MdTreeProcessor = bind({
     if (Array.isArray(children)) {
       children.forEach((child) => this._validateReplaceMutably(child, texts))
     } else {
-      switch (type) {
-        case 'text':
-        case 'html':
-        case 'yaml':
-        case 'toml':
-        case 'json':
-          if (tree.value === IGNORE) {
-            return
-          }
-          const value = getStringValue(tree)
-          const givenValue = texts.shift()
-          if (value !== givenValue) {
-            throw new InconsistentSourceTextError(`
+      if (TextTypes.has(type)) {
+        if (tree.value === IGNORE) {
+          return
+        }
+        const value = getStringValue(tree)
+        const givenValue = texts.shift()
+        if (value !== givenValue) {
+          throw new InconsistentSourceTextError(`
 source text in document: ${value}
 source text in locale: ${givenValue}`)
-          }
-          return
-        default:
-          return
+        }
+        return
+      } else {
+        return 0
       }
     }
   },
